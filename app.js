@@ -161,6 +161,11 @@ function catmull(P, n = 16){
 }
 function bend2(a, b, k){ const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = b[0] - a[0], dy = b[1] - a[1]; return [a, [mx - dy * k, my + dx * k], b]; }
 function quad(a, c, b, n = 40){ const o = []; for (let i = 0; i <= n; i++){ const t = i / n; o.push([0, 1].map(d => (1 - t) * (1 - t) * a[d] + 2 * (1 - t) * t * c[d] + t * t * b[d])); } return o; }
+// 지도 글꼴은 ①②③을 눕혀 그린다(기기 CJK 글꼴로 대체되며 세로쓰기 취급) — 지도 위 글자만 «1 »로 바꾼다(11/20 사회 🟡).
+const CIRC = '①②③④⑤⑥⑦⑧⑨⑩';
+const mapText = t => String(t).replace(/[①-⑩]/g, c => (CIRC.indexOf(c) + 1) + '. ');
+// 지구본에서 자리를 옮길 이름표(흐름 지도는 평면이라 맞던 자리) — 장면 id → 이름 → [경도, 위도]
+const LABEL_AT = { as1: { '대한 제국': [127.2, 38.2] } };
 const F = (geom, props) => ({ type: 'Feature', geometry: geom, properties: props || {} });
 const FC = feats => ({ type: 'FeatureCollection', features: feats });
 
@@ -201,8 +206,9 @@ function drawLabels(keyArea){
   if (S.names){
     if (s){
       s.labels.filter(onY).filter(onS).filter(l => !l.reveal || $('p-q').open).forEach(l => {
-        const ll = (isPhone() && l.llS) ? l.llS : l.ll, t = (isPhone() && l.tS) ? l.tS : l.t;
-        out.push(F({ type: 'Point', coordinates: ll }, { t, sz: l.s === 2 ? 17 : l.s === 0 ? 11.5 : 13.5, c: l.k ? shade(l.k) : '#5b5a55' }));
+        const t = (isPhone() && l.tS) ? l.tS : l.t, fix = LABEL_AT[s.id] && LABEL_AT[s.id][l.t];
+        const ll = fix || ((isPhone() && l.llS) ? l.llS : l.ll);
+        out.push(F({ type: 'Point', coordinates: ll }, { t: mapText(t), sz: l.s === 2 ? 17 : l.s === 0 ? 11.5 : 13.5, c: l.k ? shade(l.k) : '#5b5a55' }));
       });
     } else {
       const big = Object.entries(keyArea).sort((a, b) => b[1].a - a[1].a);
@@ -218,7 +224,7 @@ function drawOverlay(){
   const s = scene(), pts = [], arr = [], head = [], inf = [];
   if (s){
     if (s.meridian) pts.push(F({ type: 'LineString', coordinates: Array.from({ length: 81 }, (_, i) => [0, -80 + i * 2]) }, { kind: 'meridian' }));
-    s.points.filter(onS).forEach(p => pts.push(F({ type: 'Point', coordinates: p.ll }, { kind: 'pt', t: (isPhone() && p.tS) ? p.tS : p.t })));
+    s.points.filter(onS).forEach(p => pts.push(F({ type: 'Point', coordinates: p.ll }, { kind: 'pt', t: mapText((isPhone() && p.tS) ? p.tS : p.t) })));
     s.arrows.filter(onS).forEach(a => {
       let P = a.pts.slice(); if (P.length === 2) P = bend2(P[0], P[1], a.bend ?? 0.18);
       const line = catmull(P), c = (a.k && a.k !== 'INK') ? COLORS[a.k] : INK;
@@ -227,7 +233,7 @@ function drawOverlay(){
       if (a.both) head.push(F({ type: 'Point', coordinates: line[0] }, { c, b: bearing(line[2] || line[1], line[0]) }));
       if (a.label){
         const at = a.li != null ? a.pts[Math.min(a.li, a.pts.length - 1)] : line[Math.floor(line.length / 2)];
-        pts.push(F({ type: 'Point', coordinates: at }, { kind: 'arrlbl', t: (isPhone() && a.labelS) ? a.labelS : a.label, c }));
+        pts.push(F({ type: 'Point', coordinates: at }, { kind: 'arrlbl', t: mapText((isPhone() && a.labelS) ? a.labelS : a.label), c }));
       }
     });
     s.inf.filter(f => f.from && f.to).forEach(f => {
@@ -284,7 +290,7 @@ function panel(){
   $('p-body').innerHTML = s.body;
   $('p-sth').innerHTML = `${s.country} 안에서는 <small>— 단계를 누르면 지도가 바뀐다</small>`;
   $('p-dots').innerHTML = s.steps.map((st, i) => `<button type="button" data-i="${i}" aria-current="${i === S.si}" aria-label="${i + 1}단계${st.y ? ' ' + st.y : ''}">${i + 1}</button>`).join('');
-  $('p-mini').textContent = S.mini ? '▴ 설명 펴기' : '▾ 설명 접기';
+  $('p-mini').textContent = S.mini ? '▴ 설명 펴기' : '▾ 설명 접기'; setTimeout(stepLine);
   $('p-steps').innerHTML = s.steps.map((st, i) => `<li><button type="button" data-i="${i}" aria-current="${i === S.si}"><span class="n">${i + 1}</span><span>${st.y ? `<span class="y">${st.y}</span>` : ''}${st.t}</span></button></li>`).join('');
   const item = f => {
     const o = f.s != null && byId[f.s] != null ? SCENES[byId[f.s]] : null;
@@ -299,7 +305,8 @@ function panel(){
   else $('p-q').hidden = true;
   P.scrollTop = 0;
 }
-function stepCurrent(){ document.querySelectorAll('#p-steps button, #p-dots button').forEach(b => b.setAttribute('aria-current', +b.dataset.i === S.si)); }
+function stepLine(){ const s = scene(), el = $('p-cur'); if (!s || !el) return; const st = s.steps[S.si]; el.innerHTML = st ? `${st.y ? `<b>${st.y}</b> ` : ''}${st.t.replace(/<[^>]+>/g, '')}` : `${S.year}년 경계를 보는 중`; }
+function stepCurrent(){ stepLine(); document.querySelectorAll('#p-steps button, #p-dots button').forEach(b => b.setAttribute('aria-current', +b.dataset.i === S.si)); }
 
 function padding(){
   // 패널이 실제로 어디 놓였는지(아래 판 / 오른쪽 판) 재서 여백을 정한다 — 폰 세로·가로·노트북 모두 같은 식.
@@ -321,7 +328,7 @@ function fly(){
   const flyC = (center, zoom, ms) => map.flyTo({ center, zoom, pitch: 0, bearing: 0, offset: off, duration: ms });
   if (!s){ flyC(UNIT.home.center, isPhone() ? UNIT.home.zoomPhone : UNIT.home.zoom, 1800); return; }
   const [w, so, e, n] = s.view;
-  if (isWide(s)){ flyC(wideCenter(s, Math.max(0, S.si)), isPhone() ? 1.1 : 1.8, 2000); return; }
+  if (isWide(s)){ const c = wideCenter(s, Math.max(0, S.si)); flyC([c[0], c[1]], c.one ? (isPhone() ? 2.4 : 2.8) : (isPhone() ? 1.1 : 1.8), 2000); return; }
   let cam = null;
   try { cam = map.cameraForBounds([[w, so], [e, n]], { padding: pd, maxZoom: 6 }); } catch (err){ console.warn('[지구본] 화면 맞춤 실패', err.message); }
   if (cam && cam.center) map.flyTo({ ...cam, pitch: 0, bearing: 0, duration: 2200 });
@@ -334,12 +341,13 @@ function url(){
 }
 function setYear(y){ S.year = y; if (S.sc >= 0){ S.si = -1; stepCurrent(); } syncChips(); draw(); url(); }
 // 세계 장면(폭 150° 넘음)은 bbox 가운데가 엉뚱한 곳(아프리카)이 된다 — 그 단계에 보이는 점·화살표의 가운데로 간다(11/20 사회 학생 눈 🔴).
-const WIDE_C = { as1: [105, 18], gb2: [-5, 48] };   // 단계에 점·화살표가 없을 때의 가운데
+const WIDE_C = { as1: [118, 24], gb2: [-5, 48] };   // 단계에 점·화살표가 없을 때의 가운데
 function wideCenter(s, i){
   const pts = [];
   s.points.filter(p => !p.st || p.st.includes(i)).forEach(p => pts.push(p.ll));
   s.arrows.filter(a => !a.st || a.st.includes(i)).forEach(a => a.pts.forEach(q => pts.push(q)));
   if (!pts.length) return WIDE_C[s.id] || [(s.view[0] + s.view[2]) / 2, 20];
+  if (pts.length === 1) return Object.assign(pts[0].slice(), { one: true });
   let x = 0, y = 0, z = 0; const r = Math.PI / 180;
   pts.forEach(([lo, la]) => { x += Math.cos(la * r) * Math.cos(lo * r); y += Math.cos(la * r) * Math.sin(lo * r); z += Math.sin(la * r); });
   return [Math.atan2(y, x) / r, Math.atan2(z, Math.hypot(x, y)) / r];
