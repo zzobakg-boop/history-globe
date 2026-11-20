@@ -205,7 +205,9 @@ function quad(a, c, b, n = 40){ const o = []; for (let i = 0; i <= n; i++){ cons
 const CIRC = '①②③④⑤⑥⑦⑧⑨⑩';
 const mapText = t => String(t).replace(/[①-⑩]/g, c => (CIRC.indexOf(c) + 1) + '. ');
 // 지구본에서 자리를 옮길 이름표(흐름 지도는 평면이라 맞던 자리) — 장면 id → 이름 → [경도, 위도]
-const LABEL_AT = { as1: { '대한 제국': [127.2, 38.2] } };
+const LABEL_AT = { as1: { '대한 제국': [127.2, 38.2] }, it1: { '프랑스': [3, 46.6] } };   // it1 프랑스: 사보이아 경계에 붙어 보라 땅을 프랑스로 읽게 됨(11/21 사회 🟡)
+// 지구본에서 바꿔 쓰는 장면 이름표 — 영국 색으로 칠한 인도가 회색 «인도»로만 떠 옆의 «오스트레일리아(영국)»와 짝이 안 맞았다(11/21 사회 🟡)
+const LABEL_TXT = { as1: { '인도': { t: '인도(영국)', k: 'GB' } } };
 // 나라 이름표는 본토에 — 한 나라 도형이 식민지까지 묶여 있어 «가장 큰 덩어리»가 아덴·앙골라·자바가 되던 것(11/21 코드 검토 high)
 const HOME_AT = { GB: [-1.5, 52.5], FR: [2.5, 46.8], ES: [-3.7, 40.2], PT: [-8, 39.7], RU: [40, 56], AT: [15.5, 47.6], DE: [13.4, 52.5],
   GC: [10, 51], US: [-95, 39], CSA: [-87, 33], OT: [32.8, 39.9], IT: [8, 45], BE: [4.5, 50.7], NL: [5.5, 52.2], JP: [138, 36],
@@ -274,9 +276,10 @@ function drawLabels(keyArea, grey){
   if (S.names){
     if (s){
       s.labels.filter(onY).filter(onS).filter(l => !l.reveal || $('p-q').open).forEach(l => {
-        const t = (isPhone() && l.tS) ? l.tS : l.t, fix = LABEL_AT[s.id] && LABEL_AT[s.id][l.t];
+        const tx = LABEL_TXT[s.id] && LABEL_TXT[s.id][l.t];
+        const t = tx ? tx.t : (isPhone() && l.tS) ? l.tS : l.t, fix = LABEL_AT[s.id] && LABEL_AT[s.id][l.t];
         const ll = fix || ((isPhone() && l.llS) ? l.llS : l.ll);
-        out.push(F({ type: 'Point', coordinates: ll }, { t: mapText(t), sz: l.s === 2 ? 17 : l.s === 0 ? 11.5 : 13.5, c: l.k ? shade(l.k) : '#5b5a55' }));
+        out.push(F({ type: 'Point', coordinates: ll }, { t: mapText(t), sz: l.s === 2 ? 17 : l.s === 0 ? 11.5 : 13.5, c: (tx ? tx.k : l.k) ? shade(tx ? tx.k : l.k) : '#5b5a55' }));
       });
     } else {
       const big = Object.entries(keyArea).sort((a, b) => b[1].a - a[1].a);
@@ -289,7 +292,21 @@ function drawLabels(keyArea, grey){
   const seen = new Set(out.map(f => String(f.properties.t).replace(/\s/g, '')));
   const g2 = S.names ? (grey || []).sort((x, y) => y.a - x.a).filter(g => { const k = g.t.replace(/\s/g, ''); if (seen.has(k)) return false; seen.add(k); return true; })
     .map(g => F({ type: 'Point', coordinates: g.ll }, { t: g.t, a: g.a, tier: g.a > 60 ? 0 : g.a > 8 ? 1 : 2 })) : [];
-  map.getSource('lbl2').setData(FC(g2));
+  GREY = g2; greyVisible();
+}
+// 회색 이름은 위쪽 연도·단추 띠, 설명 패널, 아래 막대 뒤에 깔리면 지저분하다 — 그 자리에 떨어지는 것은 숨긴다(11/21 사회 🟡). 지도를 움직일 때마다 다시 고른다
+let GREY = [];
+function greyVisible(){
+  const boxes = ['top', 'tools', 'panel', 'bottom'].map($).filter(el => el && !el.hidden && el.offsetParent !== null).map(el => el.getBoundingClientRect());
+  const m = 18;
+  // 위쪽 띠(연도·단추)와 아래 막대는 화면 폭 전체로 본다 — 띠 사이 빈칸에 걸친 이름도 글자 뒤에 깔려 보인다
+  const topLine = Math.max(...['top', 'tools'].map(id => $(id).getBoundingClientRect().bottom)), botLine = $('bottom').getBoundingClientRect().top;
+  const vis = GREY.filter(f => {
+    const p = map.project(f.geometry.coordinates);
+    if (p.y < topLine + m || p.y > botLine - m) return false;
+    return !boxes.some(b => p.x > b.left - m && p.x < b.right + m && p.y > b.top - m && p.y < b.bottom + m);
+  });
+  map.getSource('lbl2').setData(FC(vis));
 }
 
 let pills = [];
@@ -486,6 +503,7 @@ map.on('load', () => {
   if (S.sc >= 0){ stepCurrent(); fly(); }
   window.__ready = true;
 });
+map.on('moveend', () => { if (READY) greyVisible(); });
 map.on('error', e => console.error('[지구본]', e.error && e.error.message));
 function navVar(){ document.documentElement.style.setProperty('--nav', $('bottom').offsetHeight + 'px'); }
 navVar();
