@@ -8,7 +8,7 @@
 - 검증: `python3 tools/globe_verify.py <주소> <캡처 폴더>`
 
 ## 자료 출처
-- 나라 경계: Cliopatria v0.2.1 (Seshat Global History Databank), CC BY 4.0 — 단순화함
+- 나라 경계: Cliopatria v0.2.1 (Seshat Global History Databank), CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) — 해안선을 Natural Earth 10m 땅에 맞춰 자름(`tools/build_borders.py`), 이름을 한국어로 바꿈. 교과서 밖 나라 이름(`data/names_ko.json`)은 독립 검토 둘이 맞춘 것만 싣고, 확인 안 된 이름은 숨긴다
 - 산 높이: ETOPO 2022 (NOAA NCEI) — 미국 정부 저작물. `tools/dem_tiles.py`로 줌 0~5 terrarium 타일로 만듦(바다는 0으로 누름)
 - 땅 바탕: Natural Earth (퍼블릭 도메인)
 - 글꼴 조각: Noto Sans (SIL OFL 1.1, `fonts/OFL.txt`), openmaptiles/fonts에서 받음

@@ -1,0 +1,334 @@
+english	korean	confidence	wikidata_ok	note
+Albania	알바니아	high	yes	1914 알바니아 공국; 국명 표기
+Argentine Confederation	아르헨티나	high	yes	약칭; ko위키 아르헨티나 연합
+Ashanti Empire	아샨티 왕국	high	yes	ko위키 아샨티 제국, 둘 다 통용
+Astrakhan Khanate	아스트라한 칸국	high	no	칸국이 표준(ko위키); '한국'은 지도에서 Korea로 오독. 데이터 주의: 1556 러시아 병합
+Austria-Hungary	오스트리아-헝가리 제국	high	empty	교과서 표기
+Austrian Empire	오스트리아 제국	high	yes	ko위키
+Ayutthaya Kingdom	아유타야 왕조	high	yes	교과서 표기
+Bahrain	바레인	medium	yes	국명
+Bali	발리	medium	no	위키데이터=현대 발리주; 당시 발리 소왕국들
+Bamana Empire	미정	low	empty	세구(밤바라) 왕국: ko 표준형 확인 불가
+Belgian Congo	벨기에령 콩고	high	yes	ko위키
+Bessarabia	베사라비아	high	yes	러시아령 지역명
+Beylik of Tunis	튀니스 베이국	high	no	ko위키 튀니스 베이국; 위키데이터형 비표준
+Blambangan Kingdom	미정	low	empty	블람방안 왕국: ko 표기 확인 불가
+Bolivia	볼리비아	high	yes	국명
+Bornu Empire	보르누 제국	medium	empty	ko위키 카넴-보르누 제국
+Bourbon Kingdom of France	프랑스 왕국	high	empty	부르봉 복고 왕정(ko위키 부르봉 왕정복고)
+Brandenburg-Prussia	브란덴부르크-프로이센	high	yes	ko위키
+Brazilian Republic	브라질	high	yes	국명
+British Africa	영국령 아프리카	high	no	위키데이터=아프리카 분할(사건명)
+British Cape Colony	케이프 식민지	high	yes	ko위키
+British Ceylon	영국령 실론	high	empty	ko위키
+British Colonial Empire	영국령	high	empty	식민지 묶음은 '영국령'
+British Empire	영국령	medium	empty	1763-1850 식민지 레이어로 판단; 본국은 152행
+British Gold Coast	영국령 골드코스트	high	empty	ko위키
+British Raj	영국령 인도	high	yes	교과서 표기; ko위키 인도 제국
+Burma	꼰바웅 왕조	medium	no	위키데이터=현대 미얀마; 당시 꼰바웅 왕조(교과서 '콘바웅'도 씀)
+Cambodia	캄보디아	high	yes	캄보디아 왕국
+Carnatic Sultanate	미정	low	empty	카르나틱 나와브국: ko 표준형 확인 불가
+Caucasian Imamate	캅카스 이맘국	high	yes	ko위키 북캅카스 이맘국
+Chiangmai	란나 왕국	medium	no	위키데이터=도시; 치앙마이 중심 란나(ko위키 란나)
+Commonwealth of Australia	오스트레일리아	high	yes	국명
+Comtat Venaissin	콩타브네생	high	yes	교황령 고립지; ko위키 콩타 브네생
+Confederate States of America	아메리카 연합국	high	yes	ko위키(남부 연합)
+Confederation of the Rhine	라인 동맹	high	yes	교과서
+Corsican Republic	코르시카 공화국	high	yes	ko위키
+County of Urgell	우르헬 백국	medium	yes	ko위키; 데이터 연대 의문
+Cretan State	크레타국	high	yes	ko위키 크레타국
+Crimean Khanate	크림 칸국	high	yes	ko위키
+Danish Gold Coast	덴마크령 골드코스트	high	empty	묘사형
+Danish India	덴마크령 인도	high	empty	묘사형
+Denmark-Norway	덴마크-노르웨이	high	empty	ko위키; 1814 이후는 덴마크
+Dominican Republic	도미니카 공화국	high	yes	국명
+Duchy of Anhalt	안할트 공국	high	yes	ko위키 안할트
+Duchy of Bavaria	바이에른	high	no	1623~ 선제후국이라 '공국' 부정확; 약칭 사용
+Duchy of Brunswick	브라운슈바이크 공국	high	yes	ko위키
+Duchy of Courland	쿠를란트 공국	high	yes	ko위키 쿠를란트-젬갈렌 공국(약칭)
+Duchy of Holstein	홀슈타인 공국	high	empty	ko위키 홀슈타인
+Duchy of Lorraine	로렌 공국	high	yes	ko위키
+Duchy of Mecklenburg	메클렌부르크	high	empty	1815~ 두 대공국(슈베린·슈트렐리츠)
+Duchy of Modena and Reggio	모데나 공국	high	yes	약칭; ko위키 모데나 레조 공국
+Duchy of Nassau	나사우 공국	high	no	위키데이터 '백작령' 오류; ko위키 나사우 공국
+Duchy of Oldenburg	올덴부르크 대공국	high	no	1815~ 대공국(ko위키)
+Duchy of Parma and Piacenza	파르마 공국	high	yes	약칭; ko위키 파르마 피아첸차 공국
+Duchy of Warsaw	바르샤바 공국	high	yes	교과서
+Durrani Empire	두라니 왕조	high	yes	ko위키 두라니 제국, 둘 다 통용
+Dutch Cape Colony	네덜란드령 케이프	high	empty	ko위키 네덜란드령 케이프 식민지(약칭)
+Dutch Ceylon	네덜란드령 실론	high	empty	묘사형
+Dutch East Indies	네덜란드령 동인도	high	yes	ko위키
+Dutch Gold Coast	네덜란드령 골드코스트	high	empty	묘사형
+Dutch Republic	네덜란드 공화국	high	empty	ko위키
+Dzungar Khanate	준가르	high	yes	ko위키
+Electorate of Hanover	하노버 선제후국	high	yes	위키데이터 정식명은 길어 약칭(ko위키 리다이렉트)
+Electorate of Hesse	헤센 선제후국	high	yes	ko위키
+Electorate of Saxony	작센 선제후국	high	yes	ko위키
+Emirate of Afghanistan	아프가니스탄	high	yes	약칭; 토후국
+Emirate of Bukhara	부하라 토후국	high	yes	ko위키
+Emirate of Diriyah	디리야 토후국	medium	yes	ko위키(제1차 사우디 국가)
+Emirate of Jabal Shammar	자발 샴마르 토후국	medium	yes	ko위키
+Emirate of Nejd	네지드 토후국	medium	yes	ko위키(제2차 사우디 국가)
+Empire of Brazil	브라질 제국	high	yes	ko위키
+Empire of Haiti	아이티	high	empty	제국은 1804-06·1849-59뿐; 국명 사용
+Empire of Japan	일본 제국	high	yes	ko위키
+English Colonial Empire	영국령	medium	empty	1707 이전 잉글랜드령; 식민지 묶음
+Ethiopian Empire	에티오피아 제국	high	yes	ko위키
+Federal League	미정	low	empty	아르티가스 연방 동맹(Liga Federal): ko 표준형 확인 불가(ko 링크는 무관 문서)
+Federated Republic of Mexico	멕시코	high	yes	약칭; ko위키 멕시코 제1연방공화국
+First French Empire	프랑스 제1제국	high	empty	ko위키
+First French colonial empire	프랑스령	high	no	위키데이터=프랑스 제1제국(본국 제국)으로 오류
+First Hellenic Republic	그리스	high	no	제1공화국은 1822-32; 이후 그리스 왕국
+First Toungoo Empire	따웅우 왕조	medium	empty	ko위키 따웅우 왕조; 1688은 복고 따웅우
+Free City of Bremen	브레멘 자유시	high	empty	묘사형; ko위키 브레멘
+Free City of Frankfurt	프랑크푸르트 자유시	high	yes	ko위키
+Free City of Hamburg	함부르크 자유시	high	no	위키데이터=도시명
+Free City of Krakow	크라쿠프 자유시	high	yes	ko위키
+Free City of Lübeck	뤼베크 자유시	high	empty	묘사형; ko위키 뤼베크
+Free Orange State	오렌지 자유국	medium	yes	교과서 관용 '오렌지'; ko위키 제목은 오라녀 자유국
+Freetown Colony	프리타운	medium	yes	시에라리온 초기 정착지
+French Africa	프랑스령 아프리카	high	yes	ko위키
+French Algeria	프랑스령 알제리	high	empty	ko위키
+French India	프랑스령 인도	high	yes	ko위키
+French Indochina	프랑스령 인도차이나	high	yes	ko위키
+French Second Republic	프랑스 제2공화국	high	empty	ko위키
+French Third Republic	프랑스 제3공화국	high	yes	ko위키
+Funj Sultanate	푼지 술탄국	medium	yes	ko위키
+German Africa	독일령 아프리카	high	empty	묘사형
+German Confederation	독일 연방	high	yes	교과서
+German Empire	독일 제국	high	yes	교과서
+Golden Horde	킵차크 칸국	high	yes	ko위키; 데이터 주의: 1502 멸망
+Gorkha Kingdom	고르카 왕국	high	yes	ko위키
+Gran Colombia	그란콜롬비아	high	yes	ko위키
+Granadine Confederation	그라나다 연합	medium	no	ko위키 제목 그라나다 연합
+Grand Duchy of Baden	바덴 대공국	high	yes	ko위키
+Grand Duchy of Berg	베르크 대공국	high	yes	ko위키
+Grand Duchy of Hesse	헤센 대공국	high	yes	ko위키
+Grand Duchy of Saxe-Weimar-Eisenach	작센바이마르 대공국	high	yes	약칭(정식 작센바이마르아이제나흐)
+Grand Duchy of Tuscany	토스카나 대공국	high	yes	ko위키
+Grand Duchy of Würzburg	뷔르츠부르크 대공국	medium	empty	외래어 표기법형; ko위키 문서 없음
+Great Mongol State	몽골	medium	empty	1914 복드 칸국(ko위키); 지도는 '몽골'
+Greenland	그린란드	high	yes	덴마크령
+Guatemala	과테말라	high	yes	국명
+Guayaquil Junta	과야킬	medium	empty	과야킬 평의회; 도시명만 표기
+Habsburg Monarchy	오스트리아	high	empty	합스부르크 군주국(ko위키); 교과서 지도는 오스트리아
+Haudenosaunee	이로쿼이 연맹	high	yes	교과서
+Helvetic Republic	헬베티아 공화국	high	yes	ko위키
+Holy Roman Empire Minor States	신성 로마 제국	medium	empty	군소 제후국 묶음
+Honduras	온두라스	high	yes	국명
+House of Khalifa	바레인	medium	empty	알칼리파 가문 통치
+House of Savoy	사보이아 공국	medium	no	위키데이터=왕가(가문); 국가는 사보이아 공국(ko위키)
+Hungarian Nationalists	헝가리 혁명 정부	medium	no	위키데이터=오스트리아-헝가리 오류; 1848-49 혁명
+Hyderabad State	하이데라바드국	high	yes	ko위키 하이데라바드국
+Imamate of Oman	오만 이맘국	medium	empty	조합형
+Imamate of Yemen	예멘 이맘국	medium	empty	조합형(카심 이맘국)
+Italian Africa	이탈리아령 아프리카	high	no	위키데이터=이탈리아 제국
+Italian Republic	이탈리아 공화국	medium	no	위키데이터=현대 이탈리아; 1802-05, 1805~ 이탈리아 왕국
+Itza Mayans	미정	low	empty	이차 마야: ko 표기 확인 불가
+Jesuit Reducciones	예수회 선교구	medium	empty	과라니 레둑시온 묘사형
+Joseon	조선	high	empty	교과서
+Kalmyk Khanate	칼미크 칸국	high	yes	ko위키
+Karamanli Dynasty	카라만리 왕조	medium	empty	트리폴리 통치 왕조
+Kashmir and Jammu	잠무 카슈미르	high	yes	ko위키
+Kathmandu	카트만두	medium	yes	칸티푸르 왕국 도읍명
+Kazakh Khanate	카자흐 칸국	high	yes	ko위키
+Kedah-Perlis District	미정	low	no	위키데이터=현대 프를리스주; 실체 불분명
+Kelantan	클란탄	medium	no	위키데이터=현대 주; 클란탄 술탄국
+Khanate of Bukhara	부하라 칸국	high	no	ko위키 부하라 칸국; '한국'은 오독
+Khanate of Khiva	히바 칸국	high	yes	ko위키
+Khanate of Kokand	코칸트 칸국	high	yes	ko위키
+Khanates of the Caucasus	캅카스 칸국들	medium	empty	묘사형
+Khedivate of Egypt	이집트	high	yes	케디브국; 지도 약칭
+Khmer Empire	캄보디아	high	no	크메르 제국은 앙코르 시대명; 당시 캄보디아 왕국
+Khoshut Khanate	코슈트 칸국	high	yes	ko위키
+Kingdom of Bavaria	바이에른 왕국	high	yes	ko위키
+Kingdom of Belgium	벨기에	high	yes	국명
+Kingdom of Bhutan	부탄	high	yes	국명
+Kingdom of Champasak	참파삭 왕국	medium	empty	ko위키 참파사크 왕국
+Kingdom of England	잉글랜드 왕국	high	empty	ko위키
+Kingdom of Fiji	피지 왕국	medium	empty	조합형
+Kingdom of France	프랑스 왕국	high	empty	ko위키
+Kingdom of Georgia	카르틀리카헤티 왕국	medium	no	1762~ 카르틀리-카헤티; 위키데이터 조지아 왕국=중세 통일왕국
+Kingdom of Great Britain	영국	high	no	위키데이터=그레이트브리튼섬(섬); 1707 그레이트브리튼 왕국·1801 연합왕국
+Kingdom of Hanover	하노버 왕국	high	yes	ko위키
+Kingdom of Hawaï'i	하와이 왕국	high	yes	ko위키
+Kingdom of Imereti	이메레티 왕국	high	yes	ko위키
+Kingdom of Italy	이탈리아 왕국	high	yes	ko위키
+Kingdom of Kartli	카르틀리 왕국	high	yes	ko위키
+Kingdom of Luang Phrabang	루앙프라방 왕국	high	no	ko위키 루앙프라방 왕국; 위키데이터형은 도시 이표기
+Kingdom of Lunda	룬다 왕국	medium	empty	조합형
+Kingdom of Monaco	모나코	high	empty	실제는 공국(데이터 명칭 오류)
+Kingdom of Mrauk U	미정	low	empty	므락우(아라칸) 왕국: ko 표기 확인 불가
+Kingdom of Mysore	마이소르 왕국	high	yes	ko위키
+Kingdom of Naples (Napoleonic)	나폴리 왕국	high	yes	괄호 연대(1806~1815) 제거
+Kingdom of Norway	노르웨이	high	yes	국명
+Kingdom of Portugal	포르투갈 왕국	high	yes	ko위키
+Kingdom of Prussia	프로이센 왕국	high	yes	교과서
+Kingdom of Sarawak	사라왁 왕국	high	yes	ko위키
+Kingdom of Sardinia	사르데냐 왕국	high	yes	교과서 표기(사르데냐 왕국)
+Kingdom of Saxony	작센 왕국	high	yes	ko위키
+Kingdom of Serbia	세르비아	high	yes	1880 공국, 1882 왕국
+Kingdom of Spain	에스파냐	high	yes	교과서는 에스파냐(ko위키 스페인)
+Kingdom of Sweden	스웨덴	high	yes	국명
+Kingdom of Westphalia	베스트팔렌 왕국	high	yes	ko위키
+Kingdom of Württemberg	뷔르템베르크 왕국	high	yes	ko위키
+Kingdom of the Two Sicilies	양시칠리아 왕국	high	yes	ko위키
+Konbaung Dynasty	꼰바웅 왕조	high	yes	ko위키(교과서 '콘바웅'도)
+Korean Empire	대한 제국	high	yes	교과서
+Kutai Kingdom	미정	low	empty	쿠타이 왕국: ko 문서 없음
+Kuwait	쿠웨이트	high	yes	국명
+Lan Xang	란쌍 왕국	high	yes	ko위키
+Luxembourg	룩셈부르크	high	empty	국명
+Majeerteen Sultanate	미정	low	empty	마제르틴 술탄국: ko 표기 확인 불가
+Maratha Empire	마라타 동맹	high	yes	ko위키 마라타 제국; 교과서 마라타 동맹
+Massina Empire	미정	low	empty	마시나(함달라이) 제국: ko 표기 확인 불가
+Mataram Sultanate	마타람 술탄국	high	yes	ko위키
+Merina Kingdom	메리나 왕국	high	yes	ko위키
+Mexicans	멕시코 독립군	medium	no	위키데이터=민족(멕시코인)
+Mexico	멕시코	high	empty	국명
+Montenegro	몬테네그로	high	yes	국명
+Morocco	모로코	high	yes	국명
+Mughal Empire	무굴 제국	high	yes	교과서
+Muhammad Ali dynasty	이집트	high	empty	무함마드 알리 왕조(ko위키); 지도는 이집트
+Natalia Republic	나탈리아 공화국	medium	yes	ko위키; 데이터 주의: 1839-43 존속
+Nawab of Awadh	아와드	medium	empty	ko위키 아와드
+Nayaks of Madurai	미정	low	empty	마두라이 나야크 왕조: ko 표기 확인 불가
+Negeri Sembilan	느그리슴빌란	medium	no	위키데이터=현대 주
+Nepal	네팔	high	yes	국명
+Netherlands	네덜란드	high	empty	국명
+Netherlands Antilles	네덜란드령 안틸레스	medium	yes	당시 명칭은 퀴라소 등
+New France	누벨프랑스	high	yes	ko위키
+New Granada	누에바그라나다	high	yes	ko위키
+New Hebrides	뉴헤브리디스	high	yes	ko위키
+New Netherland	뉴네덜란드	high	no	ko위키 뉴네덜란드; 데이터 주의: 1674 소멸
+Nguyễn dynasty	응우옌 왕조	high	yes	교과서
+Nguyễn lords	응우옌 주	medium	no	ko위키 응우옌 주; 꽝남국은 비표준
+Omani Slave Coast	오만령	medium	empty	오만 지배 동아프리카 해안 묘사형
+Oriental Republic of Uruguay	우루과이	high	yes	국명
+Ottoman Empire	오스만 제국	high	yes	교과서
+Ottoman Tripolitania	트리폴리타니아	high	yes	약칭(오스만령)
+Oyo Empire	오요 제국	high	yes	ko위키
+Pahang Sultanate	파항 술탄국	medium	empty	조합형
+Panthay Rebellion	두문수의 난	high	yes	ko위키
+Papal States	교황령	high	yes	교과서
+Paraguay	파라과이	high	yes	국명
+Patani Kingdom	파타니 왕국	high	yes	ko위키
+People's Republic of Zanzibar	잔지바르 술탄국	high	no	인민공화국은 1964; 당시 술탄국(데이터 명칭 오류)
+Poles	폴란드 봉기군	medium	no	위키데이터=민족; 1830 11월 봉기
+Polish-Lithuanian Commonwealth	폴란드-리투아니아	high	yes	ko위키
+Pontianak Kadriyah Sultanate	폰티아낙 술탄국	medium	yes	조합형
+Portuguese Colonies	포르투갈령	high	empty	식민지 묶음
+Portuguese Empire	포르투갈령	high	empty	식민지 묶음
+Portuguese Republic	포르투갈	high	yes	국명
+Principality of Abkhazia	아브하지야 공국	medium	empty	조합형
+Principality of Andorra	안도라	high	yes	국명
+Principality of Bulgaria	불가리아 공국	high	yes	ko위키
+Principality of Guria	구리아 공국	medium	empty	조합형
+Principality of Hohenzollern-Sigmaringen	호엔촐레른지크마링겐	high	yes	ko위키
+Principality of Liechtenstein	리히텐슈타인	high	yes	국명
+Principality of Lippe	리페	high	empty	ko위키 리페
+Principality of Mingrelia	미정	low	empty	밍그렐리아(사메그렐로) 공국: ko 표기 미확정
+Principality of Moldavia	몰다비아 공국	high	yes	ko위키
+Principality of Monaco	모나코	high	yes	국명
+Principality of Regensberg	미정	low	empty	레겐스부르크 공국 추정, 실체 불분명
+Principality of Reuss-Gera	로이스게라	high	yes	ko위키
+Principality of Schwarzburg-Sonderhausen	슈바르츠부르크존더스하우젠	medium	empty	표기법형(14자로 김)
+Principality of Svaneti	스바네티 공국	medium	empty	조합형
+Principality of Transylvania	트란실바니아 공국	high	yes	ko위키
+Principality of Waldeck and Pyrmont	발데크피르몬트	high	yes	ko위키(후국)
+Principality of Wallachia	왈라키아 공국	high	yes	ko위키 왈라키아
+Qajar Dynasty	카자르 왕조	high	yes	교과서
+Qasimids	예멘	medium	empty	카심 왕조 이맘국
+Qatar	카타르	high	empty	국명
+Qatar Dynasty	카타르	medium	no	위키데이터는 국명; 사니 가문 통치
+Qing Dynasty	청	high	yes	교과서 '청'(청나라 축약)
+Rattanakosin Kingdom	시암	high	yes	교과서 '타이(시암)'; 라따나꼬신 왕조
+Regency of Algiers	알제리	high	yes	오스만령 알제리(알제)
+Republic of Baden	바덴 공화국	medium	yes	1849 혁명
+Republic of Chile	칠레	high	yes	국명
+Republic of China	중화민국	high	no	위키데이터=중화인민공화국 오류
+Republic of Colombia	콜롬비아	high	yes	국명
+Republic of Costa Rica	코스타리카	high	yes	국명
+Republic of Cuba	쿠바	high	yes	국명
+Republic of Ecuador	에콰도르	high	yes	국명
+Republic of El Salvador	엘살바도르	high	yes	국명
+Republic of Florence	피렌체 공화국	medium	yes	데이터 주의: 1569~ 토스카나 대공국
+Republic of Genoa	제노바 공화국	high	yes	ko위키
+Republic of Liberia	라이베리아	high	yes	국명
+Republic of New Granada	누에바그라나다 공화국	high	no	ko위키 누에바그라나다 공화국
+Republic of Nicaragua	니카라과	high	yes	국명
+Republic of Panama	파나마	high	yes	국명
+Republic of Peru	페루	high	yes	국명
+Republic of Ragusa	라구사 공화국	high	yes	ko위키
+Republic of Venice	베네치아 공화국	high	yes	ko위키
+Riau-Lingga Sultanate	리아우링가 술탄국	medium	empty	조합형
+Russian Empire	러시아 제국	high	yes	교과서
+Río de la Plata	라플라타 연합주	medium	no	위키데이터=라플라타강(강); ko위키 리오데라플라타 합중국
+Saadi Sultanate	사아드 왕조	high	yes	ko위키; 데이터 주의: 1659 멸망
+Safavid Dynasty	사파비 왕조	high	yes	교과서
+Saxe-Altenburg	작센알텐부르크 공국	high	yes	ko위키
+Saxe-Meiningen	작센마이닝겐 공국	high	yes	ko위키
+Second French Empire	프랑스 제2제국	high	empty	ko위키
+Septinsular Republic	이오니아 7개 섬 공화국	medium	yes	ko위키 에프타니소스 공화국; 쉬운 풀이형 제시
+Serbs	세르비아	high	no	위키데이터=민족
+Sikh Confederacy	시크 연맹	high	yes	ko위키
+Sikh Empire	시크 왕국	high	yes	ko위키 시크 제국
+Sloboda Ukraine	슬로보다우크라이나	high	yes	ko위키
+Small Horde	미정	low	empty	카자흐 소(小)주즈: ko 표준형 확인 불가
+Sokoto Caliphate	소코토 칼리프국	high	yes	ko위키 소코토 칼리파국
+South African Republic	트란스발 공화국	high	yes	ko위키
+Spanish Empire	에스파냐령	high	yes	교과서 '에스파냐'; 식민 제국
+Sultan of Yogyakarta	욕야카르타 술탄국	medium	no	위키데이터=왕가명; ko위키 욕야카르타
+Sultanate of Aceh	아체 술탄국	high	yes	ko위키
+Sultanate of Banjar	반자르 술탄국	medium	empty	조합형
+Sultanate of Banten	반튼 술탄국	high	yes	ko위키
+Sultanate of Bima	비마 술탄국	medium	empty	조합형
+Sultanate of Bone	미정	low	no	위키데이터='술탄'(일반명사) 오류; 보네 왕국 표기 미확정
+Sultanate of Brunei	브루나이 술탄국	high	yes	ko위키
+Sultanate of Darfur	다르푸르 술탄국	high	yes	ko위키
+Sultanate of Hobyo	미정	low	empty	호비오 술탄국: ko 표기 확인 불가
+Sultanate of Jambi	잠비 술탄국	medium	empty	조합형
+Sultanate of Johor	조호르 술탄국	high	yes	ko위키
+Sultanate of Kedah	크다 술탄국	medium	yes	ko위키
+Sultanate of Kutai Kartanegara	미정	low	empty	쿠타이 카르타느가라: ko 표기 확인 불가
+Sultanate of Maguindanao	마긴다나오 술탄국	medium	yes	ko위키
+Sultanate of Malacca	믈라카	medium	yes	데이터 주의: 술탄국은 1511 멸망, 이후 네덜란드령
+Sultanate of Mempawah	미정	low	empty	믐파와 술탄국: ko 표기 확인 불가
+Sultanate of Muscat and Oman	무스카트 오만	high	yes	ko위키(약칭)
+Sultanate of Oman	오만	high	yes	국명
+Sultanate of Palembang	팔렘방 술탄국	medium	empty	조합형
+Sultanate of Perak	페락 술탄국	medium	empty	조합형(ko위키 페락주)
+Sultanate of Sambaliung	미정	low	empty	삼발리웅 술탄국: ko 표기 확인 불가
+Sultanate of Sambas	미정	low	empty	삼바스 술탄국: ko 표기 확인 불가
+Sultanate of Selangor	슬랑오르 술탄국	medium	empty	ko위키 슬랑오르주 표기
+Sultanate of Sukadana	미정	low	empty	수카다나 술탄국: ko 표기 확인 불가
+Sultanate of Sulu	술루 술탄국	high	yes	ko위키
+Sultanate of Terengganu	트렝가누 술탄국	medium	empty	ko위키 트렝가누주 표기
+Surakarta Sunanate	수라카르타	medium	empty	ko위키 수라카르타
+Swaziland	스와질란드	high	no	위키데이터=현대 국명 에스와티니(2018~)
+Swedish Empire	스웨덴	high	yes	약칭; 스웨덴 제국은 1611-1721
+Swiss Confederation	스위스	high	yes	국명
+Taiping Heavenly Kingdom	태평천국	high	yes	교과서
+Talpur Dynasty	신드	medium	empty	탈푸르 왕조가 다스린 신드
+Tangier International Zone	탕헤르 국제 지구	medium	empty	조합형; 실제 설치 1923
+Thanjavur Maratha Kingdom	탄자부르 왕국	medium	empty	ko위키 탄자부르(도시)
+Tibet	티베트	high	no	위키데이터='티베트의 역사' 문서명
+Tokugawa Shogunate	에도 막부	high	yes	교과서
+Trucial States	휴전 오만	medium	yes	ko위키
+Trịnh lords	찐 주	medium	no	위키데이터='찐 왕조의 역대 왕'(목록 문서); ko위키 찐 주
+Tsardom of Russia	러시아 차르국	high	yes	ko위키
+Tây Sơn dynasty	떠이선 왕조	high	yes	ko위키
+Tümed	투메드부	medium	yes	ko위키
+United Kingdoms of Sweden and Norway	스웨덴-노르웨이	high	yes	ko위키
+United Principalities of Moldavia and Wallachia	루마니아	high	yes	1859 연합공국→1881 루마니아 왕국; 지도 약칭
+United Provinces of Central America	중앙아메리카 연방	high	yes	ko위키 중앙아메리카 연방공화국(약칭)
+United States of America	미국	high	yes	교과서
+Venezuela	베네수엘라	high	empty	국명
+Vermont Republic	버몬트 공화국	high	yes	ko위키
+Vientiane	비엔티안 왕국	high	yes	도시명→왕국
+Wadai Empire	와다이 술탄국	medium	empty	조합형
+Yarubid dynasty	미정	low	empty	야루바 왕조: ko 표기 확인 불가
+Zand Dynasty	잔드 왕조	high	empty	ko위키 잔드
+Zaporozhian Cossacks	자포로자 코자크	medium	yes	ko위키 자포로자 코자크
+Zululand	줄루 왕국	high	no	1830-80은 줄루 왕국(ko위키); 줄루란드는 1887 영국 식민지명
+Đại Việt	대월	medium	no	위키데이터=막 왕조 오류; 후 레 왕조 대월

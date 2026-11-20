@@ -33,8 +33,11 @@ async def run():
                 await pg.screenshot(path=f'{OUT}/{name}_{i+1:02d}_{sid}.png')
             # 연도 칩 전부 눌러 오류가 없는지
             await pg.evaluate('go(-1)'); await idle(pg, 800)
+            # 해마다 경계가 실제로 그려졌나 — 받은 나라 수 = 지도에 넣은 나라 수, 큰 연도 글자 = 고른 해(11/21 자료 검토: 빈 지도도 통과하던 구멍)
             for y in await pg.evaluate('UNIT.years'):
-                await pg.evaluate(f'setYear({y})'); await pg.wait_for_timeout(400)
+                await pg.evaluate(f'setYear({y})'); await pg.wait_for_timeout(700)
+                got = await pg.evaluate("(async()=>{ const t = await topo('y'+S.year); await new Promise(r=>setTimeout(r,150)); return [t.features.filter(f=>f.geometry).length, map.getSource('pol').serialize().data.features.length, document.getElementById('year').textContent]; })()")
+                if not got[0] or got[0] != got[1] or got[2] != str(y): errs.append(f'BORDERS {y}: 받음 {got[0]} · 그림 {got[1]} · 연도 글자 {got[2]}')
             # 연타 — 장면·연도를 섞어 빠르게
             await pg.evaluate("(async()=>{ for(let k=0;k<20;k++){ go(k%SCENES.length); setYear(UNIT.years[k%UNIT.years.length]); await new Promise(r=>setTimeout(r,60)); } go(-1); })()")
             await idle(pg, 800, name+':rapid')
@@ -57,6 +60,9 @@ async def run():
         await b.close()
     rep['idle_timeouts'] = TIMEOUTS
     print(json.dumps(rep, ensure_ascii=False, indent=1))
-    bad = any(v.get('n_errors') or v.get('failed') or v.get('overflow_px') for k, v in rep.items() if isinstance(v, dict)) or rep['url_pageerrors'] or any(x.startswith('✗') for x in rep['url'])
+    LIMIT = {'ready_s': 12, 'heapMB': 300}   # 소프트웨어 GL 기준 상한 — 넘으면 실패로 센다
+    slow = [f'{k}.{m}={v[m]}' for k, v in rep.items() if isinstance(v, dict) for m, lim in LIMIT.items() if v.get(m, 0) > lim]
+    if slow: print('상한 넘음:', slow)
+    bad = any(v.get('n_errors') or v.get('failed') or v.get('overflow_px') for k, v in rep.items() if isinstance(v, dict)) or rep['url_pageerrors'] or any(x.startswith('✗') for x in rep['url']) or TIMEOUTS or slow
     sys.exit(1 if bad else 0)
 asyncio.run(run())

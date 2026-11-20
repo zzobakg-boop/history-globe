@@ -8,8 +8,12 @@ const UNIT = {
   dir: 'data/u5/',
   home: { center: [15, 32], zoom: 2.05, zoomPhone: 1.05 }
 };
+const VER = '0.2.0';   // 자료 파일을 갈아 끼우면 올린다 — Pages 캐시(약 10분)에 옛 파일과 새 파일이 섞이지 않게
 const BASE = location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '');
 const INK = '#20232b', LAND = '#ebe6d8', NEUTRAL = '#ddd7c6', SEA = '#a9c9de';
+// 교과서 밖 나라는 무채색 넷을 번갈아 칠해 이웃끼리 갈리게 한다(11/21 천대현 «경계는 다 보이게, 색은 교과서 나라만»)
+const GREYS = ['#ddd7c6', '#d2ccba', '#e5e0d2', '#cbc5b3'];
+const greyOf = n => { let h = 0; for (const ch of n) h = (h * 31 + ch.codePointAt(0)) >>> 0; return GREYS[h % GREYS.length]; };
 const $ = id => document.getElementById(id);
 const isPhone = () => innerWidth <= 720 || innerHeight <= 500;
 
@@ -23,7 +27,7 @@ const shade = k => (!k || k === 'INK') ? INK : mix(COLORS[k], INK, 0.8);
 const CACHE = {};
 async function topo(name){
   if (!CACHE[name]){
-    CACHE[name] = fetch(BASE + UNIT.dir + name + '.json').then(r => {
+    CACHE[name] = fetch(BASE + UNIT.dir + name + '.json?v=' + VER).then(r => {
       if (!r.ok) throw new Error(name + ' ' + r.status);
       return r.json();
     }).then(t => topojson.feature(t, t.objects[Object.keys(t.objects)[0]]))
@@ -72,6 +76,7 @@ const map = new maplibregl.Map({
       nodata: { type: 'geojson', data: EMPTY },
       pol: { type: 'geojson', data: EMPTY, attribution: 'Cliopatria (Seshat) CC BY 4.0' },
       lbl: { type: 'geojson', data: EMPTY },
+      lbl2: { type: 'geojson', data: EMPTY },
       pts: { type: 'geojson', data: EMPTY },
       arr: { type: 'geojson', data: EMPTY },
       head: { type: 'geojson', data: EMPTY },
@@ -86,7 +91,7 @@ const map = new maplibregl.Map({
       { id: 'relief', type: 'hillshade', source: 'dem2',
         paint: { 'hillshade-exaggeration': 0.55, 'hillshade-shadow-color': '#3b3a36', 'hillshade-highlight-color': '#ffffff',
                  'hillshade-accent-color': '#5b5a55' } },
-      { id: 'pol-line', type: 'line', source: 'pol', paint: { 'line-color': '#6c665a', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.3, 5, 0.9], 'line-opacity': 0.8 } },
+      { id: 'pol-line', type: 'line', source: 'pol', paint: { 'line-color': '#5f594d', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.45, 3, 0.8, 6, 1.5], 'line-opacity': 0.9 } },
       { id: 'meridian', type: 'line', source: 'pts', filter: ['==', ['get', 'kind'], 'meridian'],
         paint: { 'line-color': INK, 'line-width': 1.4, 'line-dasharray': [3, 2] } },
       { id: 'inf-halo', type: 'line', source: 'inf', layout: { 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 7, 'line-opacity': 0.85 } },
@@ -100,6 +105,19 @@ const map = new maplibregl.Map({
         layout: { 'icon-image': 'tri', 'icon-size': 0.7, 'icon-rotate': ['get', 'b'], 'icon-rotation-alignment': 'map',
                   'icon-allow-overlap': true, 'icon-ignore-placement': true },
         paint: { 'icon-color': ['get', 'c'] } },
+      // 교과서 밖 나라 이름 — 색 나라 이름표(lbl)보다 아래 층이라 자리다툼에서 진다
+      { id: 'lbl2-0', type: 'symbol', source: 'lbl2', minzoom: 0, filter: ['==', ['get', 'tier'], 0],
+        layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Regular'],
+                  'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9.5, 4, 11.5, 6, 13.5], 'symbol-sort-key': ['-', 0, ['get', 'a']], 'text-max-width': 6 },
+        paint: { 'text-color': '#6a6558', 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
+      { id: 'lbl2-1', type: 'symbol', source: 'lbl2', minzoom: 2.6, filter: ['==', ['get', 'tier'], 1],
+        layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Regular'],
+                  'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9.5, 4, 11.5, 6, 13.5], 'symbol-sort-key': ['-', 0, ['get', 'a']], 'text-max-width': 6 },
+        paint: { 'text-color': '#6a6558', 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
+      { id: 'lbl2-2', type: 'symbol', source: 'lbl2', minzoom: 4, filter: ['==', ['get', 'tier'], 2],
+        layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Regular'],
+                  'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9.5, 4, 11.5, 6, 13.5], 'symbol-sort-key': ['-', 0, ['get', 'a']], 'text-max-width': 6 },
+        paint: { 'text-color': '#6a6558', 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
       { id: 'lbl', type: 'symbol', source: 'lbl',
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Bold'],
                   'text-size': ['interpolate', ['linear'], ['zoom'], 1, ['*', ['get', 'sz'], 0.78], 4, ['get', 'sz'], 6, ['*', ['get', 'sz'], 1.25]],
@@ -140,6 +158,28 @@ function ringCentroid(r){
   }
   return a ? [x / (3 * a), y / (3 * a)] : r[0];
 }
+function inRing(pt, r){
+  let c = false;
+  for (let i = 0, j = r.length - 1; i < r.length; j = i++){
+    const [xi, yi] = r[i], [xj, yj] = r[j];
+    if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < (xj - xi) * (pt[1] - yi) / (yj - yi) + xi) c = !c;
+  }
+  return c;
+}
+// 이름표 자리 — 무게중심이 땅 밖(바다·만)이면 그 위도를 가로지르는 가장 긴 땅 구간의 가운데
+function labelPt(r){
+  const c = ringCentroid(r);
+  if (inRing(c, r)) return c;
+  const xs = [];
+  for (let i = 0, j = r.length - 1; i < r.length; j = i++){
+    const [xi, yi] = r[i], [xj, yj] = r[j];
+    if ((yi > c[1]) !== (yj > c[1])) xs.push((xj - xi) * (c[1] - yi) / (yj - yi) + xi);
+  }
+  xs.sort((a, b) => a - b);
+  let best = null;
+  for (let k = 0; k + 1 < xs.length; k += 2) if (!best || xs[k + 1] - xs[k] > best[1] - best[0]) best = [xs[k], xs[k + 1]];
+  return best ? [(best[0] + best[1]) / 2, c[1]] : r[0];
+}
 function polys(geom){ if (!geom) return []; return geom.type === 'Polygon' ? [geom.coordinates] : geom.type === 'MultiPolygon' ? geom.coordinates : []; }
 function bearing(a, b){
   const r = Math.PI / 180, y = Math.sin((b[0] - a[0]) * r) * Math.cos(b[1] * r);
@@ -166,42 +206,70 @@ const CIRC = '①②③④⑤⑥⑦⑧⑨⑩';
 const mapText = t => String(t).replace(/[①-⑩]/g, c => (CIRC.indexOf(c) + 1) + '. ');
 // 지구본에서 자리를 옮길 이름표(흐름 지도는 평면이라 맞던 자리) — 장면 id → 이름 → [경도, 위도]
 const LABEL_AT = { as1: { '대한 제국': [127.2, 38.2] } };
+// 나라 이름표는 본토에 — 한 나라 도형이 식민지까지 묶여 있어 «가장 큰 덩어리»가 아덴·앙골라·자바가 되던 것(11/21 코드 검토 high)
+const HOME_AT = { GB: [-1.5, 52.5], FR: [2.5, 46.8], ES: [-3.7, 40.2], PT: [-8, 39.7], RU: [40, 56], AT: [15.5, 47.6], DE: [13.4, 52.5],
+  GC: [10, 51], US: [-95, 39], CSA: [-87, 33], OT: [32.8, 39.9], IT: [8, 45], BE: [4.5, 50.7], NL: [5.5, 52.2], JP: [138, 36],
+  QING: [110, 32], KR: [127.5, 37.5] };
 const F = (geom, props) => ({ type: 'Feature', geometry: geom, properties: props || {} });
 const FC = feats => ({ type: 'FeatureCollection', features: feats });
 
 // ---------- 그리기 ----------
-let drawToken = 0, READY = false;
-function toast(t){ const el = $('toast'); el.textContent = t; el.hidden = !t; }
+let drawToken = 0, READY = false, shownYear = null, toastT = 0;
+function toast(t, ms){ const el = $('toast'); el.textContent = t; el.hidden = !t; clearTimeout(toastT); if (t && ms) toastT = setTimeout(() => { el.hidden = true; }, ms); }
+let NAMES_KO = {};   // 교과서 밖 나라 이름(검수 끝난 것만) — 영어 이름 → 한국어
+fetch(BASE + 'data/names_ko.json?v=' + VER).then(r => r.ok ? r.json() : {}).then(j => { NAMES_KO = j || {}; if (READY) draw(); }).catch(() => {});
 async function draw(){
   if (!READY) return;
   const tok = ++drawToken, yr = S.year;
-  let pol, nd;
-  try { [pol, nd] = await Promise.all([topo('y' + yr), topo('n' + yr)]); toast(''); }
-  catch (e){ if (tok === drawToken) toast(yr + '년 지도를 받지 못했다. 인터넷 연결을 확인하고 연도를 다시 눌러 보자.'); console.error('[지구본]', e); return; }
+  let pol;
+  // 빗금(자료 없음)은 꾸밈이라 못 받아도 경계는 그린다
+  const ndP = topo('n' + yr).catch(() => FC([]));
+  try { pol = await topo('y' + yr); }
+  catch (e){
+    if (tok !== drawToken) return;
+    console.error('[지구본]', e);
+    // 못 받은 해에 머물지 않는다 — 칩·큰 연도 글자를 마지막으로 그린 해로 되돌린다(학생이 틀린 해를 보지 않게)
+    if (shownYear != null && shownYear !== yr){ S.year = shownYear; syncChips(); url(); }
+    toast(yr + '년 지도를 받지 못했다. 인터넷 연결을 확인하고 연도를 다시 눌러 보자.', 6000);
+    return;
+  }
+  const nd = await ndP;
   if (tok !== drawToken) return;   // 그 사이 다른 해를 골랐다
+  toast('');
   const paint = paintOf(), focus = focusOf();
-  const keyArea = {};   // 나라 이름표 자리: 그 나라(본토) 가장 큰 덩어리
+  const keyArea = {}, grey = [];   // 색 나라 이름표 자리(본토) · 교과서 밖 나라 이름표
   const feats = pol.features.filter(f => f.geometry).map(f => {
-    const r = paint(f.properties.n, yr);
-    let c = NEUTRAL, rk = 0;
+    const n = f.properties.n, r = paint(n, yr);
+    let c = greyOf(n), rk = 0;
     if (r && focus.includes(r[0])){
       const [k, col] = r; c = col ? colonyColor(k) : COLORS[k]; rk = col ? 1 : 2;
       if (!col) for (const p of polys(f.geometry)){
         const a = ringArea(p[0]) * Math.cos(ringCentroid(p[0])[1] * Math.PI / 180);
-        if (!keyArea[k] || a > keyArea[k].a) keyArea[k] = { a, ll: ringCentroid(p[0]) };
+        const home = HOME_AT[k] && inRing(HOME_AT[k], p[0]);
+        const cur = keyArea[k];
+        if (!cur || (home && !cur.home) || (home === !!cur.home && a > cur.a)) keyArea[k] = { a, home, ll: labelPt(p[0]) };
       }
+    } else if (!r && NAMES_KO[n]){
+      let big = null;
+      for (const p of polys(f.geometry)){ const a = ringArea(p[0]) * Math.cos(ringCentroid(p[0])[1] * Math.PI / 180); if (!big || a > big.a) big = { a, p }; }
+      if (big) grey.push({ t: NAMES_KO[n], a: big.a, ll: labelPt(big.p[0]) });
     }
-    return F(f.geometry, { n: f.properties.n, c, rk });
+    return F(f.geometry, { n, c, rk });
   });
   map.getSource('pol').setData(FC(feats));
   map.getSource('nodata').setData(nd);
-  drawLabels(keyArea);
+  // 본토가 없고 아주 작은 조각만 남은 나라(1815년 «프로이센 왕국» = 스위스 뇌샤텔 한 조각)는 이름을 달지 않는다 — 엉뚱한 곳에 이름이 뜬다
+  for (const k in keyArea) if (!keyArea[k].home && keyArea[k].a < 1) delete keyArea[k];
+  // 오스만 제국은 한 덩어리 가운데가 이라크·시리아 사막에 떨어진다 — 교과서 지도처럼 아나톨리아에 단다
+  if (keyArea.OT && keyArea.OT.home) keyArea.OT.ll = HOME_AT.OT;
+  drawLabels(keyArea, grey);
   drawOverlay();
   legend(pol);
   $('year').textContent = yr;
+  shownYear = yr;
 }
 
-function drawLabels(keyArea){
+function drawLabels(keyArea, grey){
   const s = scene(), out = [];
   if (S.names){
     if (s){
@@ -216,6 +284,12 @@ function drawLabels(keyArea){
     }
   }
   map.getSource('lbl').setData(FC(out));
+  // 교과서 밖 나라 — 작은 회색 이름. 넓은 나라는 멀리서도, 작은 나라는 당겨야 보인다(층 셋의 minzoom)
+  // 장면 이름표·색 나라 이름표와 같은 이름, 같은 이름의 두 번째(작은) 덩어리는 빼서 «이집트»가 두 번 뜨지 않게 한다
+  const seen = new Set(out.map(f => String(f.properties.t).replace(/\s/g, '')));
+  const g2 = S.names ? (grey || []).sort((x, y) => y.a - x.a).filter(g => { const k = g.t.replace(/\s/g, ''); if (seen.has(k)) return false; seen.add(k); return true; })
+    .map(g => F({ type: 'Point', coordinates: g.ll }, { t: g.t, a: g.a, tier: g.a > 60 ? 0 : g.a > 8 ? 1 : 2 })) : [];
+  map.getSource('lbl2').setData(FC(g2));
 }
 
 let pills = [];
@@ -339,7 +413,12 @@ function url(){
   if (S.sc >= 0){ q.set('s', SCENES[S.sc].id); if (S.si >= 0) q.set('st', S.si + 1); else q.set('y', S.year); } else q.set('y', S.year);
   history.replaceState(null, '', '?' + q.toString());
 }
-function setYear(y){ S.year = y; if (S.sc >= 0){ S.si = -1; stepCurrent(); } syncChips(); draw(); url(); }
+// 장면 안에서 연도를 고르면 그 해의 단계로 간다. 그 해 단계가 없을 때만 단계 전부를 함께 보인다(11/21 코드 검토: 늘 전부 떠서 어지러움)
+function setYear(y){
+  S.year = y;
+  if (S.sc >= 0){ const s = scene(); S.si = s.steps.findIndex(st => (st.yr || s.year) === y); stepCurrent(); }
+  syncChips(); draw(); url();
+}
 // 세계 장면(폭 150° 넘음)은 bbox 가운데가 엉뚱한 곳(아프리카)이 된다 — 그 단계에 보이는 점·화살표의 가운데로 간다(11/20 사회 학생 눈 🔴).
 const WIDE_C = { as1: [118, 24], gb2: [-5, 48] };   // 단계에 점·화살표가 없을 때의 가운데
 function wideCenter(s, i){
@@ -376,8 +455,8 @@ $('p-dots').addEventListener('click', e => { const b = e.target.closest('button'
 $('p-inf').addEventListener('click', e => { const b = e.target.closest('button[data-go]'); if (b) go(+b.dataset.go); });
 $('p-close').addEventListener('click', () => go(-1));
 $('p-mini').addEventListener('click', () => { S.mini = !S.mini; $('panel').classList.toggle('mini', S.mini); $('p-mini').textContent = S.mini ? '▴ 설명 펴기' : '▾ 설명 접기'; fly(); });
-$('lg-toggle').addEventListener('click', e => { const o = $('bottom').classList.toggle('lg-open'); e.currentTarget.setAttribute('aria-expanded', o); e.currentTarget.textContent = o ? '색 뜻 ▴' : '색 뜻 ▾'; navVar(); });
-$('p-q').addEventListener('toggle', () => draw());
+$('lg-toggle').addEventListener('click', e => { const o = $('bottom').classList.toggle('lg-open'); e.currentTarget.setAttribute('aria-expanded', o); e.currentTarget.textContent = o ? '색 뜻 ▴' : '색 뜻 ▾'; navVar(); if (scene()) fly(); });
+$('p-q').addEventListener('toggle', () => draw());   // 질문을 펴면 숨겨 둔 답 이름표가 드러난다
 $('b-home').addEventListener('click', () => go(-1));
 $('b-relief').addEventListener('click', e => {
   S.relief = !S.relief; e.currentTarget.setAttribute('aria-pressed', S.relief);
@@ -402,7 +481,7 @@ chips();
 map.on('load', () => {
   addImages(); READY = true;
   map.setTerrain({ source: 'dem', exaggeration: 9 });
-  topo('land').then(l => map.getSource('land').setData(l));
+  (function land(){ topo('land').then(l => map.getSource('land').setData(l)).catch(e => { console.error('[지구본]', e); toast('땅 바탕을 받지 못했다. 다시 받는 중…', 4000); setTimeout(land, 5000); }); })();
   panel(); draw(); syncChips();
   if (S.sc >= 0){ stepCurrent(); fly(); }
   window.__ready = true;
