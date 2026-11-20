@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>역사 지구본</title>
+<meta name="description" content="중학교 역사① 수업용 지구본 — 연도를 고르면 그때의 나라 경계가 칠해지고, 장면을 누르면 그곳으로 날아간다.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.1/dist/maplibre-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pmtiles@4.3.0/dist/pmtiles.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+</head>
+<body>
+<div id="map" aria-label="역사 지구본"></div>
+
+<header id="top">
+  <div id="yearbox"><span id="year">1815</span><span class="nen">년</span></div>
+  <div id="unitname">역사① Ⅴ단원 · 혁명에서 제국주의까지</div>
+  <p id="mapnote">경계는 그 해 무렵의 대략적인 모습이다. 교과서와 다르면 교과서를 따른다.</p>
+</header>
+
+<div id="tools" role="toolbar" aria-label="지도 단추">
+  <button type="button" id="b-home" title="처음 모습으로">🌍 처음</button>
+  <button type="button" id="b-relief" aria-pressed="true" title="산을 입체로">⛰ 입체</button>
+  <button type="button" id="b-names" aria-pressed="true" title="나라 이름">가 이름</button>
+  <button type="button" id="b-credits" title="자료 출처">ⓘ 출처</button>
+</div>
+
+<aside id="panel" aria-live="polite" hidden>
+  <button type="button" id="p-close" aria-label="장면 닫기">✕</button>
+  <button type="button" id="p-mini">▾ 설명 접기</button>
+  <div id="p-head"></div>
+  <div id="p-body"></div>
+  <h3 id="p-sth"></h3>
+  <ol id="p-steps"></ol>
+  <div id="p-inf"></div>
+  <details id="p-q"><summary></summary><div id="p-a"></div></details>
+</aside>
+
+<nav id="bottom" aria-label="연도와 장면">
+  <div class="row lgrow"><button type="button" id="lg-toggle" aria-expanded="false">색 뜻 ▾</button><div id="legend" aria-label="색 뜻"></div></div>
+  <div class="row">
+    <span class="lab">연도</span>
+    <div id="years" role="group" aria-label="연도 고르기"></div>
+  </div>
+  <div class="row">
+    <span class="lab">장면</span>
+    <div id="scenes" role="group" aria-label="장면 고르기"></div>
+  </div>
+  <p id="credit">경계 Cliopatria (Seshat) CC BY 4.0 · 높이 ETOPO 2022 (NOAA) · 땅 Natural Earth</p>
+</nav>
+
+<dialog id="credits">
+  <h2>자료 출처</h2>
+  <ul>
+    <li>나라 경계: Cliopatria v0.2.1 (Seshat Global History Databank), <a href="https://github.com/Seshat-Global-History-Databank/cliopatria" target="_blank" rel="noopener">CC BY 4.0</a> — 단순화함</li>
+    <li>산 높이: ETOPO 2022 (미국 해양대기청 NOAA NCEI, 공공 자료)</li>
+    <li>땅 바탕: Natural Earth (퍼블릭 도메인)</li>
+    <li>장면 내용: 중학교 역사① 교과서 145~167쪽 기준(쪽수는 장면마다 적음)</li>
+    <li>프로그램: MapLibre GL JS (BSD-3), PMTiles (BSD-3), TopoJSON (ISC), 글꼴 Noto Sans (SIL OFL 1.1)</li>
+  </ul>
+  <form method="dialog"><button>닫기</button></form>
+</dialog>
+
+<script src="units/u5.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

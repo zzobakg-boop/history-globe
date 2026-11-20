@@ -1,0 +1,100 @@
+:root{
+  --space:#0b1020; --ink:#f4f1e8; --ink2:#b9c0d4; --glass:rgba(14,20,38,.82); --line:rgba(255,255,255,.14);
+  --chip:rgba(255,255,255,.08); --chip-on:#f0c35a; --chip-on-ink:#1b1606; --land:#e9e4d6; --sea:#9fc3dc;
+  --gap:12px; --fs:15px;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--space);color:var(--ink);
+  font:var(--fs)/1.55 "Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;overflow:hidden}
+#map{position:fixed;inset:0}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:#9cc8ff}
+
+/* 위: 큰 연도 */
+#top{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:14px;pointer-events:none;max-width:min(560px,60vw);z-index:3}
+#yearbox{font-weight:200;font-size:clamp(40px,7vw,64px);line-height:1;letter-spacing:-.02em;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+#yearbox .nen{font-size:.42em;margin-left:.15em;font-weight:400}
+#unitname{margin-top:6px;font-size:13px;color:var(--ink2);text-shadow:0 1px 6px rgba(0,0,0,.8)}
+#mapnote{margin:4px 0 0;font-size:11.5px;color:var(--ink2);opacity:.85;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+
+/* 오른쪽 위: 단추 */
+#tools{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;z-index:3;max-width:46vw}
+#tools button{background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:13px;backdrop-filter:blur(6px)}
+#tools button[aria-pressed="false"]{opacity:.55}
+
+/* 아래: 연도·장면 */
+#bottom{position:fixed;left:0;right:0;bottom:0;z-index:3;padding:8px 12px calc(env(safe-area-inset-bottom,0px) + 10px);
+  background:linear-gradient(to top,rgba(8,12,24,.95),rgba(8,12,24,.78) 70%,rgba(8,12,24,0));display:flex;flex-direction:column;gap:6px}
+#bottom .row{display:flex;align-items:center;gap:8px;min-width:0}
+#bottom .lab{flex:none;font-size:12px;color:var(--ink2);width:30px}
+#years,#scenes{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0;min-width:0}
+#years::-webkit-scrollbar,#scenes::-webkit-scrollbar{display:none}
+.chip{flex:none;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13.5px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink);border-color:var(--chip-on);font-weight:700}
+.chip small{opacity:.7;margin-left:4px;font-size:11px}
+#legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--ink2)}
+#legend span{display:inline-flex;align-items:center;gap:5px}
+#legend i{width:12px;height:12px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.25)}
+
+/* 장면 설명 */
+#panel{position:fixed;z-index:4;right:12px;top:calc(env(safe-area-inset-top,0px) + 58px);bottom:150px;width:min(380px,36vw);
+  overflow:auto;background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:14px 16px 16px;backdrop-filter:blur(8px)}
+#p-close{position:absolute;top:8px;right:8px;background:none;border:0;font-size:18px;color:var(--ink2);width:36px;height:36px}
+#p-head .who{font-size:12.5px;color:var(--ink2)}
+#p-head h2{margin:2px 34px 4px 0;font-size:20px;line-height:1.3}
+#p-head .meta{font-size:12px;color:var(--ink2)}
+#p-body p{margin:8px 0}
+#p-sth{font-size:14px;margin:12px 0 6px}
+#p-sth small{font-weight:400;color:var(--ink2)}
+#p-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+#p-steps button{display:flex;gap:9px;text-align:left;width:100%;background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;line-height:1.5}
+#p-steps button[aria-current="true"]{border-color:var(--chip-on);background:rgba(240,195,90,.14)}
+#p-steps .n{flex:none;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.15);display:grid;place-items:center;font-size:12px;font-weight:700}
+#p-steps button[aria-current="true"] .n{background:var(--chip-on);color:var(--chip-on-ink)}
+#p-steps .y{display:block;font-size:12px;color:var(--chip-on);font-weight:700}
+#p-inf{margin-top:12px;display:grid;gap:8px}
+#p-inf h3{font-size:13.5px;margin:4px 0}
+#p-inf .item,#p-inf button{display:block;width:100%;text-align:left;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:13.5px;line-height:1.5}
+#p-inf button:hover{border-color:var(--chip-on)}
+#p-inf small{color:var(--ink2)}
+#p-inf .none,#p-inf .note{font-size:12.5px;color:var(--ink2);margin:2px 0}
+#p-q{margin-top:12px;background:rgba(240,195,90,.10);border:1px solid rgba(240,195,90,.35);border-radius:10px;padding:8px 10px}
+#p-q summary{cursor:pointer;font-weight:700;font-size:14px}
+#p-a{margin-top:6px;font-size:14px}
+
+/* 지도 위 이름표(HTML) — 영향 표 */
+.inf-pill{background:#14192b;color:#fff;border:2px solid #fff;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+button.inf-pill{cursor:pointer}
+
+dialog#credits{background:#141a2e;color:var(--ink);border:1px solid var(--line);border-radius:14px;max-width:min(560px,92vw)}
+dialog#credits::backdrop{background:rgba(0,0,0,.55)}
+dialog#credits ul{padding-left:18px;font-size:14px}
+dialog#credits button{background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:6px 14px}
+
+.maplibregl-ctrl-bottom-right{bottom:150px}
+#credit{margin:0;font-size:10.5px;color:var(--ink2);opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lg-toggle{display:none;flex:none;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px}
+#p-mini{display:none}
+.inf-pill{max-width:46vw;overflow:hidden;text-overflow:ellipsis}
+
+/* 폰 */
+@media (max-width:720px){
+  #top{max-width:58vw}
+  #mapnote{display:none}
+  #tools{max-width:44vw}
+  #tools button{padding:5px 9px;font-size:12px}
+  #panel{left:8px;right:8px;width:auto;top:auto;bottom:118px;max-height:44vh;border-radius:14px 14px 10px 10px}
+  #legend{font-size:11px;display:none}
+  #lg-toggle{display:inline-block}
+  #bottom.lg-open #legend{display:flex}
+  #bottom.lg-open #lg-toggle{display:none}
+  #panel{max-height:38vh}
+  #p-mini{display:block;position:absolute;top:10px;right:48px;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px}
+  #panel.mini{max-height:none;overflow:hidden}
+  #panel.mini > :not(#p-head):not(#p-close):not(#p-mini){display:none}
+  #panel.mini #p-head .meta{display:none}
+  #p-head h2{margin-right:130px}
+  .inf-pill{display:none}
+  .maplibregl-ctrl-bottom-right{display:none}
+}
