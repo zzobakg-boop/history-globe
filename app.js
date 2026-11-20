@@ -11,7 +11,7 @@ const UNIT = {
 const BASE = location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '');
 const INK = '#20232b', LAND = '#ebe6d8', NEUTRAL = '#ddd7c6', SEA = '#a9c9de';
 const $ = id => document.getElementById(id);
-const isPhone = () => innerWidth <= 720;
+const isPhone = () => innerWidth <= 720 || innerHeight <= 500;
 
 // ---------- 색 ----------
 function hex2rgb(h){ const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
@@ -26,7 +26,8 @@ async function topo(name){
     CACHE[name] = fetch(BASE + UNIT.dir + name + '.json').then(r => {
       if (!r.ok) throw new Error(name + ' ' + r.status);
       return r.json();
-    }).then(t => topojson.feature(t, t.objects[Object.keys(t.objects)[0]]));
+    }).then(t => topojson.feature(t, t.objects[Object.keys(t.objects)[0]]))
+      .catch(e => { delete CACHE[name]; throw e; });   // 한 번 끊겨도 다음에 다시 받는다
   }
   return CACHE[name];
 }
@@ -34,13 +35,13 @@ async function topo(name){
 // ---------- 상태 ----------
 const S = { year: 1815, sc: -1, si: 0, relief: true, names: true, mini: false };
 const scene = () => S.sc >= 0 ? SCENES[S.sc] : null;
-const byId = {}; SCENES.forEach((s, i) => byId[s.id] = i);
+const byId = Object.create(null); SCENES.forEach((s, i) => byId[s.id] = i);
 const ALLKEYS = Object.keys(COLORS);
 
 function paintOf(){ const s = scene(); return s ? s.paint : basePaint; }
 function focusOf(){ const s = scene(); return s ? s.focus : ALLKEYS; }
 const onY = o => !o.y || o.y.includes(S.year);
-const onS = o => !o.st || o.st.includes(S.si);
+const onS = o => !o.st || S.si < 0 || o.st.includes(S.si);   // 연도 칩으로 고르면(si=-1) 단계 표시를 모두 보인다
 
 // ---------- 지도 ----------
 const protocol = new pmtiles.Protocol();
@@ -164,10 +165,14 @@ const F = (geom, props) => ({ type: 'Feature', geometry: geom, properties: props
 const FC = feats => ({ type: 'FeatureCollection', features: feats });
 
 // ---------- 그리기 ----------
-let drawToken = 0;
+let drawToken = 0, READY = false;
+function toast(t){ const el = $('toast'); el.textContent = t; el.hidden = !t; }
 async function draw(){
+  if (!READY) return;
   const tok = ++drawToken, yr = S.year;
-  const [pol, nd] = await Promise.all([topo('y' + yr), topo('n' + yr)]);
+  let pol, nd;
+  try { [pol, nd] = await Promise.all([topo('y' + yr), topo('n' + yr)]); toast(''); }
+  catch (e){ if (tok === drawToken) toast(yr + '년 지도를 받지 못했다. 인터넷 연결을 확인하고 연도를 다시 눌러 보자.'); console.error('[지구본]', e); return; }
   if (tok !== drawToken) return;   // 그 사이 다른 해를 골랐다
   const paint = paintOf(), focus = focusOf();
   const keyArea = {};   // 나라 이름표 자리: 그 나라(본토) 가장 큰 덩어리
@@ -221,8 +226,8 @@ function drawOverlay(){
       head.push(F({ type: 'Point', coordinates: line[line.length - 1] }, { c, b: bearing(line[line.length - 3] || line[0], line[line.length - 1]) }));
       if (a.both) head.push(F({ type: 'Point', coordinates: line[0] }, { c, b: bearing(line[2] || line[1], line[0]) }));
       if (a.label){
-        const li = Math.min(a.li ?? Math.floor(a.pts.length / 2), a.pts.length - 1);
-        pts.push(F({ type: 'Point', coordinates: a.pts[li] }, { kind: 'arrlbl', t: (isPhone() && a.labelS) ? a.labelS : a.label, c }));
+        const at = a.li != null ? a.pts[Math.min(a.li, a.pts.length - 1)] : line[Math.floor(line.length / 2)];
+        pts.push(F({ type: 'Point', coordinates: at }, { kind: 'arrlbl', t: (isPhone() && a.labelS) ? a.labelS : a.label, c }));
       }
     });
     s.inf.filter(f => f.from && f.to).forEach(f => {
@@ -253,7 +258,7 @@ function legend(pol){
   (s ? s.focus : [...seen.keys()]).forEach(k => {
     const v = seen.get(k); if (!v) return;
     if (v.home) out.push(`<span><i style="background:${COLORS[k]}"></i>${NAMES[k] || k}</span>`);
-    if (v.col && s) out.push(`<span><i style="background:${colonyColor(k)}"></i>${(s.colonyName && s.colonyName[k]) || NAMES[k] + josa(NAMES[k]) + ' 차지한 땅'}</span>`);
+    if (v.col && s) out.push(`<span><i style="background:${colonyColor(k)}"></i>${(s.colonyName && s.colonyName[k]) || (NAMES[k] || k) + josa(NAMES[k] || k) + ' 차지한 땅'}</span>`);
   });
   if (!s && [...seen.values()].some(v => v.col)) out.push('<span><i style="background:linear-gradient(90deg,#d99a93,#9fb4d6)"></i>옅은 색 = 그 나라가 차지한 땅</span>');
   out.push(`<span><i style="background:repeating-linear-gradient(45deg,${LAND} 0 3px,#b9b2a0 3px 4px)"></i>자료 없음</span>`);
@@ -263,7 +268,7 @@ function legend(pol){
 // ---------- 화면 ----------
 function chips(){
   $('years').innerHTML = UNIT.years.map(y => `<button type="button" class="chip" data-y="${y}" aria-pressed="${y === S.year}">${y}</button>`).join('');
-  $('scenes').innerHTML = SCENES.map((s, i) => `<button type="button" class="chip" data-s="${i}" aria-pressed="${i === S.sc}">${s.country}<small>${s.evS || s.ev}</small></button>`).join('');
+  $('scenes').innerHTML = SCENES.map((s, i) => `<button type="button" class="chip" data-s="${i}" aria-pressed="${i === S.sc}" title="다시 누르면 장면을 닫는다">${s.country} <small>${s.evS || s.ev}</small></button>`).join('');
 }
 function syncChips(){
   document.querySelectorAll('#years .chip').forEach(b => b.setAttribute('aria-pressed', +b.dataset.y === S.year));
@@ -275,7 +280,7 @@ function panel(){
   const s = scene(), P = $('panel');
   if (!s){ P.hidden = true; return; }
   P.hidden = false; P.classList.toggle('mini', isPhone() && S.mini);
-  $('p-head').innerHTML = `<div class="who">${s.country}</div><h2>${s.ev}</h2><div class="meta">${s.when} · 교과서 ${s.pages}</div>`;
+  $('p-head').innerHTML = `<div class="who">${s.country}</div><h2 tabindex="-1">${s.ev}</h2><div class="meta">${s.when} · 교과서 ${s.pages}</div>`;
   $('p-body').innerHTML = s.body;
   $('p-sth').innerHTML = `${s.country} 안에서는 <small>— 단계를 누르면 지도가 바뀐다</small>`;
   $('p-steps').innerHTML = s.steps.map((st, i) => `<li><button type="button" data-i="${i}" aria-current="${i === S.si}"><span class="n">${i + 1}</span><span>${st.y ? `<span class="y">${st.y}</span>` : ''}${st.t}</span></button></li>`).join('');
@@ -295,12 +300,18 @@ function panel(){
 function stepCurrent(){ document.querySelectorAll('#p-steps button').forEach(b => b.setAttribute('aria-current', +b.dataset.i === S.si)); }
 
 function padding(){
-  const nav = $('bottom').offsetHeight || 120, P = $('panel');
-  if (isPhone()){
-    const ph = (!P.hidden && P.offsetHeight) ? P.offsetHeight + 8 : 0;
-    return { top: 96, bottom: nav + ph + 10, left: 18, right: 18 };
+  // 패널이 실제로 어디 놓였는지(아래 판 / 오른쪽 판) 재서 여백을 정한다 — 폰 세로·가로·노트북 모두 같은 식.
+  const nav = $('bottom').offsetHeight || 120, P = $('panel'), W = innerWidth, H = innerHeight;
+  const top = isPhone() ? 92 : 110, pd = { top, bottom: nav + 12, left: 24, right: 24 };
+  if (!P.hidden){
+    const r = P.getBoundingClientRect();
+    if (r.left > W * 0.3) pd.right = W - r.left + 16;          // 오른쪽 판
+    else pd.bottom = H - r.top + 10;                           // 아래 판
   }
-  return { top: 110, bottom: nav + 20, left: 40, right: (!P.hidden ? P.offsetWidth + 24 : 0) + 40 };
+  // 지도 칸이 너무 좁아지면 여백을 줄인다(카메라 계산이 실패하지 않게)
+  if (H - pd.top - pd.bottom < 120){ const k = (H - 120) / (pd.top + pd.bottom); pd.top = Math.max(0, pd.top * k); pd.bottom = Math.max(0, pd.bottom * k); }
+  if (W - pd.left - pd.right < 160){ pd.right = Math.max(0, W - pd.left - 160); }
+  return pd;
 }
 function fly(){
   // flyTo의 padding은 지도 상태에 남아 다음 fitBounds 여백과 겹친다 — 가운데만 옮기는 offset을 쓴다.
@@ -309,22 +320,27 @@ function fly(){
   if (!s){ flyC(UNIT.home.center, isPhone() ? UNIT.home.zoomPhone : UNIT.home.zoom, 1800); return; }
   const [w, so, e, n] = s.view;
   if (e - w > 150){ flyC([(w + e) / 2, 20], isPhone() ? 0.95 : 1.75, 2000); return; }
-  const cam = map.cameraForBounds([[w, so], [e, n]], { padding: pd, maxZoom: 6 });
-  if (cam) map.flyTo({ ...cam, pitch: 0, bearing: 0, duration: 2200 });
+  let cam = null;
+  try { cam = map.cameraForBounds([[w, so], [e, n]], { padding: pd, maxZoom: 6 }); } catch (err){ console.warn('[지구본] 화면 맞춤 실패', err.message); }
+  if (cam && cam.center) map.flyTo({ ...cam, pitch: 0, bearing: 0, duration: 2200 });
   else flyC([(w + e) / 2, (so + n) / 2], 2.5, 2200);   // 여백이 너무 커 맞출 수 없을 때
 }
 function url(){
   const q = new URLSearchParams();
-  if (S.sc >= 0){ q.set('s', SCENES[S.sc].id); if (S.si) q.set('st', S.si + 1); } else q.set('y', S.year);
+  if (S.sc >= 0){ q.set('s', SCENES[S.sc].id); if (S.si >= 0) q.set('st', S.si + 1); else q.set('y', S.year); } else q.set('y', S.year);
   history.replaceState(null, '', '?' + q.toString());
 }
-function setYear(y){ S.year = y; syncChips(); draw(); url(); }
+function setYear(y){ S.year = y; if (S.sc >= 0){ S.si = -1; stepCurrent(); } syncChips(); draw(); url(); }
+function startYear(s, i){ return (s.steps[i] && s.steps[i].yr) || s.year || S.year; }
 function go(i){
+  const prev = S.sc;
   S.sc = i; S.si = 0;
-  if (i >= 0){ const s = SCENES[i]; S.year = (s.steps[0] && s.steps[0].yr) || s.year || S.year; }
+  if (i >= 0) S.year = startYear(SCENES[i], 0);
   syncChips(); panel(); draw(); fly(); url();
+  if (i >= 0){ const h = $('p-head').querySelector('h2'); if (h) h.focus({ preventScroll: true }); }
+  else if (prev >= 0){ const c = document.querySelector(`#scenes .chip[data-s="${prev}"]`); if (c) c.focus({ preventScroll: true }); }
 }
-function step(i){ const s = scene(); S.si = i; S.year = (s.steps[i] && s.steps[i].yr) || S.year; stepCurrent(); syncChips(); draw(); url(); }
+function step(i){ const s = scene(); S.si = i; S.year = startYear(s, i); stepCurrent(); syncChips(); draw(); url(); }
 
 // ---------- 손 ----------
 $('years').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) setYear(+b.dataset.y); });
@@ -348,12 +364,16 @@ $('b-credits').addEventListener('click', () => $('credits').showModal());
 (function readUrl(){
   const q = new URLSearchParams(location.search);
   const s = q.get('s'), y = +q.get('y'), st = +q.get('st');
-  if (s && byId[s] != null){ S.sc = byId[s]; const sc = SCENES[S.sc]; S.si = Math.max(0, Math.min((st || 1) - 1, sc.steps.length - 1)); S.year = sc.steps[S.si].yr || S.year; }
+  if (s && Number.isInteger(byId[s])){
+    S.sc = byId[s]; const sc = SCENES[S.sc];
+    if (UNIT.years.includes(y) && !q.has('st')){ S.si = -1; S.year = y; }
+    else { S.si = Number.isInteger(st) ? Math.max(0, Math.min(st - 1, sc.steps.length - 1)) : 0; S.year = startYear(sc, S.si); }
+  }
   else if (UNIT.years.includes(y)) S.year = y;
 })();
 chips();
 map.on('load', () => {
-  addImages();
+  addImages(); READY = true;
   map.setTerrain({ source: 'dem', exaggeration: 9 });
   topo('land').then(l => map.getSource('land').setData(l));
   panel(); draw(); syncChips();
@@ -361,3 +381,6 @@ map.on('load', () => {
   window.__ready = true;
 });
 map.on('error', e => console.error('[지구본]', e.error && e.error.message));
+function navVar(){ document.documentElement.style.setProperty('--nav', $('bottom').offsetHeight + 'px'); }
+navVar();
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { navVar(); if (scene()) $('panel').classList.toggle('mini', isPhone() && S.mini); draw(); }, 200); });

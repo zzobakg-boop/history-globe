@@ -5,14 +5,17 @@ from playwright.async_api import async_playwright
 U, OUT = sys.argv[1], sys.argv[2]
 SC = 'none' if '--scenes' in sys.argv and sys.argv[sys.argv.index('--scenes') + 1] == 'none' else 'all'
 os.makedirs(OUT, exist_ok=True)
-async def idle(pg, ms=1500):
-    await pg.evaluate("new Promise(r=>{ if(map.loaded() && !map.isMoving()) setTimeout(r,200); map.once('idle',()=>r()); setTimeout(r,12000); })")
+TIMEOUTS = []
+BENIGN = ('GL Driver', 'calculateFogMatrix')   # 소프트웨어 GL 성능 메시지 · 지구본에서 안개 행렬 안 씀(무해)
+async def idle(pg, ms=1500, tag=''):
+    ok = await pg.evaluate("new Promise(r=>{ if(map.loaded() && !map.isMoving()) setTimeout(()=>r(true),200); map.once('idle',()=>r(true)); setTimeout(()=>r(false),15000); })")
+    if not ok: TIMEOUTS.append(tag)
     await pg.wait_for_timeout(ms)
 async def run():
     rep = {}
     async with async_playwright() as p:
         b = await p.chromium.launch(args=['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'])
-        for name, vp, mob in [('phone', {'width': 390, 'height': 800}, True), ('desk', {'width': 1280, 'height': 800}, False)]:
+        for name, vp, mob in [('phone', {'width': 390, 'height': 800}, True), ('desk', {'width': 1280, 'height': 800}, False), ('land', {'width': 844, 'height': 390}, True)]:
             pg = await b.new_page(viewport=vp, device_scale_factor=2 if mob else 1, is_mobile=mob, has_touch=mob)
             errs, fails = [], []
             pg.on('console', lambda m: errs.append(m.text) if m.type in ('error', 'warning') else None)
@@ -23,7 +26,7 @@ async def run():
             ready = round(time.time() - t, 1)
             await pg.screenshot(path=f'{OUT}/{name}_00_home.png')
             over = await pg.evaluate("document.documentElement.scrollWidth - innerWidth")
-            n = await pg.evaluate('SCENES.length') if SC == 'all' else 0
+            n = await pg.evaluate('SCENES.length') if (SC == 'all' and name != 'land') else (1 if name == 'land' else 0)
             for i in range(n):
                 await pg.evaluate(f'go({i})'); await idle(pg, 2600)
                 sid = await pg.evaluate(f'SCENES[{i}].id')
@@ -32,8 +35,28 @@ async def run():
             await pg.evaluate('go(-1)'); await idle(pg, 800)
             for y in await pg.evaluate('UNIT.years'):
                 await pg.evaluate(f'setYear({y})'); await pg.wait_for_timeout(400)
+            # 연타 — 장면·연도를 섞어 빠르게
+            await pg.evaluate("(async()=>{ for(let k=0;k<20;k++){ go(k%SCENES.length); setYear(UNIT.years[k%UNIT.years.length]); await new Promise(r=>setTimeout(r,60)); } go(-1); })()")
+            await idle(pg, 800, name+':rapid')
+            ystate = await pg.evaluate("[S.sc, S.year, document.getElementById('year').textContent]")
+            if ystate[0] != -1 or str(ystate[1]) != ystate[2]: errs.append(f'STATE after rapid {ystate}')
             mem = await pg.evaluate("performance.memory ? Math.round(performance.memory.usedJSHeapSize/1e6) : -1")
+            errs = [e for e in errs if not any(k in e for k in BENIGN)]
+            fails = [f for f in fails if 'ERR_ABORTED' not in f]   # 지도를 움직이며 취소한 타일 요청은 실패가 아니다
             rep[name] = {'ready_s': ready, 'overflow_px': over, 'heapMB': mem, 'errors': errs[:12], 'n_errors': len(errs), 'failed': fails[:12]}
+        # 주소 파라미터
+        pg = await b.new_page(viewport={'width': 390, 'height': 800})
+        perr = []; pg.on('pageerror', lambda e: perr.append(str(e)))
+        base = U.split('?')[0]
+        for qs, want in [('?s=constructor', 'home:1815'), ('?st=1.5&s=fr2', 'fr2'), ('?s=fr2&st=4', 'fr2:1812'), ('?y=1871', 'home:1871'), ('?s=it1&y=1862', 'it1:1862'), ('?s=zzz&y=9999', 'home:1815')]:
+            await pg.goto(base + qs); await pg.wait_for_function('window.__ready', timeout=60000)
+            got = await pg.evaluate("(S.sc<0 ? 'home' : SCENES[S.sc].id) + ':' + S.year")   # 주소창이 아니라 앱 상태를 본다
+            ok = got == want if want.count(':') else got.startswith(want + ':')
+            rep.setdefault('url', []).append(f"{'✓' if ok else '✗'} {qs} → {got}")
+        rep['url_pageerrors'] = perr
         await b.close()
+    rep['idle_timeouts'] = TIMEOUTS
     print(json.dumps(rep, ensure_ascii=False, indent=1))
+    bad = any(v.get('n_errors') or v.get('failed') or v.get('overflow_px') for k, v in rep.items() if isinstance(v, dict)) or rep['url_pageerrors'] or any(x.startswith('✗') for x in rep['url'])
+    sys.exit(1 if bad else 0)
 asyncio.run(run())

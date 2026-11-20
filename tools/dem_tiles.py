@@ -9,8 +9,10 @@ T = 256
 R = 20037508.342789244
 n = 2 ** Z * T
 with rasterio.open(f'netcdf:{src}:z') as ds:
+    # 바다를 0으로 먼저 누른다 — 줄이며 평균을 낼 때 수심(음수)이 섞여 해안 산지가 낮아지지 않게(11/20 독립 리뷰)
+    srcarr = np.maximum(ds.read(1).astype(np.float32), 0)
     dst = np.zeros((n, n), dtype=np.float32)
-    reproject(rasterio.band(ds, 1), dst, src_crs='EPSG:4326',
+    reproject(srcarr, dst, src_transform=ds.transform, src_crs='EPSG:4326',
               dst_transform=from_bounds(-R, -R, R, R, n, n), dst_crs='EPSG:3857',
               resampling=Resampling.average)
 db = sqlite3.connect(out); c = db.cursor()
@@ -25,7 +27,7 @@ for z in range(Z, -1, -1):
     m = 2 ** z
     for y in range(m):
         for x in range(m):
-            e = np.round(np.maximum(arr[y*T:(y+1)*T, x*T:(x+1)*T], 0)).astype(np.float64) + 32768.0
+            e = np.round(arr[y*T:(y+1)*T, x*T:(x+1)*T]).astype(np.float64) + 32768.0
             r = np.floor(e / 256); g = np.floor(e % 256); b = np.floor((e - np.floor(e)) * 256)
             img = np.dstack([r, g, b]).clip(0, 255).astype(np.uint8)
             buf = io.BytesIO(); Image.fromarray(img).save(buf, 'PNG', optimize=True)

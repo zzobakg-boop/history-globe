@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>역사 지구본</title>
 <meta name="description" content="중학교 역사① 수업용 지구본 — 연도를 고르면 그때의 나라 경계가 칠해지고, 장면을 누르면 그곳으로 날아간다.">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="lib/maplibre-gl.css">
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.1/dist/maplibre-gl.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pmtiles@4.3.0/dist/pmtiles.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<!-- 라이브러리는 학교망에서 CDN이 막혀도 돌게 저장소 안에 둔다: MapLibre GL JS 5.24.1 · PMTiles 4.3.0 · topojson-client 3.1.0 -->
+<script src="lib/maplibre-gl.js"></script>
+<script src="lib/pmtiles.js"></script>
+<script src="lib/topojson-client.min.js"></script>
 </head>
 <body>
-<div id="map" aria-label="역사 지구본"></div>
+<div id="map" role="region" aria-label="역사 지구본 지도"></div>
+<div id="toast" role="status" hidden></div>
 
 <header id="top">
   <div id="yearbox"><span id="year">1815</span><span class="nen">년</span></div>
@@ -27,7 +29,7 @@
   <button type="button" id="b-credits" title="자료 출처">ⓘ 출처</button>
 </div>
 
-<aside id="panel" aria-live="polite" hidden>
+<aside id="panel" aria-label="장면 설명" hidden>
   <button type="button" id="p-close" aria-label="장면 닫기">✕</button>
   <button type="button" id="p-mini">▾ 설명 접기</button>
   <div id="p-head"></div>
@@ -39,7 +41,7 @@
 </aside>
 
 <nav id="bottom" aria-label="연도와 장면">
-  <div class="row lgrow"><button type="button" id="lg-toggle" aria-expanded="false">색 뜻 ▾</button><div id="legend" aria-label="색 뜻"></div></div>
+  <div class="row lgrow"><button type="button" id="lg-toggle" aria-expanded="false">색 뜻 ▾</button><div id="legend" role="list" aria-label="색 뜻"></div></div>
   <div class="row">
     <span class="lab">연도</span>
     <div id="years" role="group" aria-label="연도 고르기"></div>
