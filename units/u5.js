@@ -1,4 +1,4 @@
-// 역사 지구본 Ⅴ단원 자료 — 흐름 지도 v3(scenes.js·overview.json)을 그대로 옮김. 고칠 때는 원본을 고치고 tools/sync_u5.py로 다시 옮긴다.
+// 역사 지구본 Ⅴ단원 자료 — 흐름 지도 v3(scenes.js·overview.json·template의 COLORS·NAMES)을 그대로 옮김. 고칠 때는 원본을 고치고 tools/sync_u5.py로 다시 옮긴다.
 // Ⅴ단원 흐름 지도 v3 — 2026-11-16 천대현 «굵직한 사건(나라→사건)을 먼저, 나라 안 전개는 부수적으로 · 영향을 더 분명하게 · 지구본은 뺀다».
 // 사실은 «Ⅴ단원 교과서 사실 기준표»의 [학] 줄(교과서 145~167쪽)만 쓴다. 영향(inf)은 교과서가 «영향»이라 적었거나 원인→결과로 이은 것만.
 // 장면 = 나라 · 큰 사건 하나. steps = 그 나라 안 전개(누르면 지도 해가 바뀜). labels.y = 보일 해(없으면 늘), points/arrows.st = 보일 단계(없으면 늘).
@@ -18,7 +18,7 @@ const COLONY = {
   NL:['(Dutch Republic)','(Netherlands)','Dutch East Indies','Netherlands Antilles'],
   DE:['German Africa'], BE:['Belgian Congo'], IT:['Italian Africa'], OT:['Ottoman Tripolitania']
 };
-const NAPOLEONIC = ['Confederation of the Rhine','Duchy of Warsaw','Kingdom of Naples (Napoleonic)','Italian Republic','Kingdom of Westphalia','Kingdom of Bavaria','Kingdom of Saxony','Kingdom of Württemberg','Grand Duchy of Baden','Grand Duchy of Berg','Grand Duchy of Hesse','Grand Duchy of Würzburg','Duchy of Nassau','Helvetic Republic'];
+const NAPOLEONIC = ['Confederation of the Rhine','Duchy of Warsaw','Kingdom of Naples (Napoleonic)','Italian Republic','Kingdom of Westphalia','Kingdom of Bavaria','Kingdom of Saxony','Kingdom of Württemberg','Grand Duchy of Baden','Grand Duchy of Berg','Grand Duchy of Hesse','Grand Duchy of Würzburg','Duchy of Nassau','Helvetic Republic','Kingdom of Spain'];   // 에스파냐: 151쪽 지도 «프랑스의 위성 국가»(조제프 1808~1813) — 11/20 사회 학생 눈
 const NEWSTATES = ['Federated Republic of Mexico','Gran Colombia','Bolivia','Río de la Plata','Republic of Peru','United Provinces of Central America','Paraguay','Republic of Chile','Oriental Republic of Uruguay','Empire of Brazil','Empire of Haiti'];
 function basePaint(n, yr){
   for(const k in HOME) if(HOME[k].includes(n)) return [k,false];
@@ -735,7 +735,7 @@ const SCENES = [
   view:[-11,43,22,59.5], ratio:0.62, ratioPhone:0.95, focus:['GB'], paint:basePaint,
   labels:[{ll:[-1.6,52.7],t:'영국',s:2,k:'GB'},{ll:[2.4,46.6],t:'프랑스',s:1},{ll:[5.6,52.3],t:'네덜란드',s:0}],
   points:[{ll:P.london,t:'런던 — 의회',side:'r'}], arrows:[],
-  body:'<p>영국에서는 왕과 의회가 누가 나라를 움직일지를 두고 오래 맞섰다. 국경은 그대로인데, 나라를 움직이는 힘의 자리가 바뀌었다.</p>',
+  body:'<p>영국에서는 왕과 의회가 누가 나라를 움직일지를 두고 오래 맞섰다.</p>',
   steps:[{y:'1642~1649',yr:1688,t:'의회와 왕이 맞서 싸운 끝에 찰스 1세가 처형되고 공화정이 섰다(청교도 혁명).'},
          {y:'',yr:1688,t:'크롬웰이 의회를 해산하고 독재하다 국민의 지지를 잃었다. 그가 죽은 뒤 다시 왕이 섰다.'},
          {y:'1688·1689',yr:1688,t:'의회가 의회를 무시하던 제임스 2세를 몰아내고(1688), 이듬해 그의 딸 메리와 남편 윌리엄을 함께 왕으로 세웠다. 피를 흘리지 않아 <b>명예혁명</b>이라 부른다.'},
@@ -857,13 +857,13 @@ const SCENES = [
   arrows:[{pts:[[-95.9,41.3],[-108,41.6],[-121.5,38.6]],label:'대륙 횡단 철도(1869)',labelS:'횡단 철도',li:1,dy:-10,k:'US',dash:true,st:[4]}],
   body:'<p>독립한 미국은 서쪽으로 땅을 넓히며 커졌고, 노예제를 두고 남부와 북부가 싸운 남북 전쟁을 거쳐 공업국이 되었다.</p>',
   steps:[{y:'1823',yr:1830,t:'유럽 나라들은 아메리카 일에 간섭하지 말라고 밝혔다(<b>먼로주의</b>).'},
-         {y:'',yr:1850,t:'서쪽으로 땅을 넓혀 태평양에 닿았다. 그 과정에서 원주민은 살던 곳에서 강제로 쫓겨났다.'},
+         {y:'',yr:1850,t:'서쪽으로 땅을 넓혔다. 그 과정에서 원주민은 살던 곳에서 강제로 쫓겨났다.'},
          {y:'1860·1861',yr:1862,t:'노예제 확대에 반대한 링컨이 대통령에 당선되자, 남부 여러 주가 연방을 떠나 <b>남북 전쟁</b>(1861~1865)이 일어났다.'},
          {y:'1863·1865',yr:1862,t:'인구와 공업 생산력에서 앞선 북부가, 링컨의 노예 해방 선언(1863)으로 국제 여론의 지지까지 얻어 이겼다.'},
          {y:'1869',yr:1871,t:'대륙 횡단 철도가 놓이고 이민이 늘며, 19세기 말 미국은 큰 공업국이 되었다.'}],
   inf:[{dir:'out',s:'la1',lb:'라틴 아메리카 독립',k:'도움',w:'유럽은 간섭 말라(먼로주의)',p:'156쪽',from:[-90,30],to:[-85,15]}],
-  q:'단계 ①(1830년 경계)과 단계 ②(1850년 경계)의 지도를 견주어 보자. 미국 땅은 어느 쪽으로 넓어졌나? 그 땅에 살던 사람들은 어떻게 되었나?',
-  a:'서쪽으로 넓어져 태평양에 닿았다(155쪽 지도). 원주민은 인디언 이주법(1830) 등으로 살던 곳에서 강제로 쫓겨났다(155쪽).' },
+  q:'단계 ①(1830년 경계)과 단계 ②(1850년 경계)의 지도를 견주어 보자. 미국 땅은 서쪽으로 어디까지 넓어졌나?',
+  a:'태평양 연안까지 넓어졌다(155쪽 지도). 그 과정에서 원주민은 인디언 이주법(1830) 등으로 살던 곳에서 강제로 쫓겨났다(155쪽).' },
 
 { id:'la1', part:1, c:'NEW', country:'라틴 아메리카', ev:'라틴 아메리카 독립', when:'1804~1825', pages:'156~157쪽',
   view:[-118,-56,-32,31], ratio:0.82, ratioPhone:1.15, focus:['NEW','ES','PT','GB'], paint:laPaint,
@@ -950,5 +950,6 @@ const SCENES = [
   q:'다음 시간(5-3)에는 오스만 제국·인도·청·일본·조선(대한 제국)이 열강에 어떻게 맞섰는지 배운다. 지도에서 다섯 곳을 찾아보자. 이 가운데 이미 영국이 직접 다스리던 곳은?',
   a:'<b>인도</b>다. 영국은 17세기 무렵 동인도 회사로 들어온 뒤, 19세기 후반부터 총독을 보내 직접 다스렸다(165쪽). 나머지 넷이 어떻게 버텼는지는 다음 시간에 본다.' }
 ];
+
 const COLORS = {GB:'#c0392b',FR:'#2e5fa8',ES:'#c2649a',PT:'#6b8e23',RU:'#7a6a9e',AT:'#b8860b',DE:'#8b3a62',GC:'#8a7f6a',US:'#1f8a8a',CSA:'#a0703c',OT:'#9a6b45',IT:'#8e5cc4',BE:'#e3b23c',NL:'#e07b2a',JP:'#b03a5b',QING:'#b9975b',NEW:'#2f9e6e',FRD:'#2e5fa8',KR:'#5b8fb9',IMP:'#4b4f8a'};
 const NAMES = {GB:'영국',FR:'프랑스',ES:'스페인',PT:'포르투갈',RU:'러시아',AT:'오스트리아',DE:'프로이센·독일',GC:'독일 연방',US:'미국',CSA:'연방을 떠난 남부 여러 주',OT:'오스만 제국',IT:'사르데냐·이탈리아',BE:'벨기에',NL:'네덜란드',JP:'일본',QING:'청',NEW:'새로 독립한 나라',FRD:'나폴레옹이 세우거나 따르게 한 나라',KR:'대한 제국'};

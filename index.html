@@ -33,13 +33,15 @@
   <button type="button" id="p-close" aria-label="장면 닫기">✕</button>
   <button type="button" id="p-mini">▾ 설명 접기</button>
   <div id="p-head"></div>
+  <div id="p-dots" role="group" aria-label="단계 고르기"></div>
   <div id="p-body"></div>
   <h3 id="p-sth"></h3>
   <ol id="p-steps"></ol>
-  <div id="p-inf"></div>
   <details id="p-q"><summary></summary><div id="p-a"></div></details>
+  <div id="p-inf"></div>
 </aside>
 
+<div id="hint" role="status" hidden>👇 아래 <b>장면</b>을 눌러 보자 — 옆으로 밀면 더 있다. 연도를 누르면 그 해의 나라 경계가 칠해진다.</div>
 <nav id="bottom" aria-label="연도와 장면">
   <div class="row lgrow"><button type="button" id="lg-toggle" aria-expanded="false">색 뜻 ▾</button><div id="legend" role="list" aria-label="색 뜻"></div></div>
   <div class="row">

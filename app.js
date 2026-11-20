@@ -33,7 +33,7 @@ async function topo(name){
 }
 
 // ---------- 상태 ----------
-const S = { year: 1815, sc: -1, si: 0, relief: true, names: true, mini: false };
+const S = { year: 1815, sc: -1, si: 0, relief: true, names: true, mini: innerWidth <= 720 };   // 폰은 설명을 접은 채 열어 지도 칸을 넓힌다(메인 검증 🟡1)
 const scene = () => S.sc >= 0 ? SCENES[S.sc] : null;
 const byId = Object.create(null); SCENES.forEach((s, i) => byId[s.id] = i);
 const ALLKEYS = Object.keys(COLORS);
@@ -100,6 +100,11 @@ const map = new maplibregl.Map({
         layout: { 'icon-image': 'tri', 'icon-size': 0.7, 'icon-rotate': ['get', 'b'], 'icon-rotation-alignment': 'map',
                   'icon-allow-overlap': true, 'icon-ignore-placement': true },
         paint: { 'icon-color': ['get', 'c'] } },
+      { id: 'lbl', type: 'symbol', source: 'lbl',
+        layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Bold'],
+                  'text-size': ['interpolate', ['linear'], ['zoom'], 1, ['*', ['get', 'sz'], 0.78], 4, ['get', 'sz'], 6, ['*', ['get', 'sz'], 1.25]],
+                  'symbol-sort-key': ['-', 0, ['get', 'sz']], 'text-max-width': 8 },
+        paint: { 'text-color': ['get', 'c'], 'text-halo-color': 'rgba(255,255,255,0.92)', 'text-halo-width': 1.8 } },
       { id: 'pt', type: 'circle', source: 'pts', filter: ['==', ['get', 'kind'], 'pt'],
         paint: { 'circle-radius': 5, 'circle-color': '#ffffff', 'circle-stroke-color': INK, 'circle-stroke-width': 2.2 } },
       { id: 'pt-lbl', type: 'symbol', source: 'pts', filter: ['==', ['get', 'kind'], 'pt'],
@@ -108,12 +113,7 @@ const map = new maplibregl.Map({
         paint: { 'text-color': INK, 'text-halo-color': '#ffffff', 'text-halo-width': 1.8 } },
       { id: 'arr-lbl', type: 'symbol', source: 'pts', filter: ['==', ['get', 'kind'], 'arrlbl'],
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Bold'], 'text-size': 13, 'text-offset': [0, -1] },
-        paint: { 'text-color': ['get', 'c'], 'text-halo-color': '#ffffff', 'text-halo-width': 2 } },
-      { id: 'lbl', type: 'symbol', source: 'lbl',
-        layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Bold'],
-                  'text-size': ['interpolate', ['linear'], ['zoom'], 1, ['*', ['get', 'sz'], 0.78], 4, ['get', 'sz'], 6, ['*', ['get', 'sz'], 1.25]],
-                  'symbol-sort-key': ['-', 0, ['get', 'sz']], 'text-max-width': 8 },
-        paint: { 'text-color': ['get', 'c'], 'text-halo-color': 'rgba(255,255,255,0.92)', 'text-halo-width': 1.8 } }
+        paint: { 'text-color': ['get', 'c'], 'text-halo-color': '#ffffff', 'text-halo-width': 2 } }
     ]
   }
 });
@@ -283,6 +283,8 @@ function panel(){
   $('p-head').innerHTML = `<div class="who">${s.country}</div><h2 tabindex="-1">${s.ev}</h2><div class="meta">${s.when} · 교과서 ${s.pages}</div>`;
   $('p-body').innerHTML = s.body;
   $('p-sth').innerHTML = `${s.country} 안에서는 <small>— 단계를 누르면 지도가 바뀐다</small>`;
+  $('p-dots').innerHTML = s.steps.map((st, i) => `<button type="button" data-i="${i}" aria-current="${i === S.si}" aria-label="${i + 1}단계${st.y ? ' ' + st.y : ''}">${i + 1}</button>`).join('');
+  $('p-mini').textContent = S.mini ? '▴ 설명 펴기' : '▾ 설명 접기';
   $('p-steps').innerHTML = s.steps.map((st, i) => `<li><button type="button" data-i="${i}" aria-current="${i === S.si}"><span class="n">${i + 1}</span><span>${st.y ? `<span class="y">${st.y}</span>` : ''}${st.t}</span></button></li>`).join('');
   const item = f => {
     const o = f.s != null && byId[f.s] != null ? SCENES[byId[f.s]] : null;
@@ -297,7 +299,7 @@ function panel(){
   else $('p-q').hidden = true;
   P.scrollTop = 0;
 }
-function stepCurrent(){ document.querySelectorAll('#p-steps button').forEach(b => b.setAttribute('aria-current', +b.dataset.i === S.si)); }
+function stepCurrent(){ document.querySelectorAll('#p-steps button, #p-dots button').forEach(b => b.setAttribute('aria-current', +b.dataset.i === S.si)); }
 
 function padding(){
   // 패널이 실제로 어디 놓였는지(아래 판 / 오른쪽 판) 재서 여백을 정한다 — 폰 세로·가로·노트북 모두 같은 식.
@@ -319,7 +321,7 @@ function fly(){
   const flyC = (center, zoom, ms) => map.flyTo({ center, zoom, pitch: 0, bearing: 0, offset: off, duration: ms });
   if (!s){ flyC(UNIT.home.center, isPhone() ? UNIT.home.zoomPhone : UNIT.home.zoom, 1800); return; }
   const [w, so, e, n] = s.view;
-  if (e - w > 150){ flyC([(w + e) / 2, 20], isPhone() ? 0.95 : 1.75, 2000); return; }
+  if (isWide(s)){ flyC(wideCenter(s, Math.max(0, S.si)), isPhone() ? 1.1 : 1.8, 2000); return; }
   let cam = null;
   try { cam = map.cameraForBounds([[w, so], [e, n]], { padding: pd, maxZoom: 6 }); } catch (err){ console.warn('[지구본] 화면 맞춤 실패', err.message); }
   if (cam && cam.center) map.flyTo({ ...cam, pitch: 0, bearing: 0, duration: 2200 });
@@ -331,6 +333,18 @@ function url(){
   history.replaceState(null, '', '?' + q.toString());
 }
 function setYear(y){ S.year = y; if (S.sc >= 0){ S.si = -1; stepCurrent(); } syncChips(); draw(); url(); }
+// 세계 장면(폭 150° 넘음)은 bbox 가운데가 엉뚱한 곳(아프리카)이 된다 — 그 단계에 보이는 점·화살표의 가운데로 간다(11/20 사회 학생 눈 🔴).
+const WIDE_C = { as1: [105, 18], gb2: [-5, 48] };   // 단계에 점·화살표가 없을 때의 가운데
+function wideCenter(s, i){
+  const pts = [];
+  s.points.filter(p => !p.st || p.st.includes(i)).forEach(p => pts.push(p.ll));
+  s.arrows.filter(a => !a.st || a.st.includes(i)).forEach(a => a.pts.forEach(q => pts.push(q)));
+  if (!pts.length) return WIDE_C[s.id] || [(s.view[0] + s.view[2]) / 2, 20];
+  let x = 0, y = 0, z = 0; const r = Math.PI / 180;
+  pts.forEach(([lo, la]) => { x += Math.cos(la * r) * Math.cos(lo * r); y += Math.cos(la * r) * Math.sin(lo * r); z += Math.sin(la * r); });
+  return [Math.atan2(y, x) / r, Math.atan2(z, Math.hypot(x, y)) / r];
+}
+const isWide = s => s.view[2] - s.view[0] > 150;
 function startYear(s, i){ return (s.steps[i] && s.steps[i].yr) || s.year || S.year; }
 function go(i){
   const prev = S.sc;
@@ -340,16 +354,21 @@ function go(i){
   if (i >= 0){ const h = $('p-head').querySelector('h2'); if (h) h.focus({ preventScroll: true }); }
   else if (prev >= 0){ const c = document.querySelector(`#scenes .chip[data-s="${prev}"]`); if (c) c.focus({ preventScroll: true }); }
 }
-function step(i){ const s = scene(); S.si = i; S.year = startYear(s, i); stepCurrent(); syncChips(); draw(); url(); }
+function step(i){ const s = scene(); S.si = i; S.year = startYear(s, i); stepCurrent(); syncChips(); draw(); url(); if (isWide(s)) fly(); }
 
 // ---------- 손 ----------
+function hideHint(){ const h = $('hint'); if (h && !h.hidden){ h.hidden = true; try { localStorage.setItem('hg-hint', '1'); } catch (e){} } }
+try { if (!localStorage.getItem('hg-hint') && !location.search) $('hint').hidden = false; } catch (e){ $('hint').hidden = false; }
+['years', 'scenes', 'tools'].forEach(id => $(id).addEventListener('click', hideHint));
+map.on('dragstart', hideHint);
 $('years').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) setYear(+b.dataset.y); });
 $('scenes').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) go(+b.dataset.s === S.sc ? -1 : +b.dataset.s); });
 $('p-steps').addEventListener('click', e => { const b = e.target.closest('button'); if (b) step(+b.dataset.i); });
+$('p-dots').addEventListener('click', e => { const b = e.target.closest('button'); if (b) step(+b.dataset.i); });
 $('p-inf').addEventListener('click', e => { const b = e.target.closest('button[data-go]'); if (b) go(+b.dataset.go); });
 $('p-close').addEventListener('click', () => go(-1));
 $('p-mini').addEventListener('click', () => { S.mini = !S.mini; $('panel').classList.toggle('mini', S.mini); $('p-mini').textContent = S.mini ? '▴ 설명 펴기' : '▾ 설명 접기'; fly(); });
-$('lg-toggle').addEventListener('click', e => { const o = $('bottom').classList.toggle('lg-open'); e.currentTarget.setAttribute('aria-expanded', o); });
+$('lg-toggle').addEventListener('click', e => { const o = $('bottom').classList.toggle('lg-open'); e.currentTarget.setAttribute('aria-expanded', o); e.currentTarget.textContent = o ? '색 뜻 ▴' : '색 뜻 ▾'; navVar(); });
 $('p-q').addEventListener('toggle', () => draw());
 $('b-home').addEventListener('click', () => go(-1));
 $('b-relief').addEventListener('click', e => {
