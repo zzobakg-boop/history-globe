@@ -217,7 +217,7 @@ const FC = feats => ({ type: 'FeatureCollection', features: feats });
 
 // ---------- 그리기 ----------
 let drawToken = 0, READY = false, shownYear = null, toastT = 0;
-function toast(t, ms){ const el = $('toast'); el.textContent = t; el.hidden = !t; clearTimeout(toastT); if (t && ms) toastT = setTimeout(() => { el.hidden = true; }, ms); }
+function toast(t, ms, info){ const el = $('toast'); el.textContent = t; el.hidden = !t; el.classList.toggle('info', !!info); clearTimeout(toastT); if (t && ms) toastT = setTimeout(() => { el.hidden = true; }, ms); }
 let NAMES_KO = {};   // 교과서 밖 나라 이름(검수 끝난 것만) — 영어 이름 → 한국어
 fetch(BASE + 'data/names_ko.json?v=' + VER).then(r => r.ok ? r.json() : {}).then(j => { NAMES_KO = j || {}; if (READY) draw(); }).catch(() => {});
 async function draw(){
@@ -226,8 +226,11 @@ async function draw(){
   let pol;
   // 빗금(자료 없음)은 꾸밈이라 못 받아도 경계는 그린다
   const ndP = topo('n' + yr).catch(() => FC([]));
+  // 느린 망에서는 받는 몇 초 동안 새 연도 글자 아래 옛 경계가 남는다 — 0.5초 넘으면 받는 중이라고 알린다(11/21 메인 🟡: 3G 전환 2~6초)
+  const slow = setTimeout(() => { if (tok === drawToken) toast(yr + '년 지도 받는 중…', 0, true); }, 500);
   try { pol = await topo('y' + yr); }
   catch (e){
+    clearTimeout(slow);
     if (tok !== drawToken) return;
     console.error('[지구본]', e);
     // 못 받은 해에 머물지 않는다 — 칩·큰 연도 글자를 마지막으로 그린 해로 되돌린다(학생이 틀린 해를 보지 않게)
@@ -236,6 +239,7 @@ async function draw(){
     return;
   }
   const nd = await ndP;
+  clearTimeout(slow);
   if (tok !== drawToken) return;   // 그 사이 다른 해를 골랐다
   toast('');
   const paint = paintOf(), focus = focusOf();
@@ -269,6 +273,9 @@ async function draw(){
   legend(pol);
   $('year').textContent = yr;
   shownYear = yr;
+  // 쉬는 틈에 앞뒤 해를 미리 받아 둔다 — 다음 연도 칩은 기다리지 않게
+  const yi = UNIT.years.indexOf(yr);
+  setTimeout(() => [yi - 1, yi + 1].forEach(j => { const y2 = UNIT.years[j]; if (y2) topo('y' + y2).catch(() => {}); }), 1500);
 }
 
 function drawLabels(keyArea, grey){
