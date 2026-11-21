@@ -4,11 +4,13 @@
 'use strict';
 
 const UNIT = {
-  years: [1688, 1763, 1783, 1789, 1812, 1815, 1830, 1850, 1862, 1871, 1880, 1900, 1914],
+  years: [1688, 1763, 1783, 1789, 1812, 1815, 1830, 1850, 1862, 1871, 1880, 1900, 1914, 2026],
   dir: 'data/u5/',
   home: { center: [15, 32], zoom: 2.05, zoomPhone: 1.05 }
 };
-const VER = '0.3.0';   // 자료 파일을 갈아 끼우면 올린다 — Pages 캐시(약 10분)에 옛 파일과 새 파일이 섞이지 않게
+const VER = '0.4.0';   // 자료 파일을 갈아 끼우면 올린다 — Pages 캐시(약 10분)에 옛 파일과 새 파일이 섞이지 않게
+// 맨 끝 해 = 지금(Natural Earth 나라 경계) — 장면(옛 사건)과 함께 보지 않는다(11/21 천대현 «맨 마지막에 2026년도 현재»)
+const NOW = 2026;
 const BASE = location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '');
 const INK = '#20232b', LAND = '#ebe6d8', NEUTRAL = '#ddd7c6', SEA = '#a9c9de';
 // 교과서 밖 나라는 무채색 넷을 번갈아 칠해 이웃끼리 갈리게 한다(11/21 천대현 «경계는 다 보이게, 색은 교과서 나라만»)
@@ -49,8 +51,10 @@ function paintOf(){ const s = scene(); return s ? s.paint : basePaint; }
 const LIGHT_PROT = { 700: '영국', 696: '영국', 781: '영국', 760: '영국', 7020: '러시아', 7030: '러시아' };
 // 라틴 아메리카 장면의 «새로 독립한 나라»(units laPaint의 NEWSTATES)를 CShapes 나라 번호로 — 1900·1914를 고르면 새 나라 색이 사라졌다(독립 리뷰 중간 2)
 const NEW_GW = new Set([70, 100, 101, 130, 135, 140, 145, 150, 155, 160, 165, 41, 90, 91, 92, 93, 94]);
+// 나라 단위 자료(CShapes «cs:번호» · 2026 Natural Earth «ne:세 글자») — 본국·식민지가 빌드 때 hk·ck로 갈려 있다
+const isUnit = n => n.startsWith('cs:') || n.startsWith('ne:');
 const paintF = (f, paint, yr) => {
-  const p = f.properties; if (!p.n.startsWith('cs:')) return paint(p.n, yr);
+  const p = f.properties; if (!isUnit(p.n)) return paint(p.n, yr);
   const gw = +p.n.slice(3);
   if (paint === laPaint && NEW_GW.has(gw)) return ['NEW', false];
   if (LIGHT_PROT[gw]) return null;
@@ -260,11 +264,11 @@ let drawToken = 0, READY = false, shownYear = null, toastT = 0;
 function toast(t, ms, info){ const el = $('toast'); el.textContent = t; el.hidden = !t; el.classList.toggle('info', !!info); clearTimeout(toastT); if (t && ms) toastT = setTimeout(() => { el.hidden = true; }, ms); }
 let NAMES_KO = {}, NAMES_CS = {};   // 교과서 밖 나라 이름(검수 끝난 것만) — 영어 이름 → 한국어 · CShapes 해별 이름
 // CShapes 단위 이름은 해마다 다르다(콩고 자유국 1900 → 벨기에령 콩고 1914) — names_cs.json = {해: {나라번호: 이름}}
-const nameOf = (n, yr) => { if (!n.startsWith('cs:')) return NAMES_KO[n]; const t = (NAMES_CS[yr] || {})[n.slice(3)], lp = LIGHT_PROT[n.slice(3)]; return t && lp ? t + '(' + lp + ' 보호국)' : t; };
+const nameOf = (n, yr) => { if (!isUnit(n)) return NAMES_KO[n]; const t = (NAMES_CS[yr] || {})[n.slice(3)], lp = LIGHT_PROT[n.slice(3)]; return t && lp ? t + '(' + lp + ' 보호국)' : t; };
 // CShapes 식민지 이름은 땅 이름만 있다(골드코스트) — 차지한 나라를 괄호로 붙인다. 이름에 이미 나라가 들어 있으면(독일령 동아프리카) 그대로
 // 이름 꼴은 «땅(지배국)» 하나로 — «독일령 남서아프리카»·«카메룬(독일)»·장면의 «독일»이 한 화면에 섞여 독일 본국으로 읽혔다(11/21 사회 🟡). «○○령 땅»은 «땅(○○)»으로 바꾼다
 const withOwner = (t, k, n) => {
-  if (!n.startsWith('cs:')) return t;
+  if (!isUnit(n)) return t;
   const o = keyName(k, 1914);
   if (t === '영국-이집트령 수단') return '수단(영국·이집트)';
   if (t.startsWith(o + '령 ')) return t.slice(o.length + 2) + '(' + o + ')';
@@ -300,7 +304,7 @@ async function draw(){
   const feats = [];
   for (const f of pol.features){
     if (!f.geometry) continue;
-    const n = f.properties.n, r = paintF(f, paint, yr), umbrella = n.startsWith('('), nm = nameOf(n, yr);   // «(영국 제국)» 같은 괄호 항목 = 식민지 전체를 덮는 겉봉투 — 안쪽 항목과 겹친다
+    const n = f.properties.n, r = paintF(f, paint, yr), umbrella = n.startsWith('('), nm = f.properties.t || nameOf(n, yr);   // 2026은 이름이 자료 안에(t)   // «(영국 제국)» 같은 괄호 항목 = 식민지 전체를 덮는 겉봉투 — 안쪽 항목과 겹친다
     if (r && focus.includes(r[0])){
       const [k, col] = r;
       if (col){
@@ -316,7 +320,7 @@ async function draw(){
       // 본국 도형은 조각마다 본토·바다 건너 식민지를 가른다
       const home = [], over = [];
       for (const p of polys(f.geometry)){
-        const ll = labelPt(p[0]), b = (OVERSEAS[k] || []).find(b => inBox(ll, b) && !(b[5] && areaOf(p) < b[5]));
+        const ll = labelPt(p[0]), b = (n.startsWith('ne:') ? [] : OVERSEAS[k] || []).find(b => inBox(ll, b) && !(b[5] && areaOf(p) < b[5]));
         b ? over.push({ p, ll, t: b[4] || (NAMES[k] || k).split('·').pop() + '령' }) : home.push(p);
       }
       if (over.length){
@@ -446,14 +450,14 @@ function legend(pol){
     const cn = s && s.colonyName && s.colonyName[k] && !(k === 'BE' && S.year >= 1908 && /국왕/.test(s.colonyName[k])) ? s.colonyName[k] : null;
     if (v.col && s) out.push(`<span><i style="background:${colonyColor(k)}"></i>${cn || (NAMES[k] || k) + josa(NAMES[k] || k) + ' 차지한 땅'}</span>`);
   });
-  if (!s && [...seen.values()].some(v => v.col)) out.push('<span><i style="background:linear-gradient(90deg,#d99a93,#9fb4d6)"></i>옅은 색 = 그 나라가 차지한 땅</span>');
+  if (!s && [...seen.values()].some(v => v.col)) out.push(`<span><i style="background:linear-gradient(90deg,#d99a93,#9fb4d6)"></i>${S.year === NOW ? '옅은 색 = 지금도 그 나라에 딸린 바다 건너 땅' : '옅은 색 = 그 나라가 차지한 땅'}</span>`);
   out.push(`<span><i style="background:repeating-linear-gradient(45deg,${LAND} 0 3px,#b9b2a0 3px 4px)"></i>자료 없음</span>`);
   $('legend').innerHTML = out.join('');
 }
 
 // ---------- 화면 ----------
 function chips(){
-  $('years').innerHTML = UNIT.years.map(y => `<button type="button" class="chip" data-y="${y}" aria-pressed="${y === S.year}">${y}</button>`).join('');
+  $('years').innerHTML = UNIT.years.map(y => `<button type="button" class="chip" data-y="${y}" aria-pressed="${y === S.year}">${y}${y === NOW ? ' <small>현재</small>' : ''}</button>`).join('');
   $('scenes').innerHTML = SCENES.map((s, i) => `<button type="button" class="chip" data-s="${i}" aria-pressed="${i === S.sc}" title="다시 누르면 장면을 닫는다">${s.country} <small>${s.evS || s.ev}</small></button>`).join('');
 }
 function syncChips(){
@@ -521,6 +525,7 @@ function url(){
 }
 // 장면 안에서 연도를 고르면 그 해의 단계로 간다. 그 해 단계가 없을 때만 단계 전부를 함께 보인다(11/21 코드 검토: 늘 전부 떠서 어지러움)
 function setYear(y){
+  if (y === NOW && S.sc >= 0){ S.year = y; go(-1); return; }   // 옛 장면의 이름표·화살표를 지금 지도 위에 얹지 않는다
   S.year = y;
   if (S.sc >= 0){ const s = scene(); S.si = s.steps.findIndex(st => (st.yr || s.year) === y); stepCurrent(); }
   syncChips(); draw(); url();
@@ -578,7 +583,8 @@ $('b-credits').addEventListener('click', () => $('credits').showModal());
   const s = q.get('s'), y = +q.get('y'), st = +q.get('st');
   if (s && Number.isInteger(byId[s])){
     S.sc = byId[s]; const sc = SCENES[S.sc];
-    if (UNIT.years.includes(y) && !q.has('st')){ S.si = -1; S.year = y; }
+    if (y === NOW){ S.sc = -1; S.year = y; }
+    else if (UNIT.years.includes(y) && !q.has('st')){ S.si = -1; S.year = y; }
     else { S.si = Number.isInteger(st) ? Math.max(0, Math.min(st - 1, sc.steps.length - 1)) : 0; S.year = startYear(sc, S.si); }
   }
   else if (UNIT.years.includes(y)) S.year = y;

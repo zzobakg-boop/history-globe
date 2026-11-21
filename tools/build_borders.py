@@ -9,7 +9,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(HERE, 'data', 'u5')
 SRC = os.path.expanduser('~/data/maps/cliopatria/cliopatria_polities_only_v021.geojson')
 LAND = os.path.expanduser('~/data/maps/ne10/ne_10m_land')
-YEARS = [int(a) for a in sys.argv[1:]] or [1688, 1763, 1783, 1789, 1812, 1815, 1830, 1850, 1862, 1871, 1880, 1900, 1914]
+YEARS = [int(a) for a in sys.argv[1:]] or [1688, 1763, 1783, 1789, 1812, 1815, 1830, 1850, 1862, 1871, 1880, 1900, 1914, 2026]
 # 1886년부터는 CShapes 2.0(ETH, CC BY-NC-SA 4.0) — 식민지가 하나하나 따로 그려져 있다. Cliopatria는 «영국령 아프리카»를 이집트~남아프리카 한 덩어리로 묶어
 # 안쪽 경계가 없었다(11/21 천대현). 지위·지배국 열은 CRAN cshapes 패키지판에만 있어 정밀 경계에 붙여 둔 것(cshapes_full_attrs.gpkg)을 쓴다.
 # CShapes가 안 덮는 땅(아라비아 안쪽 등)만 Cliopatria로 채운다.
@@ -18,6 +18,19 @@ CS_FROM = 1886
 DOMINION_GB = {20, 560, 900, 920}
 GW2KEY = {200: 'GB', 220: 'FR', 230: 'ES', 235: 'PT', 210: 'NL', 211: 'BE', 255: 'DE', 325: 'IT', 300: 'AT', 365: 'RU',
           640: 'OT', 2: 'US', 740: 'JP', 710: 'QING', 730: 'KR'}
+# 2026(지금)은 Natural Earth 10m 나라(5.1.1, 퍼블릭 도메인) — 한국어 이름(NAME_KO)·한국 기준 묶음(ADM0_A3_KO)이 들어 있다(11/21 천대현 «맨 마지막에 2026년도 현재»)
+NE = os.path.expanduser('~/data/maps/ne10/ne_10m_admin_0_countries')
+NE1 = os.path.expanduser('~/data/maps/ne10/ne_10m_admin_1')
+NOW = 2026
+SOV2KEY = {'United Kingdom': 'GB', 'France': 'FR', 'Spain': 'ES', 'Portugal': 'PT', 'Netherlands': 'NL', 'Belgium': 'BE', 'Germany': 'DE',
+           'Italy': 'IT', 'Austria': 'AT', 'Russia': 'RU', 'United States of America': 'US', 'Japan': 'JP'}
+# 한국 기준에서 한 나라인 것(홍콩·마카오 = 중국, 올란드 = 핀란드, 관타나모 = 쿠바). 사람이 다시 묶은 것
+NE_JOIN = {'HKG': 'CHN', 'MAC': 'CHN', 'ALD': 'FIN', 'USG': 'CUB'}
+# NE 이름을 외교부·교과서 표기로 — 이름을 지우는 것(None)은 작은 분쟁 땅·기지(이름표가 어지럽기만 하다)
+NE_NAME = {'CHN': '중국', 'PRK': '북한', 'TWN': '타이완', 'TUR': '튀르키예', 'NCL': '뉴칼레도니아',
+           'ATF': '프랑스령 남방 및 남극 지역', 'IOA': '크리스마스섬·코코스 제도(오스트레일리아)', 'GRL': '그린란드(덴마크)', 'FRO': '페로 제도(덴마크)',
+           'PGA': None, 'SCR': None, 'BRI': None, 'BRT': None, 'SPI': None, 'ESB': None, 'WSB': None, 'CSI': None, 'ATC': None, 'CLP': None, 'UMI': None}
+NE_BASE = {'ESB', 'WSB'}   # 키프로스 안 영국 군사 기지 — 영국 식민지 색 점으로 찍히지 않게
 TMP = '/tmp/hg_borders'
 os.makedirs(TMP, exist_ok=True)
 
@@ -33,6 +46,33 @@ land_geom = unary_union(gpd.read_file(f'{TMP}/land.geojson').geometry.buffer(0))
 
 g = gpd.read_file(SRC)
 cs_all = gpd.read_file(CS) if any(y >= CS_FROM for y in YEARS) else None
+def ne_now():
+    g = gpd.read_file([os.path.join(NE, f) for f in os.listdir(NE) if f.endswith('.shp')][0])
+    g = g[~g.ADM0_A3.isin(['ATA', 'VAT'])].copy()   # 남극은 다른 해처럼 바탕 땅으로 · 바티칸(0.44㎢)은 2km 간격 줄이기에 도형이 사라진다(로마 안에 묻힌다)
+    k = g.ADM0_A3_KO.where(g.ADM0_A3_KO != '-99', g.ADM0_A3)
+    g['k'] = [NE_JOIN.get(x, x) for x in k]
+    # 묶을 때 이름·지위는 첫 줄에서 온다 — 본체(ADM0_A3 = 묶음 코드)를 맨 앞에(쿠바가 «관타나모만 해군 기지»로 떴다)
+    g = g.assign(main=(g.ADM0_A3 != g.k)).sort_values(['k', 'main'])
+    d = g.dissolve('k', aggfunc='first')
+    d['geometry'] = d.geometry.buffer(0)
+    # NE 기본판은 «실제로 다스리는 쪽» 경계다 — 한국 정부 입장(크림 = 우크라이나, 서사하라 = 모로코 밖)으로 고친다
+    a = gpd.read_file([os.path.join(NE1, f) for f in os.listdir(NE1) if f.endswith('.shp')][0])
+    crimea = unary_union(a[a.iso_3166_2.isin(['UA-43', 'UA-40'])].geometry.buffer(0))
+    d.at['RUS', 'geometry'] = d.at['RUS', 'geometry'].difference(crimea)
+    d.at['UKR', 'geometry'] = unary_union([d.at['UKR', 'geometry'], crimea])
+    from shapely.geometry import box
+    ws = d.at['MAR', 'geometry'].intersection(box(-20, 20, -8.6, 27 + 40 / 60))   # 모로코·서사하라 경계 = 북위 27°40′
+    d.at['MAR', 'geometry'] = d.at['MAR', 'geometry'].difference(ws)
+    d.at['SAH', 'geometry'] = unary_union([d.at['SAH', 'geometry'], ws])
+    rows = []
+    for a3, r in d.iterrows():
+        gm = r.geometry.intersection(land_geom)
+        gm = gm if not gm.is_empty else r.geometry
+        own = SOV2KEY.get(r.SOVEREIGNT) if r.SOVEREIGNT != r.ADMIN and a3 not in NE_BASE else None
+        t = NE_NAME.get(a3, r.NAME_KO)
+        rows.append({'n': f'ne:{a3}', 'st': 'independent' if r.TYPE in ('Sovereign country', 'Country', 'Sovereignty') else 'other',
+                     'hk': SOV2KEY.get(r.ADMIN, '') if not own else '', 'ck': own or '', 't': t or '', 'geometry': gm})
+    return gpd.GeoDataFrame(rows, crs=4326)
 def cs_year(y):
     d = y * 10000 + 701   # 그해 7월 1일
     c = cs_all[(cs_all.gwsyear * 10000 + cs_all.gwsmonth * 100 + cs_all.gwsday <= d) & (cs_all.gweyear * 10000 + cs_all.gwemonth * 100 + cs_all.gweday > d)].copy()
@@ -56,7 +96,7 @@ def cs_year(y):
         rows.append({'n': f'cs:{r.gwcode}', 'st': r.status, 'hk': hk,
                      'ck': GW2KEY.get(o, '') if dep and o is not None else '', 'geometry': r.geometry})
     return gpd.GeoDataFrame(rows, crs=4326)
-for y in YEARS:
+def era(y):
     s = g[(g.FromYear <= y) & (g.ToYear >= y)][['Name', 'geometry']].rename(columns={'Name': 'n'}).copy()
     s['geometry'] = s.geometry.buffer(0).intersection(land_geom)
     # 땅 칼에 안 걸리는 작은 섬나라는 원래 경계를 그대로 둔다(없어지는 것보다 해안선이 거친 편이 낫다)
@@ -80,6 +120,9 @@ for y in YEARS:
                 c.at[i, 'geometry'] = unary_union([c.at[i, 'geometry'], *s[s.n == nm].geometry]).buffer(0.03).buffer(-0.03).intersection(land_geom)
                 s = s[s.n != nm]
         s = gpd.GeoDataFrame(pd.concat([c, s], ignore_index=True), crs=4326)
+    return s
+for y in YEARS:
+    s = ne_now() if y == NOW else era(y)
     s.to_file(f'{TMP}/y{y}.geojson', driver='GeoJSON')
     # 원자료가 거칠어(1815년 나라 145개에 꼭짓점 2만 7천) 더 줄이지 않는다 — 땅으로 자른 해안선만 그대로
     # CShapes는 꼭짓점이 촘촘해 파일이 세 배(1MB)가 된다 — 2km 간격으로 맞닿은 선째 줄인다(이웃 사이 틈이 안 생긴다). 해안선은 땅 6%판이라 거의 안 바뀐다

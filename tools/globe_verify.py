@@ -51,7 +51,7 @@ async def run():
         pg = await b.new_page(viewport={'width': 390, 'height': 800})
         perr = []; pg.on('pageerror', lambda e: perr.append(str(e)))
         base = U.split('?')[0]
-        for qs, want in [('?s=constructor', 'home:1815'), ('?st=1.5&s=fr2', 'fr2'), ('?s=fr2&st=4', 'fr2:1812'), ('?y=1871', 'home:1871'), ('?s=it1&y=1862', 'it1:1862'), ('?s=zzz&y=9999', 'home:1815')]:
+        for qs, want in [('?s=constructor', 'home:1815'), ('?st=1.5&s=fr2', 'fr2'), ('?s=fr2&st=4', 'fr2:1812'), ('?y=1871', 'home:1871'), ('?s=it1&y=1862', 'it1:1862'), ('?s=zzz&y=9999', 'home:1815'), ('?s=af1&y=2026', 'home:2026')]:
             await pg.goto(base + qs); await pg.wait_for_function('window.__ready', timeout=60000)
             got = await pg.evaluate("(S.sc<0 ? 'home' : SCENES[S.sc].id) + ':' + S.year")   # 주소창이 아니라 앱 상태를 본다
             ok = got == want if want.count(':') else got.startswith(want + ':')
