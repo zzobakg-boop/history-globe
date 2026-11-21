@@ -97,7 +97,7 @@ dialog#credits button{background:var(--chip);border:1px solid var(--line);border
   #panel{left:8px;right:8px;width:auto;top:auto;bottom:calc(var(--nav) + 6px);max-height:44vh;max-height:44dvh;border-radius:14px 14px 10px 10px}
   #legend{font-size:11px;display:none}
   #lg-toggle{display:inline-block}
-  #bottom.lg-open #legend{display:flex;max-height:72px;overflow:auto}   /* 작은 폰에서 색 뜻을 펴도 지도가 남게(11/21 코드 검토) */
+  #bottom.lg-open #legend{display:flex;max-height:96px;overflow:auto}   /* 작은 폰에서 색 뜻을 펴도 지도가 남게(11/21 코드 검토) · 2026은 색 12개+설명이라 72px에서 마지막 줄이 잘렸다(11/21 사회 🟡3) */
   #panel{max-height:38vh;max-height:38dvh}
   #p-mini{display:block;position:absolute;top:6px;right:48px;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:6px 12px;min-height:36px;font-size:12.5px}
   #panel.mini{max-height:none;overflow:hidden}

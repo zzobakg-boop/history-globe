@@ -11,6 +11,11 @@ const UNIT = {
 const VER = '0.4.0';   // 자료 파일을 갈아 끼우면 올린다 — Pages 캐시(약 10분)에 옛 파일과 새 파일이 섞이지 않게
 // 맨 끝 해 = 지금(Natural Earth 나라 경계) — 장면(옛 사건)과 함께 보지 않는다(11/21 천대현 «맨 마지막에 2026년도 현재»)
 const NOW = 2026;
+// 2026에 늘 보이게 할 회색 이름 — 폰에서 «북한»에 밀려 «대한민국»이 안 떴다(11/21 사회 학생 눈 🟡1)
+const PIN = new Set(['ne:KOR']);
+const NOTE_OLD = '경계는 그 해 무렵의 대략적인 모습이다. 교과서와 다르면 교과서를 따른다.';
+// 2026은 옛 열강 본토만 색이 남아 «지금도 열강»으로 읽힐 수 있다(11/21 사회 🟡2) — 설명 한 줄(폰은 설명 줄이 숨어 처음 한 번 알림으로)
+const NOTE_NOW = '색은 옛 열강의 지금 땅이다. 그 나라들이 차지했던 식민지는 거의 다 독립했다.';
 const BASE = location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '');
 const INK = '#20232b', LAND = '#ebe6d8', NEUTRAL = '#ddd7c6', SEA = '#a9c9de';
 // 교과서 밖 나라는 무채색 넷을 번갈아 칠해 이웃끼리 갈리게 한다(11/21 천대현 «경계는 다 보이게, 색은 교과서 나라만»)
@@ -340,7 +345,7 @@ async function draw(){
     if (!umbrella && nm){
       let big = null;
       for (const p of polys(f.geometry)){ const a = areaOf(p); if (!big || a > big.a) big = { a, p }; }
-      if (big) grey.push({ t: nm, a: big.a, ll: labelPt(big.p[0]), up: f.properties.st === 'independent' });   // 독립국(라이베리아 등)은 한 층 일찍 보이게
+      if (big) grey.push({ t: nm, a: PIN.has(n) ? 1e6 : big.a, ll: labelPt(big.p[0]), up: f.properties.st === 'independent' });   // 독립국(라이베리아 등)은 한 층 일찍 보이게
     }
   }
   map.getSource('pol').setData(FC(feats));
@@ -353,6 +358,8 @@ async function draw(){
   drawOverlay();
   legend(pol);
   $('year').textContent = yr;
+  $('mapnote').textContent = yr === NOW ? NOTE_NOW : NOTE_OLD;
+  if (yr === NOW && shownYear !== NOW && isPhone()) toast(NOTE_NOW, 5000, true);
   shownYear = yr;
   // 쉬는 틈에 앞뒤 해를 미리 받아 둔다 — 다음 연도 칩은 기다리지 않게
   const yi = UNIT.years.indexOf(yr);
@@ -450,8 +457,8 @@ function legend(pol){
     const cn = s && s.colonyName && s.colonyName[k] && !(k === 'BE' && S.year >= 1908 && /국왕/.test(s.colonyName[k])) ? s.colonyName[k] : null;
     if (v.col && s) out.push(`<span><i style="background:${colonyColor(k)}"></i>${cn || (NAMES[k] || k) + josa(NAMES[k] || k) + ' 차지한 땅'}</span>`);
   });
-  if (!s && [...seen.values()].some(v => v.col)) out.push(`<span><i style="background:linear-gradient(90deg,#d99a93,#9fb4d6)"></i>${S.year === NOW ? '옅은 색 = 지금도 그 나라에 딸린 바다 건너 땅' : '옅은 색 = 그 나라가 차지한 땅'}</span>`);
-  out.push(`<span><i style="background:repeating-linear-gradient(45deg,${LAND} 0 3px,#b9b2a0 3px 4px)"></i>자료 없음</span>`);
+  if (!s && [...seen.values()].some(v => v.col)) out.push(`<span><i style="background:linear-gradient(90deg,#d99a93,#9fb4d6)"></i>${S.year === NOW ? '옅은 색 = 지금도 그 나라에 딸린 섬(예: 푸에르토리코는 미국)' : '옅은 색 = 그 나라가 차지한 땅'}</span>`);
+  if (S.year !== NOW) out.push(`<span><i style="background:repeating-linear-gradient(45deg,${LAND} 0 3px,#b9b2a0 3px 4px)"></i>자료 없음</span>`);   // 2026은 빈 땅이 없다(독립 리뷰 low 3)
   $('legend').innerHTML = out.join('');
 }
 
@@ -525,7 +532,7 @@ function url(){
 }
 // 장면 안에서 연도를 고르면 그 해의 단계로 간다. 그 해 단계가 없을 때만 단계 전부를 함께 보인다(11/21 코드 검토: 늘 전부 떠서 어지러움)
 function setYear(y){
-  if (y === NOW && S.sc >= 0){ S.year = y; go(-1); return; }   // 옛 장면의 이름표·화살표를 지금 지도 위에 얹지 않는다
+  if (y === NOW && S.sc >= 0){ S.year = y; go(-1, true); return; }   // 포커스는 누른 2026 칩에 둔다(독립 리뷰 low 1)   // 옛 장면의 이름표·화살표를 지금 지도 위에 얹지 않는다
   S.year = y;
   if (S.sc >= 0){ const s = scene(); S.si = s.steps.findIndex(st => (st.yr || s.year) === y); stepCurrent(); }
   syncChips(); draw(); url();
@@ -544,13 +551,13 @@ function wideCenter(s, i){
 }
 const isWide = s => s.view[2] - s.view[0] > 150;
 function startYear(s, i){ return (s.steps[i] && s.steps[i].yr) || s.year || S.year; }
-function go(i){
+function go(i, noFocus){
   const prev = S.sc;
   S.sc = i; S.si = 0;
   if (i >= 0) S.year = startYear(SCENES[i], 0);
   syncChips(); panel(); draw(); fly(); url();
   if (i >= 0){ const h = $('p-head').querySelector('h2'); if (h) h.focus({ preventScroll: true }); }
-  else if (prev >= 0){ const c = document.querySelector(`#scenes .chip[data-s="${prev}"]`); if (c) c.focus({ preventScroll: true }); }
+  else if (prev >= 0 && !noFocus){ const c = document.querySelector(`#scenes .chip[data-s="${prev}"]`); if (c) c.focus({ preventScroll: true }); }
 }
 function step(i){ const s = scene(); S.si = i; S.year = startYear(s, i); stepCurrent(); syncChips(); draw(); url(); if (isWide(s)) fly(); }
 
@@ -566,7 +573,7 @@ $('p-dots').addEventListener('click', e => { const b = e.target.closest('button'
 $('p-inf').addEventListener('click', e => { const b = e.target.closest('button[data-go]'); if (b) go(+b.dataset.go); });
 $('p-close').addEventListener('click', () => go(-1));
 $('p-mini').addEventListener('click', () => { S.mini = !S.mini; $('panel').classList.toggle('mini', S.mini); $('p-mini').textContent = S.mini ? '▴ 설명 펴기' : '▾ 설명 접기'; fly(); });
-$('lg-toggle').addEventListener('click', e => { const o = $('bottom').classList.toggle('lg-open'); e.currentTarget.setAttribute('aria-expanded', o); e.currentTarget.textContent = o ? '색 뜻 ▴' : '색 뜻 ▾'; navVar(); if (scene()) fly(); });
+$('lg-toggle').addEventListener('click', e => { const o = $('bottom').classList.toggle('lg-open'); e.currentTarget.setAttribute('aria-expanded', o); e.currentTarget.textContent = o ? '색 뜻 ▴' : '색 뜻 ▾'; navVar(); if (scene()) fly(); greyVisible(); });   // 펼친 색 뜻 위에 회색 이름(타이완)이 비쳤다(11/21)
 $('p-q').addEventListener('toggle', () => draw());   // 질문을 펴면 숨겨 둔 답 이름표가 드러난다
 $('b-home').addEventListener('click', () => go(-1));
 $('b-relief').addEventListener('click', e => {
@@ -583,7 +590,7 @@ $('b-credits').addEventListener('click', () => $('credits').showModal());
   const s = q.get('s'), y = +q.get('y'), st = +q.get('st');
   if (s && Number.isInteger(byId[s])){
     S.sc = byId[s]; const sc = SCENES[S.sc];
-    if (y === NOW){ S.sc = -1; S.year = y; }
+    if (y === NOW){ S.sc = -1; S.year = y; history.replaceState(null, '', '?y=' + NOW); }   // 주소에 닫힌 장면이 남지 않게(독립 리뷰 low 2)
     else if (UNIT.years.includes(y) && !q.has('st')){ S.si = -1; S.year = y; }
     else { S.si = Number.isInteger(st) ? Math.max(0, Math.min(st - 1, sc.steps.length - 1)) : 0; S.year = startYear(sc, S.si); }
   }
