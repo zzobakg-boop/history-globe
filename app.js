@@ -457,7 +457,7 @@ function legend(pol){
     const cn = s && s.colonyName && s.colonyName[k] && !(k === 'BE' && S.year >= 1908 && /국왕/.test(s.colonyName[k])) ? s.colonyName[k] : null;
     if (v.col && s) out.push(`<span><i style="background:${colonyColor(k)}"></i>${cn || (NAMES[k] || k) + josa(NAMES[k] || k) + ' 차지한 땅'}</span>`);
   });
-  if (!s && [...seen.values()].some(v => v.col)) out.push(`<span><i style="background:linear-gradient(90deg,#d99a93,#9fb4d6)"></i>${S.year === NOW ? '옅은 색 = 지금도 그 나라에 딸린 섬(예: 푸에르토리코는 미국)' : '옅은 색 = 그 나라가 차지한 땅'}</span>`);
+  if (!s && [...seen.values()].some(v => v.col)) out.push(`<span><i style="background:linear-gradient(90deg,#d99a93,#9fb4d6)"></i>${S.year === NOW ? '옅은 색 = 지금도 그 나라에 딸린 바다 건너 땅(예: 푸에르토리코는 미국)' : '옅은 색 = 그 나라가 차지한 땅'}</span>`);
   if (S.year !== NOW) out.push(`<span><i style="background:repeating-linear-gradient(45deg,${LAND} 0 3px,#b9b2a0 3px 4px)"></i>자료 없음</span>`);   // 2026은 빈 땅이 없다(독립 리뷰 low 3)
   $('legend').innerHTML = out.join('');
 }
