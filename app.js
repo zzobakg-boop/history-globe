@@ -47,7 +47,15 @@ function paintOf(){ const s = scene(); return s ? s.paint : basePaint; }
 // 외교권만 넘긴 보호국(나라 안은 스스로 다스림)은 식민지 색으로 칠하지 않는다 — «아프가니스탄(영국)»을 식민지로 읽었다(11/21 사회 학생 눈 🟡)
 // 아프가니스탄·휴전 오만·몰디브·부탄 / 부하라·히바(러시아). 우간다·나이지리아·모로코처럼 지배국이 안까지 다스린 보호국은 그대로 식민지 색
 const LIGHT_PROT = { 700: '영국', 696: '영국', 781: '영국', 760: '영국', 7020: '러시아', 7030: '러시아' };
-const paintF = (f, paint, yr) => { const p = f.properties; if (!p.n.startsWith('cs:')) return paint(p.n, yr); if (LIGHT_PROT[p.n.slice(3)]) return null; return p.hk ? [p.hk, false] : p.ck ? [p.ck, true] : null; };
+// 라틴 아메리카 장면의 «새로 독립한 나라»(units laPaint의 NEWSTATES)를 CShapes 나라 번호로 — 1900·1914를 고르면 새 나라 색이 사라졌다(독립 리뷰 중간 2)
+const NEW_GW = new Set([70, 100, 101, 130, 135, 140, 145, 150, 155, 160, 165, 41, 90, 91, 92, 93, 94]);
+const paintF = (f, paint, yr) => {
+  const p = f.properties; if (!p.n.startsWith('cs:')) return paint(p.n, yr);
+  const gw = +p.n.slice(3);
+  if (paint === laPaint && NEW_GW.has(gw)) return ['NEW', false];
+  if (LIGHT_PROT[gw]) return null;
+  return p.hk ? [p.hk, false] : p.ck ? [p.ck, true] : null;
+};
 function focusOf(){ const s = scene(); return s ? s.focus : ALLKEYS; }
 const onY = o => !o.y || o.y.includes(S.year);
 const onS = o => !o.st || S.si < 0 || o.st.includes(S.si);   // 연도 칩으로 고르면(si=-1) 단계 표시를 모두 보인다
@@ -124,7 +132,7 @@ const map = new maplibregl.Map({
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Regular'],
                   'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9.5, 4, 11.5, 6, 13.5], 'symbol-sort-key': ['-', 0, ['get', 'a']], 'text-max-width': 6 },
         paint: { 'text-color': ['coalesce', ['get', 'c'], '#6a6558'], 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
-      { id: 'lbl', type: 'symbol', source: 'lbl',
+      { id: 'lbl', type: 'symbol', source: 'lbl', filter: ['!=', ['get', 'top'], true],
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Bold'],
                   'text-size': ['interpolate', ['linear'], ['zoom'], 1, ['*', ['get', 'sz'], 0.78], 4, ['get', 'sz'], 6, ['*', ['get', 'sz'], 1.25]],
                   'symbol-sort-key': ['-', 0, ['get', 'sz']], 'text-max-width': 8 },
@@ -137,7 +145,12 @@ const map = new maplibregl.Map({
         paint: { 'text-color': INK, 'text-halo-color': '#ffffff', 'text-halo-width': 1.8 } },
       { id: 'arr-lbl', type: 'symbol', source: 'pts', filter: ['==', ['get', 'kind'], 'arrlbl'],
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Bold'], 'text-size': 13, 'text-offset': [0, -1] },
-        paint: { 'text-color': ['get', 'c'], 'text-halo-color': '#ffffff', 'text-halo-width': 2 } }
+        paint: { 'text-color': ['get', 'c'], 'text-halo-color': '#ffffff', 'text-halo-width': 2 } },
+      // 답을 열어야 뜨는 장면 이름(에티오피아·라이베리아)은 맨 위 층 — 파쇼다 점·«프랑스 횡단» 이름표에 밀려 답을 열어도 안 떴다(11/21 메인 ℹ️·독립 리뷰 중간 3)
+      { id: 'lbl-top', type: 'symbol', source: 'lbl', filter: ['==', ['get', 'top'], true],
+        layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Bold'],
+                  'text-size': ['interpolate', ['linear'], ['zoom'], 1, ['*', ['get', 'sz'], 0.78], 4, ['get', 'sz'], 6, ['*', ['get', 'sz'], 1.25]], 'text-max-width': 8 },
+        paint: { 'text-color': ['get', 'c'], 'text-halo-color': 'rgba(255,255,255,0.92)', 'text-halo-width': 1.8 } }
     ]
   }
 });
@@ -217,6 +230,8 @@ const LABEL_TXT = { as1: { '인도': { t: '인도(영국)', k: 'GB' } } };
 // 지구본에서 빼는 장면 이름표 — 아프리카 분할 1914의 «영국·프랑스·독일…»은 식민지 땅 위의 지배국 이름인데, 지구본은 식민지마다 «땅(지배국)»이 붙어 겹치고
 // 동아프리카의 «독일»을 독일 본국으로 읽게 했다(11/21 사회 🟡). 색 뜻(범례)이 지배국을 알려 준다
 const LABEL_DROP = { af1: ['프랑스', '영국', '벨기에', '독일', '포르투갈', '이탈리아'] };
+// 지구본에서 해를 제한하는 장면 이름표 — 아시아 장면을 1914로 보면 «청·대한 제국»과 «중화민국·조선(일본)»이 함께 떴다(독립 리뷰 중간 4)
+const LABEL_YR = { as1: { '청': y => y < 1912, '대한 제국': y => y < 1910 } };
 // 나라 이름표는 본토에 — 한 나라 도형이 식민지까지 묶여 있어 «가장 큰 덩어리»가 아덴·앙골라·자바가 되던 것(11/21 코드 검토 high)
 const HOME_AT = { GB: [-1.5, 52.5], FR: [2.5, 46.8], ES: [-3.7, 40.2], PT: [-8, 39.7], RU: [40, 56], AT: [15.5, 47.6], DE: [13.4, 52.5],
   GC: [10, 51], US: [-95, 39], CSA: [-87, 33], OT: [32.8, 39.9], IT: [8, 45], BE: [4.5, 50.7], NL: [5.5, 52.2], JP: [138, 36],
@@ -243,7 +258,7 @@ const FC = feats => ({ type: 'FeatureCollection', features: feats });
 // ---------- 그리기 ----------
 let drawToken = 0, READY = false, shownYear = null, toastT = 0;
 function toast(t, ms, info){ const el = $('toast'); el.textContent = t; el.hidden = !t; el.classList.toggle('info', !!info); clearTimeout(toastT); if (t && ms) toastT = setTimeout(() => { el.hidden = true; }, ms); }
-let NAMES_KO = {}, NAMES_CS = {};
+let NAMES_KO = {}, NAMES_CS = {};   // 교과서 밖 나라 이름(검수 끝난 것만) — 영어 이름 → 한국어 · CShapes 해별 이름
 // CShapes 단위 이름은 해마다 다르다(콩고 자유국 1900 → 벨기에령 콩고 1914) — names_cs.json = {해: {나라번호: 이름}}
 const nameOf = (n, yr) => { if (!n.startsWith('cs:')) return NAMES_KO[n]; const t = (NAMES_CS[yr] || {})[n.slice(3)], lp = LIGHT_PROT[n.slice(3)]; return t && lp ? t + '(' + lp + ' 보호국)' : t; };
 // CShapes 식민지 이름은 땅 이름만 있다(골드코스트) — 차지한 나라를 괄호로 붙인다. 이름에 이미 나라가 들어 있으면(독일령 동아프리카) 그대로
@@ -256,7 +271,6 @@ const withOwner = (t, k, n) => {
   return t.includes(o) ? t : t + '(' + o + ')';
 };
 fetch(BASE + 'data/names_cs.json?v=' + VER).then(r => r.ok ? r.json() : {}).then(j => { NAMES_CS = j || {}; if (READY) draw(); }).catch(() => {});
-let _unused_names;   // 교과서 밖 나라 이름(검수 끝난 것만) — 영어 이름 → 한국어
 fetch(BASE + 'data/names_ko.json?v=' + VER).then(r => r.ok ? r.json() : {}).then(j => { NAMES_KO = j || {}; if (READY) draw(); }).catch(() => {});
 async function draw(){
   if (!READY) return;
@@ -345,11 +359,11 @@ function drawLabels(keyArea, grey){
   const s = scene(), out = [];
   if (S.names){
     if (s){
-      s.labels.filter(onY).filter(onS).filter(l => !l.reveal || $('p-q').open).filter(l => !(LABEL_DROP[s.id] || []).includes(l.t)).forEach(l => {
+      s.labels.filter(onY).filter(onS).filter(l => !l.reveal || $('p-q').open).filter(l => !(LABEL_DROP[s.id] || []).includes(l.t)).filter(l => { const f = LABEL_YR[s.id] && LABEL_YR[s.id][l.t]; return !f || f(S.year); }).forEach(l => {
         const tx = LABEL_TXT[s.id] && LABEL_TXT[s.id][l.t];
         const t = tx ? tx.t : (isPhone() && l.tS) ? l.tS : l.t, fix = LABEL_AT[s.id] && LABEL_AT[s.id][l.t];
         const ll = fix || ((isPhone() && l.llS) ? l.llS : l.ll);
-        out.push(F({ type: 'Point', coordinates: ll }, { t: mapText(t), sz: l.s === 2 ? 17 : l.s === 0 ? 11.5 : 13.5, c: (tx ? tx.k : l.k) ? shade(tx ? tx.k : l.k) : '#5b5a55' }));
+        out.push(F({ type: 'Point', coordinates: ll }, { t: mapText(t), sz: l.s === 2 ? 17 : l.s === 0 ? 11.5 : 13.5, c: (tx ? tx.k : l.k) ? shade(tx ? tx.k : l.k) : '#5b5a55', top: !!l.reveal }));
       });
     } else {
       const big = Object.entries(keyArea).sort((a, b) => b[1].a - a[1].a);
@@ -427,8 +441,10 @@ function legend(pol){
   const out = [];
   (s ? s.focus : [...seen.keys()]).forEach(k => {
     const v = seen.get(k); if (!v) return;
-    if (v.home) out.push(`<span><i style="background:${COLORS[k]}"></i>${NAMES[k] || k}</span>`);
-    if (v.col && s) out.push(`<span><i style="background:${colonyColor(k)}"></i>${(s.colonyName && s.colonyName[k]) || (NAMES[k] || k) + josa(NAMES[k] || k) + ' 차지한 땅'}</span>`);
+    if (v.home) out.push(`<span><i style="background:${COLORS[k]}"></i>${keyName(k, S.year)}</span>`);   // 그해 이름(지도 이름표와 같게 — 1914 범례에 «사르데냐·이탈리아»가 떴다)
+    // «벨기에 국왕의 땅»은 1908년까지(콩고 자유국) — 1914에는 벨기에 나라 땅이다(독립 리뷰 중간 6)
+    const cn = s && s.colonyName && s.colonyName[k] && !(k === 'BE' && S.year >= 1908 && /국왕/.test(s.colonyName[k])) ? s.colonyName[k] : null;
+    if (v.col && s) out.push(`<span><i style="background:${colonyColor(k)}"></i>${cn || (NAMES[k] || k) + josa(NAMES[k] || k) + ' 차지한 땅'}</span>`);
   });
   if (!s && [...seen.values()].some(v => v.col)) out.push('<span><i style="background:linear-gradient(90deg,#d99a93,#9fb4d6)"></i>옅은 색 = 그 나라가 차지한 땅</span>');
   out.push(`<span><i style="background:repeating-linear-gradient(45deg,${LAND} 0 3px,#b9b2a0 3px 4px)"></i>자료 없음</span>`);

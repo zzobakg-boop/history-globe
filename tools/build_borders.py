@@ -36,7 +36,10 @@ cs_all = gpd.read_file(CS) if any(y >= CS_FROM for y in YEARS) else None
 def cs_year(y):
     d = y * 10000 + 701   # 그해 7월 1일
     c = cs_all[(cs_all.gwsyear * 10000 + cs_all.gwsmonth * 100 + cs_all.gwsday <= d) & (cs_all.gweyear * 10000 + cs_all.gwemonth * 100 + cs_all.gweday > d)].copy()
-    c['geometry'] = c.geometry.buffer(0).intersection(land_geom)
+    raw = c.geometry.buffer(0)
+    c['geometry'] = raw.intersection(land_geom)
+    # 땅 칼에 안 걸리는 작은 섬나라(몰디브)는 원래 경계로 — 통째로 사라졌다(11/21 독립 리뷰 낮음 8)
+    c['geometry'] = [gm if not gm.is_empty else rg for gm, rg in zip(c.geometry, raw)]
     c = c[~c.geometry.is_empty]
     own = lambda r: int(r.owner) if str(r.owner).isdigit() else None
     rows = []
@@ -46,8 +49,10 @@ def cs_year(y):
         # 영국 자치령(캐나다·남아프리카 연방·오스트레일리아·뉴질랜드)은 CShapes(국제 관계 연구용)가 독립국으로 적지만, 교과서·흐름 지도는 영국 땅으로 본다
         # («오스트레일리아(영국)», 케이프타운까지 이어지는 영국 종단) — 영국 식민지 색으로(11/21)
         if not dep and r.gwcode in DOMINION_GB: dep, o = True, 200
+        # 알래스카는 CShapes가 colony로 두지만 1880(Cliopatria)까지 미국 본토 색이었다 — 해가 바뀌며 색이 옅어지지 않게 본토로(독립 리뷰 의심 13)
+        if r.gwcode == 3: dep, o = False, None
         # 중국(710)은 1912년부터 중화민국 — 청 색·«청» 이름을 달지 않는다
-        hk = '' if dep or (r.gwcode == 710 and y >= 1912) else GW2KEY.get(r.gwcode, '')
+        hk = '' if dep or (r.gwcode == 710 and y >= 1912) else ('US' if r.gwcode == 3 else GW2KEY.get(r.gwcode, ''))
         rows.append({'n': f'cs:{r.gwcode}', 'st': r.status, 'hk': hk,
                      'ck': GW2KEY.get(o, '') if dep and o is not None else '', 'geometry': r.geometry})
     return gpd.GeoDataFrame(rows, crs=4326)
@@ -65,6 +70,15 @@ for y in YEARS:
         s['geometry'] = s.geometry.buffer(0).difference(cover)
         s['geometry'] = [gm if gm.is_empty else unary_union([p for p in getattr(gm, 'geoms', [gm]) if p.area > 0.3] or [gm.__class__()]) for gm in s.geometry]
         s = s[~s.geometry.is_empty & s.geometry.notna()]
+        # 같은 나라가 두 자료에 걸친 곳(아라비아 홍해 쪽 오스만 띠 등)은 CShapes 조각에 합친다 — 같은 색 사이에 경계선이 하나 더 보였다(11/21 메인 ℹ️)
+        SAME = {'Ottoman Empire': 640, 'Russian Empire': 365, 'Empire of Japan': 740, 'German Empire': 255}
+        for nm, gwc in SAME.items():
+            hit = c.n == f'cs:{gwc}'
+            if nm in set(s.n) and hit.any():
+                i = c.index[hit][0]
+                # 두 자료 사이 2km 틈(cover 여유)을 메우고 다시 땅으로 잘라 해안선은 그대로 둔다
+                c.at[i, 'geometry'] = unary_union([c.at[i, 'geometry'], *s[s.n == nm].geometry]).buffer(0.03).buffer(-0.03).intersection(land_geom)
+                s = s[s.n != nm]
         s = gpd.GeoDataFrame(pd.concat([c, s], ignore_index=True), crs=4326)
     s.to_file(f'{TMP}/y{y}.geojson', driver='GeoJSON')
     # 원자료가 거칠어(1815년 나라 145개에 꼭짓점 2만 7천) 더 줄이지 않는다 — 땅으로 자른 해안선만 그대로

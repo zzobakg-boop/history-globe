@@ -14,7 +14,7 @@ for a, b in zip(A, B):
     ka, kb = norm(a['korean']), norm(b['korean'])
     ok = lambda r: r['confidence'] != 'low' and r['period_ok'] != 'no'
     if ka and key(ka) == key(kb) and ok(a) and ok(b): t = ka
-    elif ka and a['confidence'] == 'high' and a['period_ok'] == 'yes' and b['confidence'] != 'low': t = ka
+    elif ka and a['confidence'] == 'high' and a['period_ok'] == 'yes' and ok(b): t = ka   # B도 low·시대 no가 아니어야(독립 리뷰 낮음 11)
     else: t = None
     if key(ka) != key(kb): dis.append([a['year'], a['gwcode'], a['cshapes_name'], ka, kb, a['confidence'], b['confidence'], 'A' if t else '숨김'])
     if t: out.setdefault(a['year'], {})[a['gwcode']] = t
@@ -22,9 +22,10 @@ for a, b in zip(A, B):
 MANUAL = {('1900', '815'): '베트남', ('1914', '815'): '베트남',   # 두 검토 모두 같은 땅으로 봄, 표기만 갈림(안남·통킹·코친차이나) — 교과서 5-3 서술 «베트남»
           ('1914', '484'): '중부 콩고',                           # Moyen-Congo, OHM 1903~1910 «모옌콩고 식민지» — 뜻을 옮긴 A 표기
           ('1914', '822'): '말레이 비연방주',                       # B high
-          ('1900', '490'): '콩고 자유국(벨기에 국왕)',
+          ('1900', '490'): '콩고 자유국(벨기에 국왕)',   # 1885~1908 레오폴드 2세의 개인 땅 — 벨기에 나라 땅이 아니다(아시아 장면 범례 «벨기에 국왕의 땅»과 같게)
           # 사회 학생 눈(11/21 ℹ️): 중2에게 낯선 이름을 풀되 시대는 지킨다 — 독일 식민지의 이름은 Togo(Togoland는 영어 별칭), 가라후토는 사할린 남부
-          ('1900', '460'): '토고', ('1914', '460'): '토고', ('1914', '7351'): '사할린 남부'}             # 1885~1908 레오폴드 2세의 개인 땅 — 벨기에 나라 땅이 아니다(아시아 장면 범례 «벨기에 국왕의 땅»과 같게)
+          ('1900', '460'): '토고', ('1914', '460'): '토고', ('1914', '7351'): '사할린 남부',
+          ('1900', '730'): '대한 제국'}   # 흐름 지도·장면 표기와 띄어쓰기 맞춤(독립 리뷰 낮음 12)
 for (y, gw), t in MANUAL.items(): out.setdefault(y, {})[gw] = t
 json.dump(out, open(os.path.join(H, '..', '..', 'data', 'names_cs.json'), 'w'), ensure_ascii=False, indent=0)
 w = csv.writer(open(os.path.join(H, 'cs_disagree.tsv'), 'w'), delimiter='\t')
