@@ -15,6 +15,7 @@ YEARS = [int(a) for a in sys.argv[1:]] or [1688, 1763, 1783, 1789, 1812, 1815, 1
 # CShapes가 안 덮는 땅(아라비아 안쪽 등)만 Cliopatria로 채운다.
 CS = os.path.expanduser('~/data/maps/cshapes/cshapes_full_attrs.gpkg')
 CS_FROM = 1886
+DOMINION_GB = {20, 560, 900, 920}
 GW2KEY = {200: 'GB', 220: 'FR', 230: 'ES', 235: 'PT', 210: 'NL', 211: 'BE', 255: 'DE', 325: 'IT', 300: 'AT', 365: 'RU',
           640: 'OT', 2: 'US', 740: 'JP', 710: 'QING', 730: 'KR'}
 TMP = '/tmp/hg_borders'
@@ -42,6 +43,9 @@ def cs_year(y):
     for r in c.itertuples():
         dep = r.status != 'independent'
         o = own(r) if dep else None
+        # 영국 자치령(캐나다·남아프리카 연방·오스트레일리아·뉴질랜드)은 CShapes(국제 관계 연구용)가 독립국으로 적지만, 교과서·흐름 지도는 영국 땅으로 본다
+        # («오스트레일리아(영국)», 케이프타운까지 이어지는 영국 종단) — 영국 식민지 색으로(11/21)
+        if not dep and r.gwcode in DOMINION_GB: dep, o = True, 200
         # 중국(710)은 1912년부터 중화민국 — 청 색·«청» 이름을 달지 않는다
         hk = '' if dep or (r.gwcode == 710 and y >= 1912) else GW2KEY.get(r.gwcode, '')
         rows.append({'n': f'cs:{r.gwcode}', 'st': r.status, 'hk': hk,

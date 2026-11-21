@@ -44,7 +44,10 @@ const ALLKEYS = Object.keys(COLORS);
 
 function paintOf(){ const s = scene(); return s ? s.paint : basePaint; }
 // 1886년부터는 CShapes 단위(n = «cs:나라번호»)다 — 본국·식민지가 빌드 때 hk·ck로 이미 갈려 있다(11/21 천대현 «아프리카 안쪽 경계»)
-const paintF = (f, paint, yr) => { const p = f.properties; return p.n.startsWith('cs:') ? (p.hk ? [p.hk, false] : p.ck ? [p.ck, true] : null) : paint(p.n, yr); };
+// 외교권만 넘긴 보호국(나라 안은 스스로 다스림)은 식민지 색으로 칠하지 않는다 — «아프가니스탄(영국)»을 식민지로 읽었다(11/21 사회 학생 눈 🟡)
+// 아프가니스탄·휴전 오만·몰디브·부탄 / 부하라·히바(러시아). 우간다·나이지리아·모로코처럼 지배국이 안까지 다스린 보호국은 그대로 식민지 색
+const LIGHT_PROT = { 700: '영국', 696: '영국', 781: '영국', 760: '영국', 7020: '러시아', 7030: '러시아' };
+const paintF = (f, paint, yr) => { const p = f.properties; if (!p.n.startsWith('cs:')) return paint(p.n, yr); if (LIGHT_PROT[p.n.slice(3)]) return null; return p.hk ? [p.hk, false] : p.ck ? [p.ck, true] : null; };
 function focusOf(){ const s = scene(); return s ? s.focus : ALLKEYS; }
 const onY = o => !o.y || o.y.includes(S.year);
 const onS = o => !o.st || S.si < 0 || o.st.includes(S.si);   // 연도 칩으로 고르면(si=-1) 단계 표시를 모두 보인다
@@ -211,6 +214,9 @@ const mapText = t => String(t).replace(/[①-⑩]/g, c => (CIRC.indexOf(c) + 1) 
 const LABEL_AT = { as1: { '대한 제국': [127.2, 38.2] }, it1: { '프랑스': [3, 46.6] } };   // it1 프랑스: 사보이아 경계에 붙어 보라 땅을 프랑스로 읽게 됨(11/21 사회 🟡)
 // 지구본에서 바꿔 쓰는 장면 이름표 — 영국 색으로 칠한 인도가 회색 «인도»로만 떠 옆의 «오스트레일리아(영국)»와 짝이 안 맞았다(11/21 사회 🟡)
 const LABEL_TXT = { as1: { '인도': { t: '인도(영국)', k: 'GB' } } };
+// 지구본에서 빼는 장면 이름표 — 아프리카 분할 1914의 «영국·프랑스·독일…»은 식민지 땅 위의 지배국 이름인데, 지구본은 식민지마다 «땅(지배국)»이 붙어 겹치고
+// 동아프리카의 «독일»을 독일 본국으로 읽게 했다(11/21 사회 🟡). 색 뜻(범례)이 지배국을 알려 준다
+const LABEL_DROP = { af1: ['프랑스', '영국', '벨기에', '독일', '포르투갈', '이탈리아'] };
 // 나라 이름표는 본토에 — 한 나라 도형이 식민지까지 묶여 있어 «가장 큰 덩어리»가 아덴·앙골라·자바가 되던 것(11/21 코드 검토 high)
 const HOME_AT = { GB: [-1.5, 52.5], FR: [2.5, 46.8], ES: [-3.7, 40.2], PT: [-8, 39.7], RU: [40, 56], AT: [15.5, 47.6], DE: [13.4, 52.5],
   GC: [10, 51], US: [-95, 39], CSA: [-87, 33], OT: [32.8, 39.9], IT: [8, 45], BE: [4.5, 50.7], NL: [5.5, 52.2], JP: [138, 36],
@@ -239,9 +245,16 @@ let drawToken = 0, READY = false, shownYear = null, toastT = 0;
 function toast(t, ms, info){ const el = $('toast'); el.textContent = t; el.hidden = !t; el.classList.toggle('info', !!info); clearTimeout(toastT); if (t && ms) toastT = setTimeout(() => { el.hidden = true; }, ms); }
 let NAMES_KO = {}, NAMES_CS = {};
 // CShapes 단위 이름은 해마다 다르다(콩고 자유국 1900 → 벨기에령 콩고 1914) — names_cs.json = {해: {나라번호: 이름}}
-const nameOf = (n, yr) => n.startsWith('cs:') ? (NAMES_CS[yr] || {})[n.slice(3)] : NAMES_KO[n];
+const nameOf = (n, yr) => { if (!n.startsWith('cs:')) return NAMES_KO[n]; const t = (NAMES_CS[yr] || {})[n.slice(3)], lp = LIGHT_PROT[n.slice(3)]; return t && lp ? t + '(' + lp + ' 보호국)' : t; };
 // CShapes 식민지 이름은 땅 이름만 있다(골드코스트) — 차지한 나라를 괄호로 붙인다. 이름에 이미 나라가 들어 있으면(독일령 동아프리카) 그대로
-const withOwner = (t, k, n) => { if (!n.startsWith('cs:')) return t; const o = (NAMES[k] || k).split('·').pop(); return t.includes(o) ? t : t + '(' + o + ')'; };
+// 이름 꼴은 «땅(지배국)» 하나로 — «독일령 남서아프리카»·«카메룬(독일)»·장면의 «독일»이 한 화면에 섞여 독일 본국으로 읽혔다(11/21 사회 🟡). «○○령 땅»은 «땅(○○)»으로 바꾼다
+const withOwner = (t, k, n) => {
+  if (!n.startsWith('cs:')) return t;
+  const o = keyName(k, 1914);
+  if (t === '영국-이집트령 수단') return '수단(영국·이집트)';
+  if (t.startsWith(o + '령 ')) return t.slice(o.length + 2) + '(' + o + ')';
+  return t.includes(o) ? t : t + '(' + o + ')';
+};
 fetch(BASE + 'data/names_cs.json?v=' + VER).then(r => r.ok ? r.json() : {}).then(j => { NAMES_CS = j || {}; if (READY) draw(); }).catch(() => {});
 let _unused_names;   // 교과서 밖 나라 이름(검수 끝난 것만) — 영어 이름 → 한국어
 fetch(BASE + 'data/names_ko.json?v=' + VER).then(r => r.ok ? r.json() : {}).then(j => { NAMES_KO = j || {}; if (READY) draw(); }).catch(() => {});
@@ -332,7 +345,7 @@ function drawLabels(keyArea, grey){
   const s = scene(), out = [];
   if (S.names){
     if (s){
-      s.labels.filter(onY).filter(onS).filter(l => !l.reveal || $('p-q').open).forEach(l => {
+      s.labels.filter(onY).filter(onS).filter(l => !l.reveal || $('p-q').open).filter(l => !(LABEL_DROP[s.id] || []).includes(l.t)).forEach(l => {
         const tx = LABEL_TXT[s.id] && LABEL_TXT[s.id][l.t];
         const t = tx ? tx.t : (isPhone() && l.tS) ? l.tS : l.t, fix = LABEL_AT[s.id] && LABEL_AT[s.id][l.t];
         const ll = fix || ((isPhone() && l.llS) ? l.llS : l.ll);
