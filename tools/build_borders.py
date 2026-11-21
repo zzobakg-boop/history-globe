@@ -66,8 +66,12 @@ def ne_now():
     d.at['SAH', 'geometry'] = unary_union([d.at['SAH', 'geometry'], ws])
     rows = []
     for a3, r in d.iterrows():
-        gm = r.geometry.intersection(land_geom)
-        gm = gm if not gm.is_empty else r.geometry
+        # 땅 칼(6%판)에 없는 섬은 NE 도형 그대로 둔다 — 울릉도·독도가 잘려 나갔다(11/21 메인 🟡1, 2026에서 20㎢ 넘는 섬 1,487조각)
+        parts = []
+        for p in getattr(r.geometry, 'geoms', [r.geometry]):
+            q = p.intersection(land_geom)
+            parts.append(q if q.area >= 0.5 * p.area else p)
+        gm = unary_union(parts).buffer(0)
         own = SOV2KEY.get(r.SOVEREIGNT) if r.SOVEREIGNT != r.ADMIN and a3 not in NE_BASE else None
         t = NE_NAME.get(a3, r.NAME_KO)
         rows.append({'n': f'ne:{a3}', 'st': 'independent' if r.TYPE in ('Sovereign country', 'Country', 'Sovereignty') else 'other',

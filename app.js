@@ -13,6 +13,8 @@ const VER = '0.4.0';   // 자료 파일을 갈아 끼우면 올린다 — Pages 
 const NOW = 2026;
 // 2026에 늘 보이게 할 회색 이름 — 폰에서 «북한»에 밀려 «대한민국»이 안 떴다(11/21 사회 학생 눈 🟡1)
 const PIN = new Set(['ne:KOR']);
+// 독도(0.2㎢)는 경계 파일의 좌표 격자(약 400m)보다 작아 도형이 남지 않는다 — 2026에 이름표로 둔다(11/21 메인 🟡1)
+const NOW_PLACES = [{ t: '독도', ll: [131.868, 37.241], tier: 1 }];
 const NOTE_OLD = '경계는 그 해 무렵의 대략적인 모습이다. 교과서와 다르면 교과서를 따른다.';
 // 2026은 옛 열강 본토만 색이 남아 «지금도 열강»으로 읽힐 수 있다(11/21 사회 🟡2) — 설명 한 줄(폰은 설명 줄이 숨어 처음 한 번 알림으로)
 const NOTE_NOW = '색은 옛 열강의 지금 땅이다. 그 나라들이 차지했던 식민지는 거의 다 독립했다.';
@@ -276,7 +278,7 @@ const withOwner = (t, k, n) => {
   if (!isUnit(n)) return t;
   const o = keyName(k, 1914);
   if (t === '영국-이집트령 수단') return '수단(영국·이집트)';
-  if (t.startsWith(o + '령 ')) return t.slice(o.length + 2) + '(' + o + ')';
+  if (n.startsWith('cs:') && t.startsWith(o + '령 ')) return t.slice(o.length + 2) + '(' + o + ')';   // 2026 공식 이름(프랑스령 폴리네시아)은 그대로 — «폴리네시아(프랑스)»는 넓은 지역 이름이 된다(11/21 메인 ℹ️2)
   return t.includes(o) ? t : t + '(' + o + ')';
 };
 fetch(BASE + 'data/names_cs.json?v=' + VER).then(r => r.ok ? r.json() : {}).then(j => { NAMES_CS = j || {}; if (READY) draw(); }).catch(() => {});
@@ -348,6 +350,7 @@ async function draw(){
       if (big) grey.push({ t: nm, a: PIN.has(n) ? 1e6 : big.a, ll: labelPt(big.p[0]), up: f.properties.st === 'independent' });   // 독립국(라이베리아 등)은 한 층 일찍 보이게
     }
   }
+  if (yr === NOW) NOW_PLACES.forEach(p => grey.push({ t: p.t, a: 5e5, ll: p.ll, tier: p.tier }));
   map.getSource('pol').setData(FC(feats));
   map.getSource('nodata').setData(nd);
   // 본토가 없고 아주 작은 조각만 남은 나라(1815년 «프로이센 왕국» = 스위스 뇌샤텔 한 조각)는 이름을 달지 않는다 — 엉뚱한 곳에 이름이 뜬다
@@ -389,7 +392,7 @@ function drawLabels(keyArea, grey){
   const hide = s ? s.labels.filter(l => l.reveal && !$('p-q').open).map(l => l.t.replace(/\s/g, '')) : [];   // «에티오피아 제국»처럼 뒤가 붙은 이름도
   // 식민지(many)는 떨어진 조각마다 이름을 단다(영국령 아프리카 = 북쪽·남쪽 두 덩어리) — 같은 이름끼리는 지우지 않고, 장면·색 나라 이름표와 겹치는 이름만 뺀다
   const g2 = S.names ? (grey || []).sort((x, y) => y.a - x.a).filter(g => { const k = g.t.replace(/\s/g, ''); if (seen.has(k) || hide.some(h => k.startsWith(h))) return false; if (!g.many) seen.add(k); return true; })
-    .map(g => F({ type: 'Point', coordinates: g.ll }, Object.assign({ t: g.t, a: g.a, tier: Math.max(0, (g.a > 60 ? 0 : g.a > 8 ? 1 : 2) - (g.up ? 1 : 0)) }, g.c ? { c: g.c } : {}))) : [];
+    .map(g => F({ type: 'Point', coordinates: g.ll }, Object.assign({ t: g.t, a: g.a, tier: g.tier ?? Math.max(0, (g.a > 60 ? 0 : g.a > 8 ? 1 : 2) - (g.up ? 1 : 0)) }, g.c ? { c: g.c } : {}))) : [];
   GREY = g2; greyVisible();
 }
 // 회색 이름은 위쪽 연도·단추 띠, 설명 패널, 아래 막대 뒤에 깔리면 지저분하다 — 그 자리에 떨어지는 것은 숨긴다(11/21 사회 🟡). 지도를 움직일 때마다 다시 고른다
