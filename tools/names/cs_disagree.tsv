@@ -1,0 +1,23 @@
+year	gwcode	cshapes_name	A	B	A_conf	B_conf	채택
+1900	255	Germany (Prussia)	독일	독일 제국	high	high	A
+1900	300	Austria-Hungary	오스트리아·헝가리	오스트리아-헝가리 제국	high	high	A
+1900	365	Russia (Soviet Union)	러시아	러시아 제국	high	high	A
+1900	434	Benin	다호메	다호메이	high	high	A
+1900	438	Guinea	프랑스령 기니	기니	high	high	A
+1900	460	German Togoland	토골란드	독일령 토골란드	high	high	A
+1900	563	Transvaal	트란스발 공화국	트란스발	high	high	A
+1900	815	Vietnam (Annam/Cochin China/Tonkin)	베트남	안남·통킹·코친차이나	medium	medium	숨김
+1900	7020	Bokhara	부하라 토후국	부하라	high	high	A
+1900	7030	Khiva	히바 칸국	히바	high	high	A
+1914	255	Germany (Prussia)	독일	독일 제국	high	high	A
+1914	300	Austria-Hungary	오스트리아·헝가리	오스트리아-헝가리 제국	high	high	A
+1914	365	Russia (Soviet Union)	러시아	러시아 제국	high	high	A
+1914	434	Benin	다호메	다호메이	high	high	A
+1914	436	Niger	니제르	니제르 군사 지역	high	medium	A
+1914	438	Guinea	프랑스령 기니	기니	high	high	A
+1914	460	German Togoland	토골란드	독일령 토골란드	high	high	A
+1914	484	Congo	중부 콩고	중앙콩고	medium	medium	숨김
+1914	815	Vietnam (Annam/Cochin China/Tonkin)	베트남	안남·통킹·코친차이나	medium	medium	숨김
+1914	822	Unfederated Malay States	비연방 말레이주	말레이 비연방주	medium	high	숨김
+1914	7020	Bokhara	부하라 토후국	부하라	high	high	A
+1914	7030	Khiva	히바 칸국	히바	high	high	A

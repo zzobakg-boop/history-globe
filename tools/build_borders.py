@@ -2,7 +2,7 @@
 흐름 지도(build_data.py)는 평면 그림이라 18%까지 줄였지만, 지구본은 확대하므로 원래 경계를 거의 그대로 두고 해안선만 촘촘한 땅으로 맞춘다.
 실행: ~/.venvs/maps/bin/python tools/build_borders.py [해 ...]  → data/u5/y<해>.json · n<해>.json · land.json
 """
-import geopandas as gpd, subprocess, os, sys, json
+import geopandas as gpd, pandas as pd, subprocess, os, sys, json
 from shapely.ops import unary_union
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,6 +10,13 @@ OUT = os.path.join(HERE, 'data', 'u5')
 SRC = os.path.expanduser('~/data/maps/cliopatria/cliopatria_polities_only_v021.geojson')
 LAND = os.path.expanduser('~/data/maps/ne10/ne_10m_land')
 YEARS = [int(a) for a in sys.argv[1:]] or [1688, 1763, 1783, 1789, 1812, 1815, 1830, 1850, 1862, 1871, 1880, 1900, 1914]
+# 1886년부터는 CShapes 2.0(ETH, CC BY-NC-SA 4.0) — 식민지가 하나하나 따로 그려져 있다. Cliopatria는 «영국령 아프리카»를 이집트~남아프리카 한 덩어리로 묶어
+# 안쪽 경계가 없었다(11/21 천대현). 지위·지배국 열은 CRAN cshapes 패키지판에만 있어 정밀 경계에 붙여 둔 것(cshapes_full_attrs.gpkg)을 쓴다.
+# CShapes가 안 덮는 땅(아라비아 안쪽 등)만 Cliopatria로 채운다.
+CS = os.path.expanduser('~/data/maps/cshapes/cshapes_full_attrs.gpkg')
+CS_FROM = 1886
+GW2KEY = {200: 'GB', 220: 'FR', 230: 'ES', 235: 'PT', 210: 'NL', 211: 'BE', 255: 'DE', 325: 'IT', 300: 'AT', 365: 'RU',
+          640: 'OT', 2: 'US', 740: 'JP', 710: 'QING', 730: 'KR'}
 TMP = '/tmp/hg_borders'
 os.makedirs(TMP, exist_ok=True)
 
@@ -24,15 +31,41 @@ subprocess.run(['mapshaper', f'{OUT}/land.json', '-o', 'format=geojson', f'{TMP}
 land_geom = unary_union(gpd.read_file(f'{TMP}/land.geojson').geometry.buffer(0))
 
 g = gpd.read_file(SRC)
+cs_all = gpd.read_file(CS) if any(y >= CS_FROM for y in YEARS) else None
+def cs_year(y):
+    d = y * 10000 + 701   # 그해 7월 1일
+    c = cs_all[(cs_all.gwsyear * 10000 + cs_all.gwsmonth * 100 + cs_all.gwsday <= d) & (cs_all.gweyear * 10000 + cs_all.gwemonth * 100 + cs_all.gweday > d)].copy()
+    c['geometry'] = c.geometry.buffer(0).intersection(land_geom)
+    c = c[~c.geometry.is_empty]
+    own = lambda r: int(r.owner) if str(r.owner).isdigit() else None
+    rows = []
+    for r in c.itertuples():
+        dep = r.status != 'independent'
+        o = own(r) if dep else None
+        # 중국(710)은 1912년부터 중화민국 — 청 색·«청» 이름을 달지 않는다
+        hk = '' if dep or (r.gwcode == 710 and y >= 1912) else GW2KEY.get(r.gwcode, '')
+        rows.append({'n': f'cs:{r.gwcode}', 'st': r.status, 'hk': hk,
+                     'ck': GW2KEY.get(o, '') if dep and o is not None else '', 'geometry': r.geometry})
+    return gpd.GeoDataFrame(rows, crs=4326)
 for y in YEARS:
     s = g[(g.FromYear <= y) & (g.ToYear >= y)][['Name', 'geometry']].rename(columns={'Name': 'n'}).copy()
     s['geometry'] = s.geometry.buffer(0).intersection(land_geom)
     # 땅 칼에 안 걸리는 작은 섬나라는 원래 경계를 그대로 둔다(없어지는 것보다 해안선이 거친 편이 낫다)
     raw = g[(g.FromYear <= y) & (g.ToYear >= y)].set_index('Name').geometry.buffer(0)
     s['geometry'] = [geom if not geom.is_empty else raw[n] for n, geom in zip(s.n, s.geometry)]
+    if y >= CS_FROM:
+        c = cs_year(y)
+        cover = unary_union(c.geometry.buffer(0)).buffer(0.02)
+        # Cliopatria는 CShapes가 비운 땅만 — 괄호 겉봉투·좁은 띠(경계선이 살짝 어긋난 틈)는 버린다
+        s = s[~s.n.str.startswith('(')].copy()
+        s['geometry'] = s.geometry.buffer(0).difference(cover)
+        s['geometry'] = [gm if gm.is_empty else unary_union([p for p in getattr(gm, 'geoms', [gm]) if p.area > 0.3] or [gm.__class__()]) for gm in s.geometry]
+        s = s[~s.geometry.is_empty & s.geometry.notna()]
+        s = gpd.GeoDataFrame(pd.concat([c, s], ignore_index=True), crs=4326)
     s.to_file(f'{TMP}/y{y}.geojson', driver='GeoJSON')
     # 원자료가 거칠어(1815년 나라 145개에 꼭짓점 2만 7천) 더 줄이지 않는다 — 땅으로 자른 해안선만 그대로
-    ms(f'{TMP}/y{y}.geojson', f'{OUT}/y{y}.json')   # -clean은 겹친 나라(식민지 괄호 항목)를 지워 버려 쓰지 않는다
+    # CShapes는 꼭짓점이 촘촘해 파일이 세 배(1MB)가 된다 — 2km 간격으로 맞닿은 선째 줄인다(이웃 사이 틈이 안 생긴다). 해안선은 땅 6%판이라 거의 안 바뀐다
+    ms(f'{TMP}/y{y}.geojson', f'{OUT}/y{y}.json', *(['-simplify', 'interval=2000', 'keep-shapes'] if y >= CS_FROM else []))   # -clean은 겹친 나라(식민지 괄호 항목)를 지워 버려 쓰지 않는다
     t = json.load(open(f'{OUT}/y{y}.json')); geo = list(t['objects'].values())[0]['geometries']
     empty = sorted(x.get('properties', {}).get('n', '?') for x in geo if not x.get('type'))
     assert len(geo) == len(s) and not empty, f'{y}년: 나라 {len(s)}개 중 {len(geo)}개만 나옴, 빈 도형 {empty}'

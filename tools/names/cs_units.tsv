@@ -1,0 +1,302 @@
+year	gwcode	cshapes_name	status	owner	capital	lonlat	area_km2
+1900	2	United States of America	independent		Washington	-98.9,36.7	7940050
+1900	3	Alaska	colony	United States of America	Juneau	-153.2,62.3	1506240
+1900	4	Hawaii	colony	United States of America	Honolulu	-155.4,19.6	16685
+1900	6	Puerto Rico	colony	United States of America	San Juan	-66.4,18.2	9147
+1900	20	Canada	independent		Ottawa	-106.2,54.9	9553560
+1900	21	Newfoundland	colony	United Kingdom	St. John's	-56.7,49.1	398416
+1900	31	Bahamas	colony	United Kingdom	Nassau	-73.3,21.1	12048
+1900	40	Cuba	occupied	United States of America	Havana	-77.9,21.5	109098
+1900	41	Haiti	independent		Port-au-Prince	-72.3,19.0	27136
+1900	42	Dominican Republic	independent		Santo Domingo	-70.1,18.8	48313
+1900	51	Jamaica	colony	United Kingdom	Kingston	-77.2,18.1	11027
+1900	52	Trinidad and Tobago	colony	United Kingdom	Port-of-Spain	-61.2,10.4	4996
+1900	53	Barbados	colony	United Kingdom	Bridgetown	-59.6,13.2	442
+1900	65	Guadeloupe	colony	France	Basse-Terre	-61.7,16.2	1651
+1900	66	Martinique	colony	France	Fort-de-France	-61.0,14.6	1147
+1900	70	Mexico	independent		Mexico City	-102.2,23.5	1956770
+1900	80	Belize	colony	United Kingdom	Belize City	-88.7,17.2	22092
+1900	90	Guatemala	independent		Guatemala City	-90.3,15.8	109031
+1900	91	Honduras	independent		Tegucigalpa	-87.2,14.5	112227
+1900	92	El Salvador	independent		San Salvador	-88.9,13.8	20555
+1900	93	Nicaragua	independent		Managua	-85.6,12.9	128097
+1900	94	Costa Rica	independent		San Jose	-83.7,9.7	51054
+1900	100	Colombia	independent		Bogota	-72.6,5.3	1167420
+1900	101	Venezuela	independent		Caracas	-65.4,6.4	910834
+1900	110	Guyana	colony	United Kingdom	Georgetown	-59.0,4.8	210584
+1900	115	Surinam	colony	Netherlands	Paramaribo	-56.1,3.9	144985
+1900	120	French Guyana	colony	France	Cayenne	-53.0,3.9	83710
+1900	130	Ecuador	independent		Quito	-77.1,-1.8	341770
+1900	135	Peru	independent		Lima	-74.8,-9.7	1277670
+1900	140	Brazil	independent		Rio de Janeiro	-49.7,-13.8	8311910
+1900	145	Bolivia	independent		La Paz	-64.6,-14.8	1320610
+1900	150	Paraguay	independent		Asuncion	-57.0,-24.2	293507
+1900	155	Chile	independent		Santiago	-71.1,-34.6	698984
+1900	160	Argentina	independent		Buenos Aires	-63.9,-36.2	2825640
+1900	165	Uruguay	independent		Montevideo	-55.8,-32.5	177857
+1900	200	United Kingdom	independent		London	-7.9,53.4	313670
+1900	210	Netherlands	independent		Amsterdam	5.5,52.1	34937
+1900	211	Belgium	independent		Brussels	4.9,50.5	30641
+1900	212	Luxembourg	independent		Luxembourg	6.1,49.8	2581
+1900	220	France	independent		Paris	2.2,46.6	532308
+1900	225	Switzerland	independent		Bern	8.5,46.8	41497
+1900	230	Spain	independent		Madrid	-3.5,39.8	506124
+1900	235	Portugal	independent		Lisbon	-8.3,39.6	91871
+1900	255	Germany (Prussia)	independent		Berlin	12.1,51.3	540112
+1900	300	Austria-Hungary	independent		Vienna	18.3,46.9	624184
+1900	325	Italy/Sardinia	independent		Rome	13.1,42.2	284653
+1900	338	Malta	colony	United Kingdom	Valletta	14.4,35.9	291
+1900	340	Serbia	independent		Belgrade	21.0,43.6	52533
+1900	341	Montenegro	independent		Cetinje	19.1,42.6	9949
+1900	350	Greece	independent		Athens	23.6,38.2	63754
+1900	355	Bulgaria	independent		Sofia	25.3,42.9	93162
+1900	360	Rumania	independent		Bucharest	27.3,45.9	128499
+1900	365	Russia (Soviet Union)	independent		Saint Petersburg (Petrograd)	56.0,52.6	22016200
+1900	380	Sweden	independent		Stockholm	11.8,62.5	766624
+1900	390	Denmark	independent		Copenhagen	9.2,56.2	38679
+1900	395	Iceland	colony	Denmark	Reykjavik	-18.8,64.9	102889
+1900	402	Cape Verde	colony	Portugal	Praia	-25.2,17.1	3997
+1900	404	Guinea-Bissau	colony	Portugal	Bolama	-14.4,11.8	33242
+1900	411	Equatorial Guinea	colony	Spain	Malabo	10.5,1.6	26920
+1900	420	Gambia	colony	United Kingdom	Banjul	-14.3,13.4	10722
+1900	430	French West Africa	colony	France	Saint-Louis	-0.3,20.5	5585920
+1900	433	Senegal	colony	France	Dakar	-14.7,14.5	195997
+1900	434	Benin	colony	France	Porto-Novo	2.3,9.3	116189
+1900	437	Cote D'Ivoire	colony	France	Grand Bassam	-5.7,7.5	321308
+1900	438	Guinea	colony	France	Conakry	-9.7,9.9	245068
+1900	450	Liberia	independent		Monrovia	-9.6,6.4	96000
+1900	451	Sierra Leone	colony	United Kingdom	Freetown	-11.9,8.5	72479
+1900	452	Ghana	colony	United Kingdom	Accra	-1.4,7.9	212417
+1900	460	German Togoland	colony	Germany (Prussia)	Lome	0.7,8.6	83724
+1900	470	Kamerun	colony	Germany (Prussia)	Duala	13.0,7.4	510559
+1900	481	Gabon	protectorate	France	Libreville	11.7,-0.8	260681
+1900	484	Congo	colony	France	Brazzaville	19.0,9.1	2234560
+1900	490	Congo, Democratic Republic of (Zaire)	colony	Belgium	Boma	22.6,-3.9	2381000
+1900	500	Uganda	protectorate	United Kingdom	Kampala	33.6,1.3	381361
+1900	501	Kenya	protectorate	United Kingdom	Mombasa	39.7,0.7	660123
+1900	510	Tanzania (Tanganyika)	colony	Germany (Prussia)	Dodoma	34.2,-6.4	991095
+1900	511	Zanzibar	protectorate	United Kingdom	Zanzibar City	39.3,-6.1	2591
+1900	521	British Somaliland (Somaliland Republic)	colony	United Kingdom	Berbera	46.1,9.7	171496
+1900	522	Djibouti	colony	France	Djibouti	42.5,11.8	21433
+1900	530	Ethiopia	independent		Addis Ababa	39.2,9.5	939229
+1900	531	Eritrea	colony	Italy/Sardinia	Asmara	38.1,15.2	120897
+1900	540	Angola	colony	Portugal	Luanda	19.5,-11.9	1344280
+1900	541	Mozambique	colony	Portugal	Maputo	34.7,-18.6	786318
+1900	552	Zimbabwe (Rhodesia)	colony	United Kingdom	Harare	29.3,-19.0	389856
+1900	553	Malawi	protectorate	United Kingdom	Lilongwe	33.8,-13.3	118483
+1900	561	Cape Colony	colony	United Kingdom	Cape Town	20.7,-29.7	716102
+1900	562	Natal	colony	United Kingdom	Pietermatritzburg	30.5,-28.8	72310
+1900	563	Transvaal	independent		Pretoria	28.9,-25.4	301824
+1900	564	Orange Free State	independent		Bloemfontein	26.5,-28.7	129711
+1900	565	Namibia	colony	Germany (Prussia)	Windhoek	17.3,-22.9	824758
+1900	570	Lesotho	colony	United Kingdom	Maseru	28.2,-29.6	30516
+1900	571	Botswana	protectorate	United Kingdom	Gaborone	24.5,-22.3	578322
+1900	572	Swaziland (Eswatini)	colony	Transvaal	Mbabane	31.5,-26.5	17110
+1900	580	Madagascar (Malagasy)	colony	France	Antananarivo	46.7,-18.7	592864
+1900	585	Reunion	colony	France	Saint-Denis	55.5,-21.1	2642
+1900	590	Mauritius	colony	United Kingdom	Port Louis	57.6,-20.3	2133
+1900	600	Morocco	independent		Rabat	-6.2,32.0	374439
+1900	610	Spanish West Africa	protectorate	Spain	Villa Cisneros	-14.1,23.4	176416
+1900	615	Algeria	colony	France	Algiers	3.0,33.5	655481
+1900	616	Tunisia	protectorate	France	Tunis	8.9,33.8	155358
+1900	625	Sudan	colony	United Kingdom	Khartoum	29.0,12.8	2590390
+1900	630	Iran (Persia)	independent		Tehran	54.2,32.3	1621540
+1900	640	Turkey (Ottoman Empire)	independent		Istanbul	24.3,41.2	2823070
+1900	651	Egypt	colony	United Kingdom	Cairo	26.5,26.7	1517210
+1900	696	United Arab Emirates	protectorate	United Kingdom	Abu Dhabi	55.1,24.4	70228
+1900	698	Oman	independent		Masqat	57.0,20.8	308791
+1900	700	Afghanistan	protectorate	United Kingdom	Kabul	65.2,33.9	641908
+1900	710	China	independent		Beijing	99.7,35.9	11110800
+1900	713	Taiwan	colony	Japan	Taipei	120.8,23.6	35989
+1900	730	Korea	independent		Seoul	126.7,38.6	219399
+1900	740	Japan	independent		Tokyo	143.4,43.4	370951
+1900	750	India	colony	United Kingdom	Calcutta	78.7,22.3	4819800
+1900	760	Bhutan	protectorate	United Kingdom	Thimphu	90.3,27.5	39840
+1900	780	Sri Lanka (Ceylon)	colony	United Kingdom	Colombo	80.7,7.9	65983
+1900	781	Maldives	protectorate	United Kingdom	Male	73.0,4.4	33
+1900	790	Nepal	independent		Kathmandu	83.1,28.4	147167
+1900	800	Thailand	independent		Bangkok	99.8,12.1	604305
+1900	811	Cambodia (Kampuchea)	colony	France	Phnom Penh	105.4,12.6	130258
+1900	812	Laos	colony	France	Vientiane	104.7,18.2	229905
+1900	815	Vietnam (Annam/Cochin China/Tonkin)	colony	France	Hue	107.8,15.9	324217
+1900	821	Federated Malay States	colony	United Kingdom	Kuala Lumpur	102.0,4.0	68719
+1900	822	Unfederated Malay States	protectorate	United Kingdom	Johor Bahru	103.3,2.1	19111
+1900	823	Sabah (North Borneo)	protectorate	United Kingdom	Sandakan (Elopura)	117.3,5.6	72619
+1900	824	Sarawak	protectorate	United Kingdom	Kuching	113.7,2.9	124276
+1900	827	Straits Settlements	colony	United Kingdom	Singapore City	102.3,2.3	3601
+1900	835	Brunei	protectorate	United Kingdom	Bandar Seri Begawan	114.5,4.5	5728
+1900	840	Philippines	colony	United States of America	Manila	125.2,7.7	292049
+1900	850	Indonesia	colony	Netherlands	Jakarta	113.3,0.1	1877240
+1900	860	East Timor	colony	Portugal	Dili	125.8,-8.9	15024
+1900	901	New South Wales	colony	United Kingdom	Sydney	146.5,-32.7	796177
+1900	902	Western Australia	colony	United Kingdom	Perth	120.8,-24.2	2521930
+1900	903	South Australia	colony	United Kingdom	Adelaide	133.0,-21.2	2313360
+1900	904	Victoria	colony	United Kingdom	Melbourne	144.3,-36.5	238068
+1900	905	Queensland	colony	United Kingdom	Brisbane	142.7,-19.8	1748620
+1900	906	Tasmania	colony	United Kingdom	Hobart	146.7,-42.2	68137
+1900	911	Papua	colony	United Kingdom	Port Moresby	142.2,-7.9	223928
+1900	912	New Guinea (German New Guinea) (Kaiser Wilhelmsland)	colony	Germany (Prussia)	Kokopo	143.7,-5.4	228300
+1900	920	New Zealand	colony	United Kingdom	Wellington	171.3,-43.5	268491
+1900	930	New Caledonia and Dependencies	colony	France	Nouméa	165.2,-21.1	23883
+1900	940	Solomon Islands	protectorate	United Kingdom	Tulaghi	160.1,-9.6	26861
+1900	950	Fiji	colony	United Kingdom	Suva	178.0,-17.8	18031
+1900	3461	Bosnia	occupied	Austria-Hungary	Sarajevo	17.7,44.2	41445
+1900	3462	Herzegovina	occupied	Austria-Hungary	Mostar	18.0,43.2	10088
+1900	4781	Lagos	colony	United Kingdom	Lagos	4.1,7.6	71584
+1900	4783	Southern Nigeria	protectorate	United Kingdom	Old Calabar (Calabar)	7.0,5.8	130337
+1900	4784	Northern Nigeria	protectorate	United Kingdom	Lokoja	8.5,10.8	727266
+1900	5200	Italian Somaliland	colony	Italy/Sardinia	Mogadishu	47.4,5.9	370343
+1900	5518	Northeastern Rhodesia	colony	United Kingdom	Chipata (Fort Jameson)	30.8,-11.5	285474
+1900	5519	Northwestern Rhodesia	colony	United Kingdom	Livingstone	26.7,-14.6	369534
+1900	7020	Bokhara	protectorate	Russia (Soviet Union)	Bukhara	66.1,39.0	194115
+1900	7030	Khiva	protectorate	Russia (Soviet Union)	Khiva	60.8,40.8	101600
+1914	2	United States of America	independent		Washington	-98.9,36.7	7940050
+1914	3	Alaska	colony	United States of America	Juneau	-153.2,62.3	1506240
+1914	4	Hawaii	colony	United States of America	Honolulu	-155.4,19.6	16685
+1914	6	Puerto Rico	colony	United States of America	San Juan	-66.4,18.2	9147
+1914	20	Canada	independent		Ottawa	-106.2,54.9	9553560
+1914	21	Newfoundland	colony	United Kingdom	St. John's	-56.7,49.1	398416
+1914	31	Bahamas	colony	United Kingdom	Nassau	-73.3,21.1	12048
+1914	40	Cuba	independent		Havana	-77.9,21.5	109098
+1914	41	Haiti	independent		Port-au-Prince	-72.3,19.0	27136
+1914	42	Dominican Republic	independent		Santo Domingo	-70.1,18.8	48313
+1914	51	Jamaica	colony	United Kingdom	Kingston	-77.2,18.1	11027
+1914	52	Trinidad and Tobago	colony	United Kingdom	Port-of-Spain	-61.2,10.4	4996
+1914	53	Barbados	colony	United Kingdom	Bridgetown	-59.6,13.2	442
+1914	65	Guadeloupe	colony	France	Basse-Terre	-61.7,16.2	1651
+1914	66	Martinique	colony	France	Fort-de-France	-61.0,14.6	1147
+1914	70	Mexico	independent		Mexico City	-102.2,23.5	1956770
+1914	80	Belize	colony	United Kingdom	Belize City	-88.7,17.2	22092
+1914	90	Guatemala	independent		Guatemala City	-90.3,15.8	109031
+1914	91	Honduras	independent		Tegucigalpa	-87.2,14.5	112227
+1914	92	El Salvador	independent		San Salvador	-88.9,13.8	20555
+1914	93	Nicaragua	independent		Managua	-85.6,12.9	128097
+1914	94	Costa Rica	independent		San Jose	-83.7,9.7	51054
+1914	95	Panama	independent		Panama City	-81.5,8.4	74108
+1914	100	Colombia	independent		Bogota	-72.6,5.3	1093310
+1914	101	Venezuela	independent		Caracas	-65.4,6.4	910834
+1914	110	Guyana	colony	United Kingdom	Georgetown	-59.0,4.8	210584
+1914	115	Surinam	colony	Netherlands	Paramaribo	-56.1,3.9	144985
+1914	120	French Guyana	colony	France	Cayenne	-53.0,3.9	83710
+1914	130	Ecuador	independent		Quito	-77.1,-1.8	341770
+1914	135	Peru	independent		Lima	-75.3,-9.7	1246180
+1914	140	Brazil	independent		Rio de Janeiro	-49.7,-13.8	8472110
+1914	145	Bolivia	independent		La Paz	-64.6,-16.2	1191910
+1914	150	Paraguay	independent		Asuncion	-57.0,-24.2	293507
+1914	155	Chile	independent		Santiago	-71.1,-34.6	743665
+1914	160	Argentina	independent		Buenos Aires	-63.9,-36.2	2780960
+1914	165	Uruguay	independent		Montevideo	-55.8,-32.5	177857
+1914	200	United Kingdom	independent		London	-7.9,53.4	313670
+1914	210	Netherlands	independent		Amsterdam	5.5,52.1	34937
+1914	211	Belgium	independent		Brussels	4.9,50.5	30641
+1914	212	Luxembourg	independent		Luxembourg	6.1,49.8	2581
+1914	220	France	independent		Paris	2.2,46.6	532308
+1914	225	Switzerland	independent		Bern	8.5,46.8	41497
+1914	230	Spain	independent		Madrid	-3.5,39.8	506124
+1914	235	Portugal	independent		Lisbon	-8.3,39.6	91871
+1914	255	Germany (Prussia)	independent		Berlin	12.1,51.3	540112
+1914	300	Austria-Hungary	independent		Vienna	19.5,46.6	675719
+1914	325	Italy/Sardinia	independent		Rome	13.1,42.2	284653
+1914	338	Malta	colony	United Kingdom	Valletta	14.4,35.9	291
+1914	339	Albania	independent		Durres	20.0,41.1	28656
+1914	340	Serbia	independent		Belgrade	21.5,42.9	90640
+1914	341	Montenegro	independent		Cetinje	19.6,42.7	15906
+1914	350	Greece	independent		Athens	24.5,35.3	121697
+1914	355	Bulgaria	independent		Sofia	25.0,42.5	111549
+1914	360	Rumania	independent		Bucharest	27.3,45.8	136186
+1914	365	Russia (Soviet Union)	independent		Saint Petersburg (Petrograd)	69.3,52.6	22149200
+1914	380	Sweden	independent		Stockholm	14.7,61.7	445983
+1914	385	Norway	independent		Oslo	12.1,64.0	320641
+1914	390	Denmark	independent		Copenhagen	9.2,56.2	38679
+1914	395	Iceland	colony	Denmark	Reykjavik	-18.8,64.9	102889
+1914	402	Cape Verde	colony	Portugal	Praia	-25.2,17.1	3997
+1914	404	Guinea-Bissau	colony	Portugal	Bolama	-14.4,11.8	33242
+1914	411	Equatorial Guinea	colony	Spain	Malabo	10.5,1.6	26920
+1914	420	Gambia	colony	United Kingdom	Banjul	-14.3,13.4	10722
+1914	432	Mali	colony	France	Bamako	-2.2,17.8	1736750
+1914	433	Senegal	colony	France	Dakar	-14.7,14.5	195997
+1914	434	Benin	colony	France	Porto-Novo	2.3,9.3	116189
+1914	435	Mauritania	protectorate	France	Nouakchott	-12.0,20.9	826376
+1914	436	Niger	colony	France	Zinder	9.9,17.6	1182030
+1914	437	Cote D'Ivoire	colony	France	Bingerville	-5.7,7.5	321308
+1914	438	Guinea	colony	France	Conakry	-9.7,9.9	245068
+1914	450	Liberia	independent		Monrovia	-9.6,6.4	96000
+1914	451	Sierra Leone	colony	United Kingdom	Freetown	-11.9,8.5	72479
+1914	452	Ghana	colony	United Kingdom	Accra	-1.4,7.9	212417
+1914	460	German Togoland	colony	Germany (Prussia)	Lome	0.7,8.6	83724
+1914	470	Kamerun	colony	Germany (Prussia)	Buea	12.9,6.0	799999
+1914	475	Nigeria	colony	United Kingdom	Abuja	7.9,9.1	862504
+1914	481	Gabon	colony	France	Libreville	11.8,-1.2	226633
+1914	482	Central African Republic	colony	France	Bangui	20.7,7.5	495616
+1914	483	Chad	occupied	France	N'Djamena	18.6,15.4	1221000
+1914	484	Congo	colony	France	Brazzaville	15.5,-1.7	262560
+1914	490	Congo, Democratic Republic of (Zaire)	colony	Belgium	Kinshasa (Léopoldville)	22.5,-4.0	2326640
+1914	500	Uganda	protectorate	United Kingdom	Kampala	32.9,1.6	282510
+1914	501	Kenya	protectorate	United Kingdom	Nairobi	38.3,-0.1	635870
+1914	510	Tanzania (Tanganyika)	colony	Germany (Prussia)	Dodoma	34.2,-6.4	991095
+1914	511	Zanzibar	protectorate	United Kingdom	Zanzibar City	39.3,-6.1	2591
+1914	521	British Somaliland (Somaliland Republic)	colony	United Kingdom	Berbera	46.1,9.7	171496
+1914	522	Djibouti	colony	France	Djibouti	42.5,11.8	21433
+1914	530	Ethiopia	independent		Addis Ababa	39.0,9.1	1127560
+1914	531	Eritrea	colony	Italy/Sardinia	Asmara	38.1,15.2	120897
+1914	540	Angola	colony	Portugal	Luanda	18.9,-11.9	1247360
+1914	541	Mozambique	colony	Portugal	Maputo	34.7,-18.6	786318
+1914	551	Zambia	colony	United Kingdom	Lusaka	25.4,-13.1	751927
+1914	552	Zimbabwe (Rhodesia)	colony	United Kingdom	Harare	29.3,-19.0	389856
+1914	553	Malawi	protectorate	United Kingdom	Lilongwe	33.8,-13.3	118483
+1914	560	South Africa	independent		Pretoria	26.2,-28.4	1220230
+1914	565	Namibia	colony	Germany (Prussia)	Windhoek	17.3,-22.9	824758
+1914	570	Lesotho	colony	United Kingdom	Maseru	28.2,-29.6	30516
+1914	571	Botswana	protectorate	United Kingdom	Gaborone	24.5,-22.3	578322
+1914	572	Swaziland (Eswatini)	colony	United Kingdom	Mbabane	31.5,-26.5	17110
+1914	580	Madagascar (Malagasy)	colony	France	Antananarivo	46.7,-18.7	594566
+1914	585	Reunion	colony	France	Saint-Denis	55.5,-21.1	2642
+1914	590	Mauritius	colony	United Kingdom	Port Louis	57.6,-20.3	2133
+1914	600	Morocco	protectorate	France	Rabat	-6.8,31.6	350332
+1914	602	Spanish Morocco	protectorate	Spain	Tetuan	-10.3,28.1	52796
+1914	610	Spanish West Africa	protectorate	Spain	Villa Cisneros	-13.7,24.2	269072
+1914	615	Algeria	colony	France	Algiers	1.8,27.8	2441770
+1914	616	Tunisia	protectorate	France	Tunis	8.9,33.8	155358
+1914	620	Libya	colony	Italy/Sardinia	Tripoli	15.8,27.8	881852
+1914	625	Sudan	colony	United Kingdom	Khartoum	29.0,12.8	2579520
+1914	630	Iran (Persia)	independent		Tehran	54.2,32.3	1621540
+1914	640	Turkey (Ottoman Empire)	independent		Istanbul	37.3,26.9	1784490
+1914	651	Egypt	colony	United Kingdom	Cairo	26.5,26.7	1517210
+1914	696	United Arab Emirates	protectorate	United Kingdom	Abu Dhabi	55.1,24.4	70228
+1914	698	Oman	independent		Masqat	57.0,20.8	308791
+1914	700	Afghanistan	protectorate	United Kingdom	Kabul	65.2,33.9	641908
+1914	710	China	independent		Beijing	110.6,35.9	9059500
+1914	711	Tibet	independent		Lhasa	90.5,32.9	1886260
+1914	713	Taiwan	colony	Japan	Taipei	120.8,23.6	35989
+1914	730	Korea	colony	Japan	Seoul	126.7,38.6	219399
+1914	740	Japan	independent		Tokyo	143.4,43.4	370951
+1914	750	India	colony	United Kingdom	Calcutta	78.7,22.3	4819800
+1914	760	Bhutan	protectorate	United Kingdom	Thimphu	90.3,27.5	39840
+1914	780	Sri Lanka (Ceylon)	colony	United Kingdom	Colombo	80.7,7.9	65983
+1914	781	Maldives	protectorate	United Kingdom	Male	73.0,4.4	33
+1914	790	Nepal	independent		Kathmandu	83.1,28.4	147167
+1914	800	Thailand	independent		Bangkok	101.7,13.0	512205
+1914	811	Cambodia (Kampuchea)	colony	France	Phnom Penh	105.1,12.6	181751
+1914	812	Laos	colony	France	Vientiane	104.7,18.2	229905
+1914	815	Vietnam (Annam/Cochin China/Tonkin)	colony	France	Hue	107.8,15.9	324217
+1914	821	Federated Malay States	colony	United Kingdom	Kuala Lumpur	101.8,4.2	71414
+1914	822	Unfederated Malay States	protectorate	United Kingdom	Johor Bahru	102.4,5.1	57024
+1914	823	Sabah (North Borneo)	protectorate	United Kingdom	Sandakan (Elopura)	117.3,5.6	72619
+1914	824	Sarawak	protectorate	United Kingdom	Kuching	113.7,2.9	124276
+1914	827	Straits Settlements	colony	United Kingdom	Singapore City	102.3,2.3	3601
+1914	835	Brunei	protectorate	United Kingdom	Bandar Seri Begawan	114.5,4.5	5728
+1914	840	Philippines	colony	United States of America	Manila	125.2,7.7	292049
+1914	850	Indonesia	colony	Netherlands	Jakarta	113.3,0.1	1877240
+1914	860	East Timor	colony	Portugal	Dili	125.8,-8.9	15024
+1914	900	Australia	independent		Melbourne	132.7,-24.5	7686690
+1914	911	Papua	colony	United Kingdom	Port Moresby	142.2,-7.9	223928
+1914	912	New Guinea (German New Guinea) (Kaiser Wilhelmsland)	colony	Germany (Prussia)	Rabaul (Simpsonhafen)	143.7,-5.4	228300
+1914	920	New Zealand	independent		Wellington	171.3,-43.5	268491
+1914	930	New Caledonia and Dependencies	colony	France	Nouméa	165.2,-21.1	23883
+1914	940	Solomon Islands	protectorate	United Kingdom	Tulaghi	160.1,-9.6	26861
+1914	950	Fiji	colony	United Kingdom	Suva	178.0,-17.8	18031
+1914	960	French Polynesia	colony	France	Pape'ete	-147.7,-15.1	12558
+1914	5200	Italian Somaliland	colony	Italy/Sardinia	Mogadishu	47.4,5.9	370343
+1914	7020	Bokhara	protectorate	Russia (Soviet Union)	Bukhara	66.1,39.0	194115
+1914	7030	Khiva	protectorate	Russia (Soviet Union)	Khiva	60.8,40.8	101600
+1914	7351	Southern Sakhalin Island	colony	Japan	Toyohara	142.3,47.9	32106

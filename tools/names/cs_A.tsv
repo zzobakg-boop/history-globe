@@ -1,0 +1,302 @@
+year	gwcode	cshapes_name	korean	period_ok	confidence	note
+1900	2	United States of America	미국	yes	high	United States; OHM 미국
+1900	3	Alaska	알래스카	yes	high	District of Alaska (1884~1912), 1912~ Territory of Alaska
+1900	4	Hawaii	하와이	yes	high	1898 미국 병합, 1900-06 Territory of Hawaii
+1900	6	Puerto Rico	푸에르토리코	yes	high	1898 미국령; 미국 공문서 표기는 Porto Rico(1900~1932)
+1900	20	Canada	캐나다	yes	high	OHM Dominion of Canada 캐나다 자치령
+1900	21	Newfoundland	뉴펀들랜드	yes	high	OHM Crown Colony / Dominion of Newfoundland(1907~)
+1900	31	Bahamas	바하마	yes	high	OHM Colony of the Bahamas
+1900	40	Cuba	쿠바	yes	high	미군정기(1899~1902) 쿠바; OHM US Military Government of Cuba
+1900	41	Haiti	아이티	yes	high	OHM République d'Haïti
+1900	42	Dominican Republic	도미니카 공화국	yes	high	OHM República Dominicana
+1900	51	Jamaica	자메이카	yes	high	OHM Colony of Jamaica
+1900	52	Trinidad and Tobago	트리니다드 토바고	yes	high	OHM Trinidad and Tobago Colony (1889 통합)
+1900	53	Barbados	바베이도스	yes	high	OHM Colony of Barbados
+1900	65	Guadeloupe	과들루프	yes	high	OHM Colonie de la Guadeloupe
+1900	66	Martinique	마르티니크	yes	high	Colonie de la Martinique
+1900	70	Mexico	멕시코	yes	high	OHM México
+1900	80	Belize	영국령 온두라스	yes	high	OHM British Honduras Colony; ko위키 영국령 온두라스(벨리즈는 1973~)
+1900	90	Guatemala	과테말라	yes	high	OHM Guatemala
+1900	91	Honduras	온두라스	yes	high	OHM Honduras
+1900	92	El Salvador	엘살바도르	yes	high	OHM El Salvador
+1900	93	Nicaragua	니카라과	yes	high	OHM Nicaragua
+1900	94	Costa Rica	코스타리카	yes	high	OHM Costa Rica
+1900	100	Colombia	콜롬비아	yes	high	OHM Colombia(1886~1903, 파나마 포함)
+1900	101	Venezuela	베네수엘라	yes	high	OHM Estados Unidos de Venezuela
+1900	110	Guyana	영국령 기아나	yes	high	OHM British Guiana; ko위키 영국령 기아나(가이아나는 1966~)
+1900	115	Surinam	수리남	yes	high	네덜란드어 Suriname, 영어 Dutch Guiana; ko위키 수리남 (네덜란드 식민지)
+1900	120	French Guyana	프랑스령 기아나	yes	high	OHM Colonie de la Guyane 프랑스령 기아나
+1900	130	Ecuador	에콰도르	yes	high	OHM Ecuador
+1900	135	Peru	페루	yes	high	OHM Perú
+1900	140	Brazil	브라질	yes	high	OHM Brasil
+1900	145	Bolivia	볼리비아	yes	high	OHM Bolivia
+1900	150	Paraguay	파라과이	yes	high	OHM Paraguay
+1900	155	Chile	칠레	yes	high	OHM Chile
+1900	160	Argentina	아르헨티나	yes	high	OHM Argentina
+1900	165	Uruguay	우루과이	yes	high	OHM Uruguay
+1900	200	United Kingdom	영국	yes	high	OHM United Kingdom of Great Britain and Ireland(그레이트브리튼 아일랜드 연합왕국) 약칭
+1900	210	Netherlands	네덜란드	yes	high	OHM Koninkrijk der Nederlanden
+1900	211	Belgium	벨기에	yes	high	OHM Belgique
+1900	212	Luxembourg	룩셈부르크	yes	high	OHM Lëtzebuerg
+1900	220	France	프랑스	yes	high	OHM République française
+1900	225	Switzerland	스위스	yes	high	OHM Schweiz
+1900	230	Spain	에스파냐	yes	high	OHM España; 역사 교과서 표기 에스파냐(ko위키 스페인)
+1900	235	Portugal	포르투갈	yes	high	OHM Reino de Portugal(~1910)·Portugal(1910~ 공화국)
+1900	255	Germany (Prussia)	독일	yes	high	OHM Deutsches Reich; ko위키 독일 제국
+1900	300	Austria-Hungary	오스트리아·헝가리	yes	high	OHM Österreich-Ungarn; ko위키 오스트리아-헝가리, 교과서 오스트리아·헝가리 제국
+1900	325	Italy/Sardinia	이탈리아	yes	high	OHM Italia (이탈리아 왕국)
+1900	338	Malta	몰타	yes	high	OHM Colony of Malta
+1900	340	Serbia	세르비아	yes	high	OHM Краљевина Србија 세르비아 왕국
+1900	341	Montenegro	몬테네그로	yes	high	OHM Књажевина Црна Горa 몬테네그로 공국(1910 왕국)
+1900	350	Greece	그리스	yes	high	OHM Βασίλειον τῆς Ἑλλάδος 그리스 왕국
+1900	355	Bulgaria	불가리아	yes	high	불가리아 공국(명목상 오스만 종주, 1908 독립); ko위키 불가리아 공국
+1900	360	Rumania	루마니아	yes	high	OHM Regatul României 루마니아 왕국
+1900	365	Russia (Soviet Union)	러시아	yes	high	OHM Российская империя; ko위키 러시아 제국
+1900	380	Sweden	스웨덴-노르웨이	yes	high	OHM Svensk-norska; 1905 분리 전 연합왕국(면적이 노르웨이 포함)
+1900	390	Denmark	덴마크	yes	high	OHM Danmark
+1900	395	Iceland	아이슬란드	yes	high	덴마크 지배하 아이슬란드(1918 왕국)
+1900	402	Cape Verde	카보베르데	yes	high	OHM Cabo Verde Português
+1900	404	Guinea-Bissau	포르투갈령 기니	yes	high	OHM Guiné Portuguesa; ko위키 포르투갈령 기니
+1900	411	Equatorial Guinea	에스파냐령 기니	yes	high	en Spanish Guinea(Territorios Españoles del Golfo de Guinea); ko위키 스페인령 기니
+1900	420	Gambia	감비아	yes	high	OHM Gambia Colony and Protectorate
+1900	430	French West Africa	프랑스령 서아프리카	yes	high	OHM Afrique-Occidentale française(1895~)
+1900	433	Senegal	세네갈	yes	high	프랑스령 서아프리카 안의 세네갈 식민지
+1900	434	Benin	다호메	yes	high	Colonie du Dahomey(1894~1958); 베냉은 1975~
+1900	437	Cote D'Ivoire	코트디부아르	yes	high	Colonie de la Côte d'Ivoire(1893~)
+1900	438	Guinea	프랑스령 기니	yes	high	Guinée française; ko위키 프랑스령 기니
+1900	450	Liberia	라이베리아	yes	high	OHM Liberia
+1900	451	Sierra Leone	시에라리온	yes	high	OHM Sierra Leone Protectorate
+1900	452	Ghana	골드코스트	yes	high	OHM Gold Coast Colony; ko위키 영국령 골드코스트(가나는 1957~)
+1900	460	German Togoland	토골란드	yes	high	OHM Schutzgebiet Togo 독일령 토골란드; ko위키 토골란드
+1900	470	Kamerun	카메룬	yes	high	OHM Kamerun 독일령 카메룬
+1900	481	Gabon	가봉	partial	medium	1900년에는 프랑스령 콩고의 일부(가봉 식민지는 1904/1906~); OHM Congo français
+1900	484	Congo	프랑스령 콩고	yes	high	OHM Congo français(1899~1903)
+1900	490	Congo, Democratic Republic of (Zaire)	콩고 자유국	yes	high	OHM État indépendant du Congo; ko위키 콩고 독립국, 교과서 콩고 자유국
+1900	500	Uganda	우간다	yes	high	OHM Protectorate of Uganda 우간다 보호령
+1900	501	Kenya	영국령 동아프리카	yes	high	OHM British East Africa(East Africa Protectorate); ko위키 동아프리카 보호령(케냐는 1920~)
+1900	510	Tanzania (Tanganyika)	독일령 동아프리카	yes	high	OHM Deutsch-Ostafrika
+1900	511	Zanzibar	잔지바르	yes	high	OHM Zanzibar Protectorate
+1900	521	British Somaliland (Somaliland Republic)	영국령 소말릴란드	yes	high	OHM British Somaliland
+1900	522	Djibouti	프랑스령 소말릴란드	yes	high	OHM Côte française des Somalis; ko위키 프랑스령 소말릴란드(지부티는 1977~)
+1900	530	Ethiopia	에티오피아	yes	high	OHM 에티오피아 제국; 당시 영어권은 Abyssinia도 씀
+1900	531	Eritrea	에리트레아	yes	high	OHM Colonia Eritrea
+1900	540	Angola	앙골라	yes	high	OHM África Ocidental Portuguesa(포르투갈령 서아프리카), 통칭 Angola
+1900	541	Mozambique	모잠비크	yes	high	OHM Província de Moçambique
+1900	552	Zimbabwe (Rhodesia)	남로디지아	yes	high	1898 Order in Council로 Southern Rhodesia; OHM Rhodesia; ko위키 남로디지아
+1900	553	Malawi	영국령 중앙아프리카	yes	high	OHM British Central Africa Protectorate(~1907, 이후 니아살랜드)
+1900	561	Cape Colony	케이프 식민지	yes	high	OHM Cape Colony
+1900	562	Natal	나탈	yes	high	OHM Colony of Natal 나탈 식민지
+1900	563	Transvaal	트란스발 공화국	yes	high	OHM Zuid-Afrikaansche Republiek(~1902); ko위키 트란스발 공화국; 영국 병합 선포 1900-09
+1900	564	Orange Free State	오렌지 자유국	yes	high	OHM Oranje Vrijstaat; ko위키 오라녀 자유국; 영국이 1900-05 병합 선포(Orange River Colony)
+1900	565	Namibia	독일령 남서아프리카	yes	high	OHM Deutsch-Südwestafrika
+1900	570	Lesotho	바수톨란드	yes	high	OHM Colony of Basutoland; ko위키 바수톨란드
+1900	571	Botswana	베추아날란드	yes	high	OHM Bechuanaland Protectorate; ko위키 베추아날란드 보호령
+1900	572	Swaziland (Eswatini)	스와질란드	yes	high	OHM Swaziland Protectorate(1903~); 1894~1899 트란스발 보호하
+1900	580	Madagascar (Malagasy)	마다가스카르	yes	high	OHM Colonie de Madagascar et dépendances
+1900	585	Reunion	레위니옹	yes	high	OHM La Réunion
+1900	590	Mauritius	모리셔스	yes	high	OHM British Mauritius
+1900	600	Morocco	모로코	yes	high	OHM السلطنة الشريفة 알라위 술탄국(독립)
+1900	610	Spanish West Africa	리오데오로	yes	medium	에스파냐 보호령 Río de Oro(1884~); ko위키 문서 없음
+1900	615	Algeria	알제리	yes	high	프랑스령 알제리
+1900	616	Tunisia	튀니지	yes	high	OHM Protectorat français de Tunisie
+1900	625	Sudan	영국-이집트령 수단	yes	high	OHM Anglo-Egyptian Sudan; ko위키 영국-이집트령 수단
+1900	630	Iran (Persia)	페르시아	yes	high	OHM Iran 페르시아(카자르 왕조)
+1900	640	Turkey (Ottoman Empire)	오스만 제국	yes	high	OHM دولتْ علیّه عثمانیّه 오스만 제국
+1900	651	Egypt	이집트	yes	high	헤디브국(영국 점령); 술탄국은 1914-12~
+1900	696	United Arab Emirates	휴전 오만	yes	high	OHM Trucial States 휴전 오만; ko위키 휴전 오만
+1900	698	Oman	무스카트 오만	yes	high	OHM Sultanate of Muscat and Oman; ko위키 무스카트 오만 술탄국
+1900	700	Afghanistan	아프가니스탄	yes	high	OHM امارت افغانستان 아프가니스탄 토후국
+1900	710	China	청	yes	high	OHM 大淸 대청; 교과서 청
+1900	713	Taiwan	타이완	yes	high	1895~ 일본 지배(대만총독부); 교과서 표기 타이완
+1900	730	Korea	대한제국	yes	high	OHM 대한제국(1897~1910)
+1900	740	Japan	일본	yes	high	OHM 大日本帝国; ko위키 일본 제국
+1900	750	India	인도	yes	high	OHM British Raj 영국령 인도 제국
+1900	760	Bhutan	부탄	yes	high	OHM 부탄
+1900	780	Sri Lanka (Ceylon)	실론	yes	high	OHM British Ceylon 영국령 실론(스리랑카는 1972~)
+1900	781	Maldives	몰디브	yes	high	OHM Maldives Protectorate
+1900	790	Nepal	네팔	yes	high	OHM नेपाल
+1900	800	Thailand	시암	yes	high	OHM ราชอาณาจักรสยาม(Siam); 타이는 1939~
+1900	811	Cambodia (Kampuchea)	캄보디아	yes	high	프랑스령 인도차이나 안 캄보디아 보호국
+1900	812	Laos	라오스	yes	high	프랑스령 인도차이나 안 라오스(1893~)
+1900	815	Vietnam (Annam/Cochin China/Tonkin)	베트남	partial	medium	당시 통킹·안남·코친차이나 셋으로 나뉨(프랑스령 인도차이나); 베트남은 통칭으로 대체
+1900	821	Federated Malay States	말레이 연방주	yes	high	OHM Federated Malay States; ko위키 말레이 연방주
+1900	822	Unfederated Malay States	조호르	yes	high	1900년에는 조호르만 해당(비연방 말레이주 묶음은 1909~); OHM Johore Protectorate
+1900	823	Sabah (North Borneo)	북보르네오	yes	high	OHM British North Borneo; ko위키 북보르네오
+1900	824	Sarawak	사라왁	yes	high	OHM Protectorate of Sarawak
+1900	827	Straits Settlements	해협 식민지	yes	high	OHM Colony of the Straits Settlement; ko위키 해협 식민지
+1900	835	Brunei	브루나이	yes	high	OHM Protectorate of Brunei
+1900	840	Philippines	필리핀	yes	high	OHM US Philippines / 미군정 필리핀 제도
+1900	850	Indonesia	네덜란드령 동인도	yes	high	OHM Nederlands-Indië; ko위키 네덜란드령 동인도
+1900	860	East Timor	포르투갈령 티모르	yes	high	OHM Timor Português
+1900	901	New South Wales	뉴사우스웨일스	yes	high	OHM Colony of New South Wales(~1901-01-01)
+1900	902	Western Australia	웨스턴오스트레일리아	yes	high	OHM Colony of Western Australia
+1900	903	South Australia	사우스오스트레일리아	yes	high	OHM Colony of South Australia(노던 준주 포함)
+1900	904	Victoria	빅토리아	yes	high	OHM Colony of Victoria
+1900	905	Queensland	퀸즐랜드	yes	high	OHM Colony of Queensland
+1900	906	Tasmania	태즈메이니아	yes	high	OHM Colony of Tasmania
+1900	911	Papua	영국령 뉴기니	yes	high	British New Guinea(1884~1906, 이후 파푸아 준주)
+1900	912	New Guinea (German New Guinea) (Kaiser Wilhelmsland)	독일령 뉴기니	yes	high	OHM Deutsch-Neuguinea(본토 Kaiser-Wilhelmsland)
+1900	920	New Zealand	뉴질랜드	yes	high	OHM New Zealand 뉴질랜드 식민지
+1900	930	New Caledonia and Dependencies	누벨칼레도니	yes	high	OHM Nouvelle-Calédonie; ko위키 누벨칼레도니
+1900	940	Solomon Islands	솔로몬 제도	yes	high	OHM British Solomon Islands Protectorate
+1900	950	Fiji	피지	yes	high	OHM Colony of Fiji
+1900	3461	Bosnia	보스니아	yes	high	1878~ 오스트리아-헝가리 점령(명목상 오스만), 1908 병합
+1900	3462	Herzegovina	헤르체고비나	yes	high	1878~ 오스트리아-헝가리 점령(명목상 오스만), 1908 병합
+1900	4781	Lagos	라고스	yes	high	OHM Lagos Colony(~1906)
+1900	4783	Southern Nigeria	남부 나이지리아	yes	high	OHM Southern Nigeria Protectorate(1900-01-01~)
+1900	4784	Northern Nigeria	북부 나이지리아	yes	high	OHM Northern Nigeria Protectorate(1900-01-01~)
+1900	5200	Italian Somaliland	이탈리아령 소말릴란드	partial	medium	1900년 해안은 베나디르 회사 관리·북부는 보호 술탄국; Somalia italiana 정식 식민지는 1905/1908~
+1900	5518	Northeastern Rhodesia	북동로디지아	yes	high	OHM North Eastern Rhodesia(1900-01~1911)
+1900	5519	Northwestern Rhodesia	북서로디지아	yes	high	OHM Barotziland–North-Western Rhodesia(1899~1911)
+1900	7020	Bokhara	부하라 토후국	yes	high	Emirate of Bukhara(1785~1920) 러시아 보호국; ko위키 부하라 토후국
+1900	7030	Khiva	히바 칸국	yes	high	Khanate of Khiva 러시아 보호국; ko위키 히바 칸국
+1914	2	United States of America	미국	yes	high	United States; OHM 미국
+1914	3	Alaska	알래스카	yes	high	District of Alaska (1884~1912), 1912~ Territory of Alaska
+1914	4	Hawaii	하와이	yes	high	1898 미국 병합, 1900-06 Territory of Hawaii
+1914	6	Puerto Rico	푸에르토리코	yes	high	1898 미국령; 미국 공문서 표기는 Porto Rico(1900~1932)
+1914	20	Canada	캐나다	yes	high	OHM Dominion of Canada 캐나다 자치령
+1914	21	Newfoundland	뉴펀들랜드	yes	high	OHM Crown Colony / Dominion of Newfoundland(1907~)
+1914	31	Bahamas	바하마	yes	high	OHM Colony of the Bahamas
+1914	40	Cuba	쿠바	yes	high	OHM Cuba(1909~ 공화국)
+1914	41	Haiti	아이티	yes	high	OHM République d'Haïti
+1914	42	Dominican Republic	도미니카 공화국	yes	high	OHM República Dominicana
+1914	51	Jamaica	자메이카	yes	high	OHM Colony of Jamaica
+1914	52	Trinidad and Tobago	트리니다드 토바고	yes	high	OHM Trinidad and Tobago Colony (1889 통합)
+1914	53	Barbados	바베이도스	yes	high	OHM Colony of Barbados
+1914	65	Guadeloupe	과들루프	yes	high	OHM Colonie de la Guadeloupe
+1914	66	Martinique	마르티니크	yes	high	Colonie de la Martinique
+1914	70	Mexico	멕시코	yes	high	OHM México
+1914	80	Belize	영국령 온두라스	yes	high	OHM British Honduras Colony; ko위키 영국령 온두라스(벨리즈는 1973~)
+1914	90	Guatemala	과테말라	yes	high	OHM Guatemala
+1914	91	Honduras	온두라스	yes	high	OHM Honduras
+1914	92	El Salvador	엘살바도르	yes	high	OHM El Salvador
+1914	93	Nicaragua	니카라과	yes	high	OHM Nicaragua
+1914	94	Costa Rica	코스타리카	yes	high	OHM Costa Rica
+1914	95	Panama	파나마	yes	high	1903 콜롬비아에서 독립; OHM Panamá
+1914	100	Colombia	콜롬비아	yes	high	OHM Colombia(1903 파나마 분리 후)
+1914	101	Venezuela	베네수엘라	yes	high	OHM Estados Unidos de Venezuela
+1914	110	Guyana	영국령 기아나	yes	high	OHM British Guiana; ko위키 영국령 기아나(가이아나는 1966~)
+1914	115	Surinam	수리남	yes	high	네덜란드어 Suriname, 영어 Dutch Guiana; ko위키 수리남 (네덜란드 식민지)
+1914	120	French Guyana	프랑스령 기아나	yes	high	OHM Colonie de la Guyane 프랑스령 기아나
+1914	130	Ecuador	에콰도르	yes	high	OHM Ecuador
+1914	135	Peru	페루	yes	high	OHM Perú
+1914	140	Brazil	브라질	yes	high	OHM Brasil
+1914	145	Bolivia	볼리비아	yes	high	OHM Bolivia
+1914	150	Paraguay	파라과이	yes	high	OHM Paraguay
+1914	155	Chile	칠레	yes	high	OHM Chile
+1914	160	Argentina	아르헨티나	yes	high	OHM Argentina
+1914	165	Uruguay	우루과이	yes	high	OHM Uruguay
+1914	200	United Kingdom	영국	yes	high	OHM United Kingdom of Great Britain and Ireland(그레이트브리튼 아일랜드 연합왕국) 약칭
+1914	210	Netherlands	네덜란드	yes	high	OHM Koninkrijk der Nederlanden
+1914	211	Belgium	벨기에	yes	high	OHM Belgique
+1914	212	Luxembourg	룩셈부르크	yes	high	OHM Lëtzebuerg
+1914	220	France	프랑스	yes	high	OHM République française
+1914	225	Switzerland	스위스	yes	high	OHM Schweiz
+1914	230	Spain	에스파냐	yes	high	OHM España; 역사 교과서 표기 에스파냐(ko위키 스페인)
+1914	235	Portugal	포르투갈	yes	high	OHM Reino de Portugal(~1910)·Portugal(1910~ 공화국)
+1914	255	Germany (Prussia)	독일	yes	high	OHM Deutsches Reich; ko위키 독일 제국
+1914	300	Austria-Hungary	오스트리아·헝가리	yes	high	OHM Österreich-Ungarn; ko위키 오스트리아-헝가리, 교과서 오스트리아·헝가리 제국
+1914	325	Italy/Sardinia	이탈리아	yes	high	OHM Italia (이탈리아 왕국)
+1914	338	Malta	몰타	yes	high	OHM Colony of Malta
+1914	339	Albania	알바니아	yes	high	OHM Principata e Shqipërisë 알바니아 공국(1914-02~)
+1914	340	Serbia	세르비아	yes	high	OHM Краљевина Србија 세르비아 왕국
+1914	341	Montenegro	몬테네그로	yes	high	OHM Краљевина Црна Горa 몬테네그로 왕국(1910~)
+1914	350	Greece	그리스	yes	high	OHM Βασίλειον τῆς Ἑλλάδος 그리스 왕국
+1914	355	Bulgaria	불가리아	yes	high	OHM Царство България 불가리아 차르국(1908 독립)
+1914	360	Rumania	루마니아	yes	high	OHM Regatul României 루마니아 왕국
+1914	365	Russia (Soviet Union)	러시아	yes	high	OHM Российская империя; ko위키 러시아 제국
+1914	380	Sweden	스웨덴	yes	high	OHM Sverige(1905 노르웨이 분리)
+1914	385	Norway	노르웨이	yes	high	OHM Norge(1905 독립)
+1914	390	Denmark	덴마크	yes	high	OHM Danmark
+1914	395	Iceland	아이슬란드	yes	high	덴마크 지배하 아이슬란드(1918 왕국)
+1914	402	Cape Verde	카보베르데	yes	high	OHM Cabo Verde Português
+1914	404	Guinea-Bissau	포르투갈령 기니	yes	high	OHM Guiné Portuguesa; ko위키 포르투갈령 기니
+1914	411	Equatorial Guinea	에스파냐령 기니	yes	high	en Spanish Guinea(Territorios Españoles del Golfo de Guinea); ko위키 스페인령 기니
+1914	420	Gambia	감비아	yes	high	OHM Gambia Colony and Protectorate
+1914	432	Mali	오트세네갈니제르	yes	medium	OHM Haut Sénégal et Niger(1904~1920, 오트볼타 포함); 프랑스령 수단은 1920~; ko위키 문서 없음
+1914	433	Senegal	세네갈	yes	high	프랑스령 서아프리카 안의 세네갈 식민지
+1914	434	Benin	다호메	yes	high	Colonie du Dahomey(1894~1958); 베냉은 1975~
+1914	435	Mauritania	모리타니	yes	high	OHM Protectorat de la Mauritanie
+1914	436	Niger	니제르	yes	high	Territoire militaire du Niger(1911~1922), 수도 진데르
+1914	437	Cote D'Ivoire	코트디부아르	yes	high	Colonie de la Côte d'Ivoire(1893~)
+1914	438	Guinea	프랑스령 기니	yes	high	Guinée française; ko위키 프랑스령 기니
+1914	450	Liberia	라이베리아	yes	high	OHM Liberia
+1914	451	Sierra Leone	시에라리온	yes	high	OHM Sierra Leone Protectorate
+1914	452	Ghana	골드코스트	yes	high	OHM Gold Coast Colony; ko위키 영국령 골드코스트(가나는 1957~)
+1914	460	German Togoland	토골란드	yes	high	OHM Schutzgebiet Togo 독일령 토골란드; ko위키 토골란드
+1914	470	Kamerun	카메룬	yes	high	OHM Kamerun 독일령 카메룬
+1914	475	Nigeria	나이지리아	yes	high	OHM Colony and Protectorate of Nigeria(1914-01-01 통합)
+1914	481	Gabon	가봉	yes	high	프랑스령 적도 아프리카(1910~) 안 가봉 식민지
+1914	482	Central African Republic	우방기샤리	yes	high	OHM Oubangui-Chari(-Tchad); 프랑스령 적도 아프리카; ko위키 우방기샤리
+1914	483	Chad	차드	yes	high	Territoire militaire du Tchad(우방기샤리-차드 식민지 소속 군정 지역)
+1914	484	Congo	중부 콩고	yes	medium	OHM Colonie du Moyen-Congo 모옌콩고(Middle Congo); ko위키 문서 없음
+1914	490	Congo, Democratic Republic of (Zaire)	벨기에령 콩고	yes	high	OHM Congo belge(1908~)
+1914	500	Uganda	우간다	yes	high	OHM Protectorate of Uganda 우간다 보호령
+1914	501	Kenya	영국령 동아프리카	yes	high	OHM British East Africa(East Africa Protectorate); ko위키 동아프리카 보호령(케냐는 1920~)
+1914	510	Tanzania (Tanganyika)	독일령 동아프리카	yes	high	OHM Deutsch-Ostafrika
+1914	511	Zanzibar	잔지바르	yes	high	OHM Zanzibar Protectorate
+1914	521	British Somaliland (Somaliland Republic)	영국령 소말릴란드	yes	high	OHM British Somaliland
+1914	522	Djibouti	프랑스령 소말릴란드	yes	high	OHM Côte française des Somalis; ko위키 프랑스령 소말릴란드(지부티는 1977~)
+1914	530	Ethiopia	에티오피아	yes	high	OHM 에티오피아 제국; 당시 영어권은 Abyssinia도 씀
+1914	531	Eritrea	에리트레아	yes	high	OHM Colonia Eritrea
+1914	540	Angola	앙골라	yes	high	OHM África Ocidental Portuguesa(포르투갈령 서아프리카), 통칭 Angola
+1914	541	Mozambique	모잠비크	yes	high	OHM Província de Moçambique
+1914	551	Zambia	북로디지아	yes	high	OHM Northern Rhodesia(1911~)
+1914	552	Zimbabwe (Rhodesia)	남로디지아	yes	high	1898 Order in Council로 Southern Rhodesia; OHM Rhodesia; ko위키 남로디지아
+1914	553	Malawi	니아살랜드	yes	high	OHM Nyasaland(1907~)
+1914	560	South Africa	남아프리카 연방	yes	high	OHM Union of South Africa(1910~)
+1914	565	Namibia	독일령 남서아프리카	yes	high	OHM Deutsch-Südwestafrika
+1914	570	Lesotho	바수톨란드	yes	high	OHM Colony of Basutoland; ko위키 바수톨란드
+1914	571	Botswana	베추아날란드	yes	high	OHM Bechuanaland Protectorate; ko위키 베추아날란드 보호령
+1914	572	Swaziland (Eswatini)	스와질란드	yes	high	OHM Swaziland Protectorate(1903~); 1894~1899 트란스발 보호하
+1914	580	Madagascar (Malagasy)	마다가스카르	yes	high	OHM Colonie de Madagascar et dépendances
+1914	585	Reunion	레위니옹	yes	high	OHM La Réunion
+1914	590	Mauritius	모리셔스	yes	high	OHM British Mauritius
+1914	600	Morocco	모로코	yes	high	OHM Protectorat français au Maroc(1912~)
+1914	602	Spanish Morocco	에스파냐령 모로코	yes	high	1912 에스파냐 보호령(북부·케이프주비); ko위키 스페인령 모로코
+1914	610	Spanish West Africa	리오데오로	yes	medium	Río de Oro(+1912 이후 사기아 엘함라); 스페인령 사하라 이름은 1924~; ko위키 문서 없음
+1914	615	Algeria	알제리	yes	high	프랑스령 알제리(남부 영토 포함)
+1914	616	Tunisia	튀니지	yes	high	OHM Protectorat français de Tunisie
+1914	620	Libya	리비아	partial	medium	1911 이탈리아 점령; 행정상 트리폴리타니아·키레나이카 둘(OHM), 리비아라는 이름은 이탈리아가 함께 씀
+1914	625	Sudan	영국-이집트령 수단	yes	high	OHM Anglo-Egyptian Sudan; ko위키 영국-이집트령 수단
+1914	630	Iran (Persia)	페르시아	yes	high	OHM Iran 페르시아(카자르 왕조)
+1914	640	Turkey (Ottoman Empire)	오스만 제국	yes	high	OHM دولتْ علیّه عثمانیّه 오스만 제국
+1914	651	Egypt	이집트	yes	high	헤디브국(영국 점령); 술탄국은 1914-12~
+1914	696	United Arab Emirates	휴전 오만	yes	high	OHM Trucial States 휴전 오만; ko위키 휴전 오만
+1914	698	Oman	무스카트 오만	yes	high	OHM Sultanate of Muscat and Oman; ko위키 무스카트 오만 술탄국
+1914	700	Afghanistan	아프가니스탄	yes	high	OHM امارت افغانستان 아프가니스탄 토후국
+1914	710	China	중화민국	yes	high	OHM 中國(1912~); ko위키 중화민국
+1914	711	Tibet	티베트	yes	high	OHM བོད 티베트(1912~ 사실상 독립)
+1914	713	Taiwan	타이완	yes	high	1895~ 일본 지배(대만총독부); 교과서 표기 타이완
+1914	730	Korea	조선	yes	high	1910 국권 피탈 후 일제가 대한제국을 조선으로 개칭(조선총독부)
+1914	740	Japan	일본	yes	high	OHM 大日本帝国; ko위키 일본 제국
+1914	750	India	인도	yes	high	OHM British Raj 영국령 인도 제국
+1914	760	Bhutan	부탄	yes	high	OHM 부탄
+1914	780	Sri Lanka (Ceylon)	실론	yes	high	OHM British Ceylon 영국령 실론(스리랑카는 1972~)
+1914	781	Maldives	몰디브	yes	high	OHM Maldives Protectorate
+1914	790	Nepal	네팔	yes	high	OHM नेपाल
+1914	800	Thailand	시암	yes	high	OHM ราชอาณาจักรสยาม(Siam); 타이는 1939~
+1914	811	Cambodia (Kampuchea)	캄보디아	yes	high	프랑스령 인도차이나 안 캄보디아 보호국
+1914	812	Laos	라오스	yes	high	프랑스령 인도차이나 안 라오스(1893~)
+1914	815	Vietnam (Annam/Cochin China/Tonkin)	베트남	partial	medium	당시 통킹·안남·코친차이나 셋으로 나뉨(프랑스령 인도차이나); 베트남은 통칭으로 대체
+1914	821	Federated Malay States	말레이 연방주	yes	high	OHM Federated Malay States; ko위키 말레이 연방주
+1914	822	Unfederated Malay States	비연방 말레이주	yes	medium	en Unfederated Malay States(1909~ 조호르·크다·클란탄·트렝가누·프를리스); ko위키 문서 없음
+1914	823	Sabah (North Borneo)	북보르네오	yes	high	OHM British North Borneo; ko위키 북보르네오
+1914	824	Sarawak	사라왁	yes	high	OHM Protectorate of Sarawak
+1914	827	Straits Settlements	해협 식민지	yes	high	OHM Colony of the Straits Settlement; ko위키 해협 식민지
+1914	835	Brunei	브루나이	yes	high	OHM Protectorate of Brunei
+1914	840	Philippines	필리핀	yes	high	OHM US Philippines / 미군정 필리핀 제도
+1914	850	Indonesia	네덜란드령 동인도	yes	high	OHM Nederlands-Indië; ko위키 네덜란드령 동인도
+1914	860	East Timor	포르투갈령 티모르	yes	high	OHM Timor Português
+1914	900	Australia	오스트레일리아	yes	high	OHM Australia(1901 연방)
+1914	911	Papua	파푸아	yes	high	Territory of Papua(1906~, 오스트레일리아 관할); ko위키 파푸아 준주
+1914	912	New Guinea (German New Guinea) (Kaiser Wilhelmsland)	독일령 뉴기니	yes	high	OHM Deutsch-Neuguinea(본토 Kaiser-Wilhelmsland)
+1914	920	New Zealand	뉴질랜드	yes	high	OHM Dominion of New Zealand(1907~)
+1914	930	New Caledonia and Dependencies	누벨칼레도니	yes	high	OHM Nouvelle-Calédonie; ko위키 누벨칼레도니
+1914	940	Solomon Islands	솔로몬 제도	yes	high	OHM British Solomon Islands Protectorate
+1914	950	Fiji	피지	yes	high	OHM Colony of Fiji
+1914	960	French Polynesia	프랑스령 오세아니아	yes	high	OHM Établissements français de l'Océanie(폴리네시아는 1957~)
+1914	5200	Italian Somaliland	이탈리아령 소말릴란드	yes	high	OHM Somalia italiana; ko위키 이탈리아령 소말리아
+1914	7020	Bokhara	부하라 토후국	yes	high	Emirate of Bukhara(1785~1920) 러시아 보호국; ko위키 부하라 토후국
+1914	7030	Khiva	히바 칸국	yes	high	Khanate of Khiva 러시아 보호국; ko위키 히바 칸국
+1914	7351	Southern Sakhalin Island	가라후토	yes	high	1905 포츠머스 조약으로 일본령 남사할린(樺太); ko위키 가라후토청
