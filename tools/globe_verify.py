@@ -33,10 +33,10 @@ async def run():
                 await pg.screenshot(path=f'{OUT}/{name}_{i+1:02d}_{sid}.png')
             # 연도 칩 전부 눌러 오류가 없는지
             await pg.evaluate('go(-1)'); await idle(pg, 800)
-            # 해마다 경계가 실제로 그려졌나 — 받은 나라 수 = 지도에 넣은 나라 수, 큰 연도 글자 = 고른 해(11/21 자료 검토: 빈 지도도 통과하던 구멍)
+            # 해마다 경계가 실제로 그려졌나 — 받은 나라 수 = 지도에 넣은 나라 수(이름으로 센다: 본국 도형은 본토·바다 건너 식민지로 쪼개 그린다, 11/21), 큰 연도 글자 = 고른 해(11/21 자료 검토: 빈 지도도 통과하던 구멍)
             for y in await pg.evaluate('UNIT.years'):
                 await pg.evaluate(f'setYear({y})'); await pg.wait_for_timeout(700)
-                got = await pg.evaluate("(async()=>{ const t = await topo('y'+S.year); await new Promise(r=>setTimeout(r,150)); return [t.features.filter(f=>f.geometry).length, map.getSource('pol').serialize().data.features.length, document.getElementById('year').textContent]; })()")
+                got = await pg.evaluate("(async()=>{ const t = await topo('y'+S.year); await new Promise(r=>setTimeout(r,150)); return [new Set(t.features.filter(f=>f.geometry).map(f=>f.properties.n)).size, new Set(map.getSource('pol').serialize().data.features.map(f=>f.properties.n)).size, document.getElementById('year').textContent]; })()")
                 if not got[0] or got[0] != got[1] or got[2] != str(y): errs.append(f'BORDERS {y}: 받음 {got[0]} · 그림 {got[1]} · 연도 글자 {got[2]}')
             # 연타 — 장면·연도를 섞어 빠르게
             await pg.evaluate("(async()=>{ for(let k=0;k<20;k++){ go(k%SCENES.length); setYear(UNIT.years[k%UNIT.years.length]); await new Promise(r=>setTimeout(r,60)); } go(-1); })()")

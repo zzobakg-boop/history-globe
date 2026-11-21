@@ -8,7 +8,7 @@ const UNIT = {
   dir: 'data/u5/',
   home: { center: [15, 32], zoom: 2.05, zoomPhone: 1.05 }
 };
-const VER = '0.2.0';   // 자료 파일을 갈아 끼우면 올린다 — Pages 캐시(약 10분)에 옛 파일과 새 파일이 섞이지 않게
+const VER = '0.2.3';   // 자료 파일을 갈아 끼우면 올린다 — Pages 캐시(약 10분)에 옛 파일과 새 파일이 섞이지 않게
 const BASE = location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '');
 const INK = '#20232b', LAND = '#ebe6d8', NEUTRAL = '#ddd7c6', SEA = '#a9c9de';
 // 교과서 밖 나라는 무채색 넷을 번갈아 칠해 이웃끼리 갈리게 한다(11/21 천대현 «경계는 다 보이게, 색은 교과서 나라만»)
@@ -109,15 +109,15 @@ const map = new maplibregl.Map({
       { id: 'lbl2-0', type: 'symbol', source: 'lbl2', minzoom: 0, filter: ['==', ['get', 'tier'], 0],
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Regular'],
                   'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9.5, 4, 11.5, 6, 13.5], 'symbol-sort-key': ['-', 0, ['get', 'a']], 'text-max-width': 6 },
-        paint: { 'text-color': '#6a6558', 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
+        paint: { 'text-color': ['coalesce', ['get', 'c'], '#6a6558'], 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
       { id: 'lbl2-1', type: 'symbol', source: 'lbl2', minzoom: 2.6, filter: ['==', ['get', 'tier'], 1],
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Regular'],
                   'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9.5, 4, 11.5, 6, 13.5], 'symbol-sort-key': ['-', 0, ['get', 'a']], 'text-max-width': 6 },
-        paint: { 'text-color': '#6a6558', 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
+        paint: { 'text-color': ['coalesce', ['get', 'c'], '#6a6558'], 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
       { id: 'lbl2-2', type: 'symbol', source: 'lbl2', minzoom: 4, filter: ['==', ['get', 'tier'], 2],
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Regular'],
                   'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9.5, 4, 11.5, 6, 13.5], 'symbol-sort-key': ['-', 0, ['get', 'a']], 'text-max-width': 6 },
-        paint: { 'text-color': '#6a6558', 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
+        paint: { 'text-color': ['coalesce', ['get', 'c'], '#6a6558'], 'text-halo-color': 'rgba(255,255,255,0.85)', 'text-halo-width': 1.4 } },
       { id: 'lbl', type: 'symbol', source: 'lbl',
         layout: { 'text-field': ['get', 't'], 'text-font': ['Klokantech Noto Sans Bold'],
                   'text-size': ['interpolate', ['linear'], ['zoom'], 1, ['*', ['get', 'sz'], 0.78], 4, ['get', 'sz'], 6, ['*', ['get', 'sz'], 1.25]],
@@ -212,6 +212,18 @@ const LABEL_TXT = { as1: { '인도': { t: '인도(영국)', k: 'GB' } } };
 const HOME_AT = { GB: [-1.5, 52.5], FR: [2.5, 46.8], ES: [-3.7, 40.2], PT: [-8, 39.7], RU: [40, 56], AT: [15.5, 47.6], DE: [13.4, 52.5],
   GC: [10, 51], US: [-95, 39], CSA: [-87, 33], OT: [32.8, 39.9], IT: [8, 45], BE: [4.5, 50.7], NL: [5.5, 52.2], JP: [138, 36],
   QING: [110, 32], KR: [127.5, 37.5] };
+// 원자료가 본국 도형에 묶어 둔 바다 건너 식민지 — 본국 진한 색이 아니라 식민지 옅은 색으로 칠하고 이름을 단다
+// (11/21 천대현 «1900·1914 아프리카 이름이 없다» 점검: 1914 앙골라·모잠비크가 포르투갈 본토색, 한반도·타이완이 일본 본토색이었다)
+// 상자 = [서, 남, 동, 북, 이름표]. 조각의 이름표 자리가 상자 안이면 식민지로 본다. 이름표는 아시아 장면의 «오스트레일리아(영국)»처럼 «땅(나라)»
+const OVERSEAS = {
+  PT: [[10, -19, 25, -4.3, '앙골라(포르투갈)'], [30, -27, 41, -10, '모잠비크(포르투갈)'], [-26, -36, 55, 20], [60, -12, 130, 25]],
+  US: [[116, 4, 127.5, 21.5, '필리핀(미국)'], [-86, 19.5, -74, 23.5, '쿠바(미국)'], [-86, 17, -64, 24.5], [-161, 18, -154, 23, '하와이(미국)'], [144, 12, 146, 15], [-171.5, -15, -168, -13]],
+  JP: [[124, 33, 128.9, 43.5, '조선(일본)'], [119, 21.5, 122.5, 25.6, '타이완(일본)'], [141, 45.8, 145, 50], [120.5, 38.3, 122.6, 40]],
+  ES: [[-18, 20, -8, 27.8], [-6.5, 34.6, -1.9, 35.95], [5, -2, 12, 4], [116, 4, 127.5, 21.5, '필리핀(스페인)'], [-86, 19.5, -74, 23.5, '쿠바(스페인)'], [-86, 17, -64, 24.5]],
+  GB: [[44, 12, 54, 19, '아덴(영국)'], [35, 10, 62, 32]], FR: [[-55, 1, -51, 6.5, '기아나(프랑스)']], NL: [[94, -11, 142, 7]],
+  DE: [[125, -15, 180, 10, '뉴기니(독일)'], [-175, -15, -170, -12], [119.5, 35.5, 121, 36.6]]
+};
+const inBox = (p, b) => p[0] >= b[0] && p[0] <= b[2] && p[1] >= b[1] && p[1] <= b[3];
 const F = (geom, props) => ({ type: 'Feature', geometry: geom, properties: props || {} });
 const FC = feats => ({ type: 'FeatureCollection', features: feats });
 
@@ -243,25 +255,46 @@ async function draw(){
   if (tok !== drawToken) return;   // 그 사이 다른 해를 골랐다
   toast('');
   const paint = paintOf(), focus = focusOf();
-  const keyArea = {}, grey = [];   // 색 나라 이름표 자리(본토) · 교과서 밖 나라 이름표
-  const feats = pol.features.filter(f => f.geometry).map(f => {
-    const n = f.properties.n, r = paint(n, yr);
-    let c = greyOf(n), rk = 0;
+  const keyArea = {}, grey = [];   // 색 나라 이름표 자리(본토) · 그 밖 이름표(식민지·교과서 밖 나라)
+  const areaOf = p => ringArea(p[0]) * Math.cos(ringCentroid(p[0])[1] * Math.PI / 180);
+  const feats = [];
+  for (const f of pol.features){
+    if (!f.geometry) continue;
+    const n = f.properties.n, r = paint(n, yr), umbrella = n.startsWith('(');   // «(영국 제국)» 같은 괄호 항목 = 식민지 전체를 덮는 겉봉투 — 안쪽 항목과 겹친다
     if (r && focus.includes(r[0])){
-      const [k, col] = r; c = col ? colonyColor(k) : COLORS[k]; rk = col ? 1 : 2;
-      if (!col) for (const p of polys(f.geometry)){
-        const a = ringArea(p[0]) * Math.cos(ringCentroid(p[0])[1] * Math.PI / 180);
-        const home = HOME_AT[k] && inRing(HOME_AT[k], p[0]);
-        const cur = keyArea[k];
-        if (!cur || (home && !cur.home) || (home === !!cur.home && a > cur.a)) keyArea[k] = { a, home, ll: labelPt(p[0]) };
+      const [k, col] = r;
+      if (col){
+        feats.push(F(f.geometry, { n, c: colonyColor(k), rk: 1 }));
+        // 식민지도 이름을 단다 — 이름표가 없어 1900·1914 아프리카가 빈 땅처럼 보였다(11/21 천대현). 넓은 조각마다 하나씩
+        if (!umbrella && NAMES_KO[n]) for (const p of polys(f.geometry)){ const a = areaOf(p); if (a > 2) grey.push({ t: NAMES_KO[n], a, ll: labelPt(p[0]), c: shade(k), many: true }); }
+        continue;
       }
-    } else if (!r && NAMES_KO[n]){
+      // 본국 도형은 조각마다 본토·바다 건너 식민지를 가른다
+      const home = [], over = [];
+      for (const p of polys(f.geometry)){
+        const ll = labelPt(p[0]), b = (OVERSEAS[k] || []).find(b => inBox(ll, b));
+        b ? over.push({ p, ll, t: b[4] || (NAMES[k] || k).split('·').pop() + '령' }) : home.push(p);
+      }
+      if (over.length){
+        feats.push(F({ type: 'MultiPolygon', coordinates: over.map(o => o.p) }, { n, c: colonyColor(k), rk: 1 }));
+        for (const o of over){ const a = areaOf(o.p); if (a > 2) grey.push({ t: o.t, a, ll: o.ll, c: shade(k), many: true }); }
+      }
+      if (!home.length) continue;
+      feats.push(F({ type: 'MultiPolygon', coordinates: home }, { n, c: COLORS[k], rk: 2 }));
+      for (const p of home){
+        const a = areaOf(p), isHome = HOME_AT[k] && inRing(HOME_AT[k], p[0]), cur = keyArea[k];
+        if (!cur || (isHome && !cur.home) || (isHome === !!cur.home && a > cur.a)) keyArea[k] = { a, home: isHome, ll: labelPt(p[0]) };
+      }
+      continue;
+    }
+    // 색을 안 칠한 땅은 모두 회색 이름 — 장면 밖 교과서 나라(이탈리아 장면의 러시아 등)도 여기로 온다
+    feats.push(F(f.geometry, { n, c: greyOf(n), rk: 0 }));
+    if (!umbrella && NAMES_KO[n]){
       let big = null;
-      for (const p of polys(f.geometry)){ const a = ringArea(p[0]) * Math.cos(ringCentroid(p[0])[1] * Math.PI / 180); if (!big || a > big.a) big = { a, p }; }
+      for (const p of polys(f.geometry)){ const a = areaOf(p); if (!big || a > big.a) big = { a, p }; }
       if (big) grey.push({ t: NAMES_KO[n], a: big.a, ll: labelPt(big.p[0]) });
     }
-    return F(f.geometry, { n, c, rk });
-  });
+  }
   map.getSource('pol').setData(FC(feats));
   map.getSource('nodata').setData(nd);
   // 본토가 없고 아주 작은 조각만 남은 나라(1815년 «프로이센 왕국» = 스위스 뇌샤텔 한 조각)는 이름을 달지 않는다 — 엉뚱한 곳에 이름이 뜬다
@@ -297,8 +330,9 @@ function drawLabels(keyArea, grey){
   // 교과서 밖 나라 — 작은 회색 이름. 넓은 나라는 멀리서도, 작은 나라는 당겨야 보인다(층 셋의 minzoom)
   // 장면 이름표·색 나라 이름표와 같은 이름, 같은 이름의 두 번째(작은) 덩어리는 빼서 «이집트»가 두 번 뜨지 않게 한다
   const seen = new Set(out.map(f => String(f.properties.t).replace(/\s/g, '')));
-  const g2 = S.names ? (grey || []).sort((x, y) => y.a - x.a).filter(g => { const k = g.t.replace(/\s/g, ''); if (seen.has(k)) return false; seen.add(k); return true; })
-    .map(g => F({ type: 'Point', coordinates: g.ll }, { t: g.t, a: g.a, tier: g.a > 60 ? 0 : g.a > 8 ? 1 : 2 })) : [];
+  // 식민지(many)는 떨어진 조각마다 이름을 단다(영국령 아프리카 = 북쪽·남쪽 두 덩어리) — 같은 이름끼리는 지우지 않고, 장면·색 나라 이름표와 겹치는 이름만 뺀다
+  const g2 = S.names ? (grey || []).sort((x, y) => y.a - x.a).filter(g => { const k = g.t.replace(/\s/g, ''); if (seen.has(k)) return false; if (!g.many) seen.add(k); return true; })
+    .map(g => F({ type: 'Point', coordinates: g.ll }, Object.assign({ t: g.t, a: g.a, tier: g.a > 60 ? 0 : g.a > 8 ? 1 : 2 }, g.c ? { c: g.c } : {}))) : [];
   GREY = g2; greyVisible();
 }
 // 회색 이름은 위쪽 연도·단추 띠, 설명 패널, 아래 막대 뒤에 깔리면 지저분하다 — 그 자리에 떨어지는 것은 숨긴다(11/21 사회 🟡). 지도를 움직일 때마다 다시 고른다
